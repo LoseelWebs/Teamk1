@@ -1,8 +1,9 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Academia Team K-1 en Poza Rica, Veracruz: Kickboxing, K-1, Muay Thai y MMA para niños, novatos y avanzados.">
+<meta name="theme-color" content="#08080a">
 <title>Academia Team K-1</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Bebas+Neue&family=Anton&family=Archivo+Black&family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-:root{--bg:#0c0c0d;--panel:#16161a;--panel-2:#1e1e22;--phc:#1f1f24;--line:rgba(255,255,255,.1);--ink:#f5f2ee;--ink2:#d9d3cc;--muted:#a19a93;--acc:#d42a2f;--lime:#c6f11a;
+:root{--bg:#08080a;--panel:#16161a;--panel-2:#1e1e22;--phc:#1f1f24;--line:rgba(255,255,255,.1);--ink:#f5f2ee;--ink2:#d9d3cc;--muted:#a19a93;--acc:#d42a2f;--lime:#c6f11a;
  --cut:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);--ease:cubic-bezier(.22,.8,.2,1);color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.55 var(--fb);-webkit-font-smoothing:antialiased}
@@ -27,7 +28,7 @@ a{color:inherit}img{max-width:100%}
 .sgrid .h{background:var(--panel-2);font-weight:800;font-size:11.5px;color:var(--muted);letter-spacing:.04em}
 .sgrid .c{place-items:start;text-align:left;padding-left:12px}
 .sgrid .c b{display:block;font-size:13.5px;line-height:1.25}.sgrid .c small{color:var(--muted);font-weight:700;font-size:12px}
-.sgrid .y i{display:block;width:16px;height:16px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px rgba(198,241,26,.15)}
+.sgrid .y i{display:block;width:16px;height:16px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px color-mix(in srgb,var(--lime) 15%,transparent)}
 .sgrid .n i{display:block;width:8px;height:2px;background:#3a3a40}
 .snote{color:var(--muted);font-size:13px;margin:8px 0 0}
 /* botones */
@@ -51,8 +52,8 @@ a{color:inherit}img{max-width:100%}
 .cmp h3{margin:0;font:700 22px/.95 var(--fd);text-transform:uppercase}.cmp p{margin:0;color:var(--muted);font-size:13px}
 .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.mini .ph{aspect-ratio:1}
 /* barra inferior octágono con borde luminoso */
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:0 12px 10px;pointer-events:none;filter:drop-shadow(0 0 7px rgba(212,42,47,.45)) drop-shadow(0 8px 18px rgba(0,0,0,.6))}
-.dk{pointer-events:auto;position:relative;max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);padding:6px;clip-path:var(--cut);background:linear-gradient(180deg,rgba(255,120,120,.75),rgba(212,42,47,.55))}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:0 12px 10px;pointer-events:none;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--acc) 45%,transparent)) drop-shadow(0 8px 18px rgba(0,0,0,.6))}
+.dk{pointer-events:auto;position:relative;max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);padding:6px;clip-path:var(--cut);background:linear-gradient(180deg,rgba(255,120,120,.75),color-mix(in srgb,var(--acc) 55%,transparent))}
 .dk::before{content:"";position:absolute;inset:1.5px;clip-path:var(--cut);background:rgba(18,18,21,.96)}
 .dk .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/6);clip-path:var(--cut);background:var(--acc);transform:translateX(calc(var(--i,0)*100%));transition:transform .5s cubic-bezier(.34,1.3,.5,1)}
 .dk a{position:relative;z-index:1;display:grid;place-items:center;gap:2px;padding:7px 0 6px;color:var(--muted);text-decoration:none;font-size:10.5px;font-weight:700}
@@ -66,7 +67,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:900;text-transform:uppercase;margin:0
 /* portada: foto a pantalla completa + cartel al centro */
 .hero{position:relative;min-height:min(86vh,700px);display:grid;place-items:center;text-align:center;isolation:isolate;overflow:hidden}
 .hero>#wave{position:absolute;inset:0;width:100%;height:100%;z-index:-2;display:block}
-.hero{background:radial-gradient(70% 60% at 50% 105%,rgba(212,42,47,.28),transparent 70%),#09090a}
+.hero{background:radial-gradient(70% 60% at 50% 105%,color-mix(in srgb,var(--acc) 28%,transparent),transparent 70%),#09090a}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(42% 40% at 50% 34%,rgba(9,9,10,.82),transparent 72%),linear-gradient(180deg,rgba(9,9,10,.55),transparent 30%,transparent 82%,rgba(12,12,13,.95))}
 .hero .in{display:grid;gap:12px;justify-items:center;padding:34px 16px}
 .hero .emb{width:min(220px,52vw)}
@@ -87,7 +88,7 @@ section{padding:60px 0 6px}
 .g{border-left:3px solid var(--lime);padding:4px 0 4px 12px}.g i{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .g b{display:block;font:900 22px/1 var(--fd);text-transform:uppercase;margin:3px 0}.g span{font-size:13px;color:var(--ink2)}
 /* precio como boleto de admisión */
-.admit{margin-top:18px;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;background:linear-gradient(90deg,var(--acc),#8f1015);border-radius:var(--r);padding:20px 24px;position:relative}
+.admit{margin-top:18px;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;background:linear-gradient(90deg,var(--acc),color-mix(in srgb,var(--acc) 60%,#000));border-radius:var(--r);padding:20px 24px;position:relative}
 .admit::before,.admit::after{content:"";position:absolute;left:230px;width:22px;height:22px;border-radius:50%;background:var(--bg);transform:translateX(-50%)}
 .admit::before{top:-11px}.admit::after{bottom:-11px}
 .admit .left{border-right:2px dashed rgba(255,255,255,.35);padding-right:22px;min-width:186px}
@@ -125,11 +126,11 @@ footer img{height:70px;display:block;margin:0 auto 10px}
 .view:not(#inicio){padding-top:30px}
 .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:34px}
 .qc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:4px;align-content:start;text-decoration:none;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:transform .25s,border-color .25s}
-.qc:hover{transform:translateY(-2px);border-color:rgba(212,42,47,.6)}
+.qc:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--acc) 60%,transparent)}
 .qc small{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .qc b{font:900 24px/1 var(--fd);text-transform:uppercase}.qc span{color:var(--muted);font-size:13px}.qc em{font-style:normal;color:var(--acc);font-weight:800;font-size:12.5px;margin-top:2px}
-.qc.hot{border-color:var(--acc);background:linear-gradient(135deg,rgba(212,42,47,.22),var(--panel))}
-.qc.lime{border-color:rgba(198,241,26,.45)}.qc.lime em{color:var(--lime)}
+.qc.hot{border-color:var(--acc);background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 22%,transparent),var(--panel))}
+.qc.lime{border-color:color-mix(in srgb,var(--lime) 45%,transparent)}.qc.lime em{color:var(--lime)}
 .duo.one{grid-template-columns:1fr}
 .tape,.rowsT{max-width:760px;margin-left:auto;margin-right:auto}
 .hero{min-height:min(74vh,620px)}
@@ -139,13 +140,13 @@ footer img{height:70px;display:block;margin:0 auto 10px}
 @media(max-width:520px){.tape{grid-template-columns:1fr 1fr;gap:10px}.vs{display:none}.corner h3{font-size:26px}.rowsT div{grid-template-columns:1fr 84px 1fr;font-size:12px}.poster h3{font-size:24px}.posters{gap:10px}}
 </style><style>
 /* Fondo animado fijo detrás de toda la página, visto borroso a través de recuadros de vidrio */
-body{background:#08080a}
+body{background:var(--bg)}
 .bgfx{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .bgfx #wave{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.6}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
-.b1{width:55vmax;height:55vmax;left:-15vmax;top:-20vmax;background:radial-gradient(circle,#7d0d12,transparent 65%)}
-.b2{width:45vmax;height:45vmax;right:-15vmax;top:25vh;background:radial-gradient(circle,#d42a2f,transparent 65%);opacity:.35}
-.b3{width:40vmax;height:40vmax;left:20vw;bottom:-25vmax;background:radial-gradient(circle,rgba(198,241,26,.55),transparent 65%);opacity:.18}
+.b1{width:55vmax;height:55vmax;left:-15vmax;top:-20vmax;background:radial-gradient(circle,color-mix(in srgb,var(--acc) 55%,#000),transparent 65%)}
+.b2{width:45vmax;height:45vmax;right:-15vmax;top:25vh;background:radial-gradient(circle,var(--acc),transparent 65%);opacity:.35}
+.b3{width:40vmax;height:40vmax;left:20vw;bottom:-25vmax;background:radial-gradient(circle,color-mix(in srgb,var(--lime) 55%,transparent),transparent 65%);opacity:.18}
 .hero{background:transparent!important}
 .hero::after{background:radial-gradient(45% 42% at 50% 36%,rgba(8,8,10,.6),transparent 72%)!important}
 :root{--panel:rgba(20,20,24,.5);--panel-2:rgba(30,30,36,.55);--phc:rgba(255,255,255,.06);--line:rgba(255,255,255,.12)}
@@ -153,18 +154,18 @@ body{background:#08080a}
 .sgrid .h{background:rgba(255,255,255,.06)}
 .top{background:rgba(8,8,10,.45)!important;backdrop-filter:blur(18px) saturate(150%)}
 .drawer aside{background:rgba(16,16,19,.72)}
-.admit{background:linear-gradient(90deg,rgba(212,42,47,.85),rgba(143,16,21,.8))}
+.admit{background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 85%,transparent),rgba(143,16,21,.8))}
 .admit::before,.admit::after{background:#0b0b0d}
 footer{background:rgba(8,8,10,.4);backdrop-filter:blur(14px)}
 </style><style>
 /* Lista de competencias (barra lateral) */
 .clist{display:grid;gap:8px}
 .ci{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;transition:border-color .2s,transform .2s}
-.ci:hover{border-color:rgba(212,42,47,.6);transform:translateX(3px)}
+.ci:hover{border-color:color-mix(in srgb,var(--acc) 60%,transparent);transform:translateX(3px)}
 .ci span{flex:1;display:grid;gap:2px}.ci small{color:var(--lime);font-weight:800;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
 .ci b{font:900 21px/1 var(--fd);text-transform:uppercase}.ci .chev{width:18px;height:18px;color:var(--muted);flex:none}
 .ci em{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--acc);color:#fff;padding:3px 7px;border-radius:5px}
-.ci.hot{border-color:rgba(212,42,47,.55);background:linear-gradient(120deg,rgba(212,42,47,.25),var(--panel))}
+.ci.hot{border-color:color-mix(in srgb,var(--acc) 55%,transparent);background:linear-gradient(120deg,color-mix(in srgb,var(--acc) 25%,transparent),var(--panel))}
 /* Ventana flotante */
 .modal{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px}
 .modal .scrim{position:absolute;inset:0;border:0;background:rgba(0,0,0,.7);opacity:1}
@@ -180,7 +181,7 @@ footer{background:rgba(8,8,10,.4);backdrop-filter:blur(14px)}
 /* Cartel de combates: main event + lista */
 .ev{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:10px}
 .ev b{color:var(--ink)}
-.main{position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(90deg,rgba(212,42,47,.35),rgba(10,10,12,.2) 40%,rgba(10,10,12,.2) 60%,rgba(70,110,200,.3));border:1px solid rgba(255,255,255,.12)}
+.main{position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),rgba(10,10,12,.2) 40%,rgba(10,10,12,.2) 60%,rgba(70,110,200,.3));border:1px solid rgba(255,255,255,.12)}
 .main .tagline{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:3;display:flex;gap:6px;white-space:nowrap}
 .main .tagline span{font:800 10.5px var(--fb);letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:5px;background:rgba(0,0,0,.55)}
 .main .tagline .me{background:var(--acc);color:#fff}
@@ -188,7 +189,7 @@ footer{background:rgba(8,8,10,.4);backdrop-filter:blur(14px)}
 .faces .ph{height:clamp(170px,30vh,280px);border-radius:0;border:0;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}
 .faces .l .ph{mask-image:linear-gradient(90deg,#000 70%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 70%,transparent)}
 .faces .r .ph{mask-image:linear-gradient(270deg,#000 70%,transparent);-webkit-mask-image:linear-gradient(270deg,#000 70%,transparent)}
-.vsb{align-self:center;font:400 clamp(44px,8vw,80px)/1 var(--fp);color:#fff;text-shadow:0 0 30px rgba(212,42,47,.8);padding:0 4px}
+.vsb{align-self:center;font:400 clamp(44px,8vw,80px)/1 var(--fp);color:#fff;text-shadow:0 0 30px color-mix(in srgb,var(--acc) 80%,transparent);padding:0 4px}
 .names{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:start;padding:12px 16px 16px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55) 30%)}
 .fn{display:grid;gap:3px}.fn.r{text-align:right}
 .fn small{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em}
@@ -210,7 +211,7 @@ footer{background:rgba(8,8,10,.4);backdrop-filter:blur(14px)}
 .bout .nm span{font-size:11.5px;color:var(--muted)}.bout .nm i{font-style:normal;color:var(--lime);font-weight:700}
 .bout .w{display:grid;justify-items:center;gap:2px;text-align:center}
 .bout .w b{font:400 18px/1 var(--fp);color:var(--ink2)}.bout .w span{font-size:10.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.bout.co{border-color:rgba(212,42,47,.45);background:linear-gradient(90deg,rgba(212,42,47,.14),rgba(255,255,255,.03))}
+.bout.co{border-color:color-mix(in srgb,var(--acc) 45%,transparent);background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 14%,transparent),rgba(255,255,255,.03))}
 .fnote{margin:0;font-size:12px;color:var(--muted)}
 @media(max-width:560px){.modal{padding:8px}.mbox{max-height:92vh;padding:14px}.bout{grid-template-columns:1fr;gap:6px;padding:10px}.bout .side.r{flex-direction:row;text-align:left}.bout .w{grid-row:2;justify-items:start;display:flex;gap:8px;align-items:center;padding-left:54px} .bout .w{flex-wrap:wrap;justify-content:flex-start}.bout .w b{font-size:15px;color:var(--acc)}.names{padding:10px 12px 14px}.mid{display:none}.faces{padding-top:40px}}
 </style><style>
@@ -255,7 +256,7 @@ footer{background:rgba(8,8,10,.4);backdrop-filter:blur(14px)}
 .edbar{display:flex;justify-content:flex-end;gap:8px}
 .edbtn{border:1px solid rgba(214,174,86,.5);background:rgba(214,174,86,.12);color:#f3dc94;font:800 12.5px var(--fb);padding:8px 14px;border-radius:999px;cursor:pointer}
 .edbtn.pri{background:linear-gradient(135deg,#e9cd7e,#b8902f);color:#111;border-color:transparent}
-.edbtn.del{border-color:rgba(212,42,47,.5);background:rgba(212,42,47,.12);color:#ffb3b3}
+.edbtn.del{border-color:color-mix(in srgb,var(--acc) 50%,transparent);background:color-mix(in srgb,var(--acc) 12%,transparent);color:#ffb3b3}
 .ed{display:grid;gap:14px}
 .ed fieldset{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px;margin:0}
 .ed legend{font:800 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#d6ae56;padding:0 6px}
@@ -474,6 +475,105 @@ background:radial-gradient(60% 70% at 50% 100%,rgba(8,6,4,.92),rgba(8,6,4,.55) 4
 .tape.tape-n{grid-template-columns:repeat(var(--n),1fr)!important}
 @media(max-width:520px){.tape.tape-n{grid-template-columns:repeat(2,1fr)!important}}
 .edbar,.ed{display:none!important}
+</style><style id="mev2">/* ===== Main event estilo jaula (color = --mev, se cambia desde el panel) ===== */
+:root{--mev:var(--red)}
+.mev.mev2{background:#050505!important;border:1px solid color-mix(in srgb,var(--mev) 45%,transparent)!important;border-radius:0!important}
+.mev2 .m-l{position:absolute;inset:0;pointer-events:none}
+.mev2 .m-humo{z-index:0;background:url(img/mev-humo.jpg) center/cover,var(--mev);background-blend-mode:multiply}
+.mev2 .m-reja{z-index:1;background:url(img/mev-reja.jpg) center/cover,color-mix(in srgb,var(--mev) 35%,#fff);background-blend-mode:multiply;mix-blend-mode:screen;opacity:.5}
+.mev2 .m-luces{z-index:1;background:url(img/mev-luces.jpg) center/cover,color-mix(in srgb,var(--mev) 22%,#fff);background-blend-mode:multiply;mix-blend-mode:screen;opacity:.6}
+.mev2 .m-sombra{z-index:4;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.5) 70%,rgba(4,4,4,.96) 92%)}
+.mev2 .m-chispas{z-index:5;background:url(img/mev-chispas.jpg) center/cover,color-mix(in srgb,var(--mev) 50%,#ffd27a);background-blend-mode:multiply;mix-blend-mode:screen;opacity:.85;-webkit-mask-image:linear-gradient(180deg,transparent 15%,rgba(0,0,0,.35) 45%,#000 75%);mask-image:linear-gradient(180deg,transparent 15%,rgba(0,0,0,.35) 45%,#000 75%)}
+.mev2 .mev-logo{z-index:8!important;filter:drop-shadow(0 0 14px rgba(0,0,0,.9)) drop-shadow(0 0 22px color-mix(in srgb,var(--mev) 60%,transparent))}
+.mev2 .m-f{position:absolute;bottom:0;height:76%;z-index:3;filter:contrast(1.16) saturate(1.06) brightness(.98) drop-shadow(0 0 2px color-mix(in srgb,var(--mev) 85%,#fff)) drop-shadow(0 0 22px color-mix(in srgb,var(--mev) 75%,transparent))}
+.mev2 .m-f .mev-ph{height:100%!important;width:auto!important;max-width:none!important;object-fit:contain!important;-webkit-mask-image:none!important;mask-image:none!important;filter:none!important;display:block}
+.mev2 .m-fa{left:-17%}.mev2 .m-fb{right:-20%}
+.mev2 .m-ev{position:absolute;left:0;right:0;top:21%;z-index:8;text-align:center;white-space:nowrap;overflow:hidden;font:400 clamp(12px,1.9vw,16px)/1 "Anton",Impact,sans-serif;letter-spacing:.3em;text-transform:uppercase;color:color-mix(in srgb,var(--mev) 30%,#fff);text-shadow:0 2px 8px #000}
+.mev2 .m-vs{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) skewX(-10deg);z-index:6;font:400 clamp(72px,12vw,124px)/1 "Anton",Impact,sans-serif;
+ background:linear-gradient(180deg,#fff 0%,color-mix(in srgb,var(--mev) 18%,#fff) 34%,var(--mev) 54%,color-mix(in srgb,var(--mev) 55%,#000) 72%,color-mix(in srgb,var(--mev) 45%,#fff) 100%);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 3px 0 color-mix(in srgb,var(--mev) 50%,#000)) drop-shadow(0 6px 0 color-mix(in srgb,var(--mev) 22%,#000)) drop-shadow(0 0 22px color-mix(in srgb,var(--mev) 70%,transparent)) drop-shadow(0 10px 16px #000)}
+.mev2 .m-pl{position:absolute;bottom:60px;z-index:7;max-width:46%;padding:7px 14px 6px;transform:skewX(-12deg);background:linear-gradient(180deg,#161616,#000);box-shadow:0 0 0 1px rgba(255,255,255,.15),0 8px 20px rgba(0,0,0,.7)}
+.mev2 .m-pl::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;background:var(--mev)}
+.mev2 .m-pl b{display:block;padding-top:.14em;font:400 clamp(20px,3.4vw,30px)/1.05 "Anton",Impact,sans-serif;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+.mev2 .m-pl small{display:block;margin-top:3px;font:700 10.5px var(--fb);color:#d0d0d0;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mev2 .m-pl.l{left:3%}.mev2 .m-pl.r{right:3%;text-align:right}
+.mev2 .m-ft{position:absolute;left:0;right:0;bottom:0;height:48px;z-index:7;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;
+ background:linear-gradient(90deg,rgba(0,0,0,.94),rgba(0,0,0,.66) 50%,rgba(0,0,0,.94));border-top:2px solid var(--mev);
+ font:400 12px "Anton",Impact,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#ddd}
+.mev2 .m-ft span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mev2 .m-ft span:last-child{text-align:right}
+.mev2 .m-ft b{font-weight:400;font-size:clamp(15px,2.4vw,20px);letter-spacing:.04em;color:color-mix(in srgb,var(--mev) 28%,#fff);white-space:nowrap}
+@media(min-width:561px){.mev2 .m-f{height:84%}.mev2 .m-fa{left:2%}.mev2 .m-fb{right:2%}.mev2 .m-ev{top:23%}}
+@media(max-width:380px){.mev2 .m-ft{font-size:10.5px;padding:0 10px}.mev2 .m-pl b{font-size:19px}}
+</style><style id="mev3">
+/* fondo más oscuro */
+.mev2 .m-humo{filter:brightness(.55) saturate(1.15)}
+.mev2 .m-reja{opacity:.32}.mev2 .m-luces{opacity:.38}.mev2 .m-chispas{opacity:.7}
+.mev2::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(75% 65% at 50% 42%,transparent 35%,rgba(0,0,0,.72) 100%)}
+/* peleadores: más color, contraste y volumen */
+.mev2 .m-f{filter:contrast(1.35) saturate(1.4) sepia(.08) brightness(.97) drop-shadow(0 0 1.5px color-mix(in srgb,var(--mev) 70%,#fff)) drop-shadow(0 0 26px color-mix(in srgb,var(--mev) 70%,transparent)) drop-shadow(0 18px 24px rgba(0,0,0,.85))!important}
+.mev2 .m-f>i{position:absolute;inset:0;pointer-events:none;-webkit-mask:var(--src) center/100% 100% no-repeat;mask:var(--src) center/100% 100% no-repeat}
+.mev2 .m-shade{mix-blend-mode:multiply;background:linear-gradient(180deg,rgba(255,255,255,0) 25%,rgba(70,40,30,.55) 70%,rgba(0,0,0,.95) 100%),radial-gradient(55% 60% at 50% 32%,#fff 45%,rgba(60,35,30,.85) 100%)}
+.mev2 .m-rim{mix-blend-mode:screen}
+.mev2 .m-fa .m-rim{background:linear-gradient(90deg,transparent 84%,color-mix(in srgb,var(--mev) 75%,#fff) 100%)}
+.mev2 .m-fb .m-rim{background:linear-gradient(270deg,transparent 84%,color-mix(in srgb,var(--mev) 75%,#fff) 100%)}
+.mev2 .m-rim{opacity:.6}
+/* destellos */
+.mev2 .m-flare{position:absolute;z-index:2;width:150px;height:150px;transform:translate(-50%,-50%);pointer-events:none;mix-blend-mode:screen;
+ background:radial-gradient(circle,#fff 0 3%,color-mix(in srgb,var(--mev) 60%,#fff) 6%,color-mix(in srgb,var(--mev) 35%,transparent) 18%,transparent 45%),
+ linear-gradient(0deg,transparent 49.3%,rgba(255,255,255,.95) 50%,transparent 50.7%),linear-gradient(90deg,transparent 49.4%,rgba(255,255,255,.75) 50%,transparent 50.6%);
+ -webkit-mask:radial-gradient(circle,#000 20%,transparent 70%);mask:radial-gradient(circle,#000 20%,transparent 70%)}
+.mev2 .f1{left:50%;top:30%;width:190px;height:190px}.mev2 .f2{left:50%;top:62%;width:120px;height:120px;opacity:.7}
+
+</style><style id="mev3">
+.mev.mev3{background:radial-gradient(75% 65% at 55% 40%,color-mix(in srgb,var(--mev) 32%,#120c02),#0c0803 60%,#050302)!important;border:1px solid color-mix(in srgb,var(--mev) 55%,transparent)!important}
+.mev3 .mev-bg::after{display:none!important}
+.mev3 .mev-row span{-webkit-text-stroke:1px color-mix(in srgb,var(--mev) 55%,#fff)!important;opacity:.55}
+.mev3 .mev-row span:nth-child(3n){color:var(--mev)!important;-webkit-text-stroke:0!important;opacity:.62}
+.mev3 .m3-luces{position:absolute;inset:0;z-index:1;pointer-events:none;background:url(img/mev-ppv.jpg) center top/100% 100%,color-mix(in srgb,var(--mev) 30%,#fff);background-blend-mode:multiply;mix-blend-mode:screen;opacity:1;filter:brightness(1.7) contrast(1.25)}
+.mev3 .m3-fondo{position:absolute;left:0;right:0;bottom:0;height:42%;z-index:2;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55) 60%,rgba(0,0,0,.8))}
+.mev3 .mev-duo{z-index:1!important}
+.mev3 .mev-duo::after{display:none!important}
+.mev3 .fx{position:relative;display:inline-block;height:100%;width:max-content;flex:none;
+ filter:contrast(1.32) saturate(1.38) sepia(.08) brightness(.98) drop-shadow(0 0 1.5px color-mix(in srgb,var(--mev) 75%,#fff)) drop-shadow(0 0 24px color-mix(in srgb,var(--mev) 60%,transparent)) drop-shadow(0 16px 22px rgba(0,0,0,.85));
+ -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 98%),linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,#000 62%,transparent 98%),linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%);mask-composite:intersect}
+.mev3 .fx .mev-ph{height:100%!important;width:auto!important;max-width:none!important;object-fit:contain!important;-webkit-mask-image:none!important;mask-image:none!important;filter:none!important;display:block}
+.mev3 .fx>i{position:absolute;inset:0;pointer-events:none;-webkit-mask:var(--src) center/100% 100% no-repeat;mask:var(--src) center/100% 100% no-repeat}
+.mev3 .m-shade{mix-blend-mode:multiply;background:linear-gradient(180deg,rgba(255,255,255,0) 30%,rgba(70,40,30,.5) 72%,rgba(0,0,0,.9) 100%),radial-gradient(55% 60% at 50% 32%,#fff 45%,rgba(60,35,30,.8) 100%)}
+.mev3 .m-rim{mix-blend-mode:screen;opacity:.6}
+.mev3 .fa .m-rim{background:linear-gradient(270deg,transparent 84%,color-mix(in srgb,var(--mev) 70%,#fff) 100%)}
+.mev3 .fb .m-rim{background:linear-gradient(90deg,transparent 84%,color-mix(in srgb,var(--mev) 70%,#fff) 100%)}
+.mev3 .mev-names{z-index:4!important}.mev3 .mev-date,.mev3 .mev-sp,.mev3 .mev-logo{z-index:4!important}
+.mev3 .mvs,.mev3 .btype,.mev3 .mev-meta i{color:var(--mev)!important}
+.mev3 .mev-date{background:linear-gradient(180deg,color-mix(in srgb,var(--mev) 35%,#fff),var(--mev))!important;-webkit-background-clip:text!important;background-clip:text!important}
+.mev3 .mev-logo{filter:drop-shadow(0 0 12px rgba(0,0,0,.9)) drop-shadow(0 0 18px color-mix(in srgb,var(--mev) 45%,transparent))}
+</style><style id="mev4">
+.mev3 .m3-luces{display:none!important}
+/* letras del fondo con el mismo dorado de la fecha */
+.mev3 .mev-row span{-webkit-text-stroke:1px color-mix(in srgb,var(--mev) 45%,#fff)!important;opacity:.5}
+.mev3 .mev-row span:nth-child(3n){background:linear-gradient(180deg,color-mix(in srgb,var(--mev) 35%,#fff),var(--mev));-webkit-background-clip:text;background-clip:text;color:transparent!important;opacity:.72}
+/* peleadores hasta abajo, sombra gradual desde la base */
+.mev3 .mev-duo{bottom:0!important;height:82%!important}
+@media(max-width:560px){.mev3 .mev-duo{height:72%!important}}
+.mev3 .fx{z-index:1;transform:translate(var(--ax,0),var(--ay,0)) scale(var(--as,1));transform-origin:50% 100%;
+ -webkit-mask-image:linear-gradient(180deg,#000 0,#000 58%,rgba(0,0,0,.75) 76%,rgba(0,0,0,.3) 90%,transparent 100%),linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%)!important;
+ mask-image:linear-gradient(180deg,#000 0,#000 58%,rgba(0,0,0,.75) 76%,rgba(0,0,0,.3) 90%,transparent 100%),linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%)!important}
+.mev3 .m3-fondo{height:60%!important;background:linear-gradient(0deg,rgba(0,0,0,.88) 0,rgba(0,0,0,.6) 22%,rgba(0,0,0,.25) 45%,transparent 70%)!important}
+/* un reflector por peleador: solo la luz, sin lámpara */
+.mev3 .m3-beam{position:absolute;left:50%;bottom:28%;width:170%;height:200%;transform:translateX(-50%);z-index:0;pointer-events:none;filter:blur(16px);opacity:.75;mix-blend-mode:screen}
+.mev3 .m3-beam::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--mev) 25%,#fff) 0,color-mix(in srgb,var(--mev) 45%,transparent) 55%,transparent 100%);clip-path:polygon(46% 0,54% 0,88% 100%,12% 100%)}
+.mev3 .m3-beam::after{content:"";position:absolute;left:22%;right:22%;bottom:-4%;height:14%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--mev) 40%,#fff),transparent);opacity:.6}
+.mev3 .fa,.mev3 .fb{overflow:visible}
+</style><style id="mev5">
+/* cuerpos con más color y volumen (no pálidos) */
+.mev3 .fx{filter:contrast(1.22) saturate(1.35) sepia(.06) brightness(1.1) drop-shadow(0 0 1.5px color-mix(in srgb,var(--mev) 75%,#fff)) drop-shadow(0 0 22px color-mix(in srgb,var(--mev) 55%,transparent)) drop-shadow(0 16px 22px rgba(0,0,0,.85))!important}
+.mev3 .m-shade{background:linear-gradient(180deg,rgba(255,255,255,0) 40%,rgba(120,70,45,.35) 75%,rgba(0,0,0,.75) 100%),radial-gradient(60% 65% at 50% 30%,#fff 55%,rgba(120,75,55,.6) 100%),linear-gradient(#fff0e4,#fff0e4)!important;background-blend-mode:multiply!important}
+.mev3 .m-rim{opacity:.75!important}
+/* reflectores separados, uno hacia cada peleador */
+.mev3 .m3-beam{width:120%!important;transform-origin:50% 100%;opacity:1!important;filter:blur(12px)!important}
+.mev3 .fa .m3-beam{transform:translateX(-50%) rotate(-12deg)!important}
+.mev3 .fb .m3-beam{transform:translateX(-50%) rotate(12deg)!important}
+.mev3 .m3-beam::before{clip-path:polygon(47% 0,53% 0,80% 100%,20% 100%)!important}
 </style></head><body><div class="bgfx" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div><header class="top"><div class="top-in">
   <button class="wfn-top" type="button" data-open="m-wfn" data-tab="peleas" aria-label="WFN · Warrior Fight Night: ver combates"><img src="img/wfn-logo.png" alt="WFN Combat League"></button>
   <a class="logo" href="#inicio" aria-label="Team K-1 Academy, inicio"><img src="img/logo-tri.png" alt="Logo de Team K-1 Academy"></a>
@@ -550,7 +650,7 @@ background:radial-gradient(60% 70% at 50% 100%,rgba(8,6,4,.92),rgba(8,6,4,.55) 4
 <div class="fm-side"><h6>Competencias</h6><button type="button" class="fm-c" data-open="m-wku">Panamericano WKU</button>
 <div class="fm-act"><a class="fm-wa" href="https://wa.me/527828280510?text=Hola%2C%20vi%20su%20p%C3%A1gina%20y%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20en%20Team%20K-1" target="_blank" rel="noopener">WhatsApp</a><a class="fm-map" href="https://www.google.com/maps/search/?api=1&amp;query=Blvd.+Adolfo+Ruiz+Cortines+102+Col.+Obrera+Poza+Rica+Veracruz" target="_blank" rel="noopener">Cómo llegar</a></div></div></div></nav>
 
-<script type="application/json" id="contenido-respaldo">{"negocio": {"nombre": "Team K-1", "subtitulo": "Academy", "ciudad": "Poza Rica · Veracruz", "titulo_pestana": "Academia Team K-1"}, "contacto": {"telefono": "782 828 0510", "whatsapp": "527828280510", "mensaje_whatsapp": "Hola, vi su página y quiero información sobre las clases en Team K-1", "direccion1": "Blvd. Adolfo Ruiz Cortines #102", "direccion2": "Col. Obrera, Poza Rica, Ver. 93260", "colonia": "Col. Obrera", "mapa": "https://www.google.com/maps/search/?api=1&query=Blvd.+Adolfo+Ruiz+Cortines+102+Col.+Obrera+Poza+Rica+Veracruz", "facebook": "https://www.facebook.com/search/top?q=Academia%20Team%20K-1", "eyebrow": "Visítanos", "titulo": "Comunícate con nosotros", "resena_cifra": "100%", "resena_texto": "de las personas que opinaron en Facebook recomiendan Team K-1", "foto": ""}, "inicio": {"lugar": "Poza Rica · Veracruz", "titulo1": "Team K-1", "titulo2": "Academy", "texto": "Forja tu disciplina en Kickboxing, K-1, Muay Thai y MMA, con grupos para niños y niñas, novatos y avanzados.", "boton1": "Comunícate con nosotros", "boton2": "Ver horarios", "franja": ["Kickboxing", "K-1", "Muay Thai", "MMA", "Clases 100% familiares"], "tarjeta_hoy": {"etiqueta": "Hoy", "titulo": "Lunes a viernes", "texto": "Mañana y noche", "enlace": "Ver horarios →"}, "tarjeta_precio": {"etiqueta": "Mensualidad", "titulo": "$600 al mes", "texto": "Pregunta por la inscripción y promociones", "enlace": "Ver precio →"}, "tarjeta_competencias": {"etiqueta": "Competencias", "titulo": "WKU y WFN", "texto": "Torneos y Warrior Fight Night", "enlace": "Abrir →"}, "tarjeta_ubicacion": {"etiqueta": "Ubicación", "titulo": "Col. Obrera", "texto": "Blvd. Adolfo Ruiz Cortines #102", "enlace": "Cómo llegar →"}, "boton_wfn": {"etiqueta": "Combat League", "titulo": "Warrior Fight Night", "enlace": "Ver combates →"}}, "clases": {"eyebrow": "Qué entrenamos", "titulo": "Disciplinas", "texto": "Empiezas desde cero y avanzas a tu ritmo hasta competir, si así lo quieres.", "disciplinas": [{"nombre": "Kickboxing", "texto": "Golpes y patadas con mucho trabajo de cardio, coordinación y reflejos.", "foto": ""}, {"nombre": "K-1", "texto": "Pelea de pie con golpes, patadas y rodillazos, con reglas de competencia K-1.", "foto": ""}, {"nombre": "Muay Thai", "texto": "El arte de las ocho armas: puños, codos, rodillas, patadas y clinch.", "foto": ""}, {"nombre": "MMA", "texto": "Golpeo de pie, derribos y control en el piso para pelear completo.", "foto": ""}], "grupos": [{"etiqueta": "De 6 a 15 años", "nombre": "Niños y niñas", "horario": "Lunes, miércoles y viernes · 6:00 – 7:00 p. m."}, {"etiqueta": "Desde cero", "nombre": "Novatos y adultos", "horario": "Lunes a jueves · 8:00 – 9:00 p. m. Viernes: sparring de 7:00 a 8:00 p. m."}, {"etiqueta": "Con experiencia", "nombre": "Intermedios y avanzados", "horario": "Lunes a jueves · 7:00 – 8:00 p. m. Viernes: sparring con novatos y adultos, a la misma hora."}, {"etiqueta": "Todos los niveles", "nombre": "Matutina general", "horario": "Lunes, miércoles y viernes · 7:00 – 11:00 a. m."}]}, "horarios": {"eyebrow": "Semana de entrenamiento", "titulo": "Horarios", "texto": "Los puntos verdes marcan los días en que hay clase.", "clases": [{"nombre": "Matutina general", "inicio": "07:00", "fin": "11:00", "detalle": "", "dias": [1, 3, 5], "destacado": false}, {"nombre": "Niños y niñas", "inicio": "18:00", "fin": "19:00", "detalle": "", "dias": [1, 3, 5], "destacado": false}, {"nombre": "Intermedios y avanzados", "inicio": "19:00", "fin": "20:00", "detalle": "", "dias": [1, 2, 3, 4], "destacado": false}, {"nombre": "Novatos y adultos", "inicio": "20:00", "fin": "21:00", "detalle": "", "dias": [1, 2, 3, 4], "destacado": false}, {"nombre": "Sparring", "inicio": "19:00", "fin": "20:00", "detalle": "Viernes · 7:00 – 8:00 p. m.", "dias": [5], "destacado": true}], "nota_titulo": "Viernes de sparring:", "nota": "intermedios y avanzados se juntan con novatos y adultos en la clase de 7:00 a 8:00 p. m. Sábados y domingos no hay clases.", "precio": {"etiqueta": "Mensualidad", "monto": "$600", "beneficios": ["Entrena en tu grupo de lunes a viernes", "Grupos para niños y niñas, novatos y avanzados", "Clases familiares"], "inscripcion_titulo": "+ Inscripción:", "inscripcion": "tiene costo. Pregunta por las promociones vigentes.", "boton": "Pide informes"}}, "equipo": {"eyebrow": "Tale of the tape", "titulo": "Coaches", "texto": "Dos coaches con experiencia en competencia que acompañan a sus alumnos en cada clase y torneo.", "coaches": [{"rol": "Coach principal", "nombre": "Maestro Jorge García Morales", "foto": ""}, {"rol": "Coach matutino", "nombre": "David Herrejón", "foto": ""}], "comparativa": [{"izq": "Tarde y noche", "etiqueta": "Horario", "der": "Mañana"}, {"izq": "Kickboxing, K-1, Muay Thai y MMA", "etiqueta": "Disciplinas", "der": "Clase general"}, {"izq": "Niños, novatos y avanzados", "etiqueta": "Grupos", "der": "Todos los niveles"}, {"izq": "Coach principal", "etiqueta": "Rol", "der": "También compite"}], "uniforme_eyebrow": "Uniforme oficial", "uniforme_titulo": "Viste los colores del equipo", "uniforme": [{"nombre": "Playera", "foto": "img/uni-playera.jpg"}, {"nombre": "Short", "foto": "img/uni-short.jpg"}], "banda": {"eyebrow": "Competencias", "titulo": "WKU y Warrior Fight Night", "texto": "Torneos donde compiten nuestros alumnos y la liga de MMA Warrior Fight Night.", "boton": "Ver competencias →"}}, "nosotros": {"frase": "Creado para peleadores · hecho para familias", "palabras": ["Disciplina", "Constancia", "Respeto", "Humildad", "Lealtad"], "final": "Oss", "mision": "Formar personas disciplinadas a través del Kickboxing, el K-1, el Muay Thai y las MMA, con clases para niños y niñas, novatos y avanzados, en un ambiente 100% familiar.", "vision": "Ser la academia de artes marciales de referencia en Poza Rica, formando atletas que compitan dentro y fuera del estado sin perder los valores del equipo.", "foto_vision": "", "valores_eyebrow": "Lo que nos mueve", "valores_titulo": "Valores fundamentales", "valores": [{"nombre": "Disciplina", "texto": "Constancia en cada entrenamiento, dentro y fuera del tatami.", "foto": ""}, {"nombre": "Respeto", "texto": "Al coach, a los compañeros y al rival, en clase y en competencia.", "foto": ""}, {"nombre": "Familia", "texto": "Clases para todas las edades, donde todos se apoyan para crecer.", "foto": ""}, {"nombre": "Superación", "texto": "Cada cambio de cinta y cada pelea son un paso más.", "foto": ""}], "cta_titulo": "Entrena con nosotros", "cta_boton": "Comunícate"}, "competencias": {"wku": {"eyebrow": "Torneo internacional", "titulo": "Panamericano WKU México", "texto": "Alumnos de Team K-1 subieron al podio y regresaron con medallas, incluido un primer lugar.", "foto": "", "galeria": ["", "", "", "", "", ""]}, "wfn": {"eyebrow": "WFN Combat League", "titulo": "WFN · Warrior Fight Night", "texto": "Combat League de MMA en Poza Rica. Peleas en jaula con atletas de la región.", "foto": "", "galeria": ["", "", "", "", "", ""]}}, "cartelera": {"evento": "WFN · Próxima función", "fecha": "Fecha por anunciar", "lugar": "Poza Rica, Veracruz", "main": {"div": "Peso ligero", "rounds": "3 × 5 min", "rojo": {"nombre": "Nombre", "apellido": "Apellido", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Nombre", "apellido": "Apellido", "origen": "", "record": "", "foto": ""}}, "peleas": [{"tipo": "Co-main event", "div": "Peso wélter", "rounds": "3 × 5 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso pluma", "rounds": "3 × 3 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso mediano", "rounds": "3 × 3 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso gallo", "rounds": "3 × 3 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso ligero", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso mosca", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso wélter", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso pluma", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso gallo", "rounds": "3 × 2 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso súper ligero", "rounds": "3 × 2 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}], "fondo": ["WARRIOR", "FIGHT", "NIGHT", "WFN", "POZA RICA", "COATZINTLA", "AMAMM"]}, "pie": {"texto_inferior": "KICKBOXING · K-1 · MUAY THAI · MMA", "anio": "2026"}}</script>
+<script type="application/json" id="contenido-respaldo">{"negocio": {"nombre": "Team K-1", "subtitulo": "Academy", "ciudad": "Poza Rica · Veracruz", "titulo_pestana": "Academia Team K-1"}, "contacto": {"telefono": "782 828 0510", "whatsapp": "527828280510", "mensaje_whatsapp": "Hola, vi su página y quiero información sobre las clases en Team K-1", "direccion1": "Blvd. Adolfo Ruiz Cortines #102", "direccion2": "Col. Obrera, Poza Rica, Ver. 93260", "colonia": "Col. Obrera", "mapa": "https://www.google.com/maps/search/?api=1&query=Blvd.+Adolfo+Ruiz+Cortines+102+Col.+Obrera+Poza+Rica+Veracruz", "facebook": "https://www.facebook.com/search/top?q=Academia%20Team%20K-1", "eyebrow": "Visítanos", "titulo": "Comunícate con nosotros", "resena_cifra": "100%", "resena_texto": "de las personas que opinaron en Facebook recomiendan Team K-1", "foto": ""}, "inicio": {"lugar": "Poza Rica · Veracruz", "titulo1": "Team K-1", "titulo2": "Academy", "texto": "Forja tu disciplina en Kickboxing, K-1, Muay Thai y MMA, con grupos para niños y niñas, novatos y avanzados.", "boton1": "Comunícate con nosotros", "boton2": "Ver horarios", "franja": ["Kickboxing", "K-1", "Muay Thai", "MMA", "Clases 100% familiares"], "tarjeta_hoy": {"etiqueta": "Hoy", "titulo": "Lunes a viernes", "texto": "Mañana y noche", "enlace": "Ver horarios →"}, "tarjeta_precio": {"etiqueta": "Mensualidad", "titulo": "$600 al mes", "texto": "Pregunta por la inscripción y promociones", "enlace": "Ver precio →"}, "tarjeta_competencias": {"etiqueta": "Competencias", "titulo": "WKU y WFN", "texto": "Torneos y Warrior Fight Night", "enlace": "Abrir →"}, "tarjeta_ubicacion": {"etiqueta": "Ubicación", "titulo": "Col. Obrera", "texto": "Blvd. Adolfo Ruiz Cortines #102", "enlace": "Cómo llegar →"}, "boton_wfn": {"etiqueta": "Combat League", "titulo": "Warrior Fight Night", "enlace": "Ver combates →"}}, "clases": {"eyebrow": "Qué entrenamos", "titulo": "Disciplinas", "texto": "Empiezas desde cero y avanzas a tu ritmo hasta competir, si así lo quieres.", "disciplinas": [{"nombre": "Kickboxing", "texto": "Golpes y patadas con mucho trabajo de cardio, coordinación y reflejos.", "foto": ""}, {"nombre": "K-1", "texto": "Pelea de pie con golpes, patadas y rodillazos, con reglas de competencia K-1.", "foto": ""}, {"nombre": "Muay Thai", "texto": "El arte de las ocho armas: puños, codos, rodillas, patadas y clinch.", "foto": ""}, {"nombre": "MMA", "texto": "Golpeo de pie, derribos y control en el piso para pelear completo.", "foto": ""}], "grupos": [{"etiqueta": "De 6 a 15 años", "nombre": "Niños y niñas", "horario": "Lunes, miércoles y viernes · 6:00 – 7:00 p. m."}, {"etiqueta": "Desde cero", "nombre": "Novatos y adultos", "horario": "Lunes a jueves · 8:00 – 9:00 p. m. Viernes: sparring de 7:00 a 8:00 p. m."}, {"etiqueta": "Con experiencia", "nombre": "Intermedios y avanzados", "horario": "Lunes a jueves · 7:00 – 8:00 p. m. Viernes: sparring con novatos y adultos, a la misma hora."}, {"etiqueta": "Todos los niveles", "nombre": "Matutina general", "horario": "Lunes, miércoles y viernes · 7:00 – 11:00 a. m."}]}, "horarios": {"eyebrow": "Semana de entrenamiento", "titulo": "Horarios", "texto": "Los puntos verdes marcan los días en que hay clase.", "clases": [{"nombre": "Matutina general", "inicio": "07:00", "fin": "11:00", "detalle": "", "dias": [1, 3, 5], "destacado": false}, {"nombre": "Niños y niñas", "inicio": "18:00", "fin": "19:00", "detalle": "", "dias": [1, 3, 5], "destacado": false}, {"nombre": "Intermedios y avanzados", "inicio": "19:00", "fin": "20:00", "detalle": "", "dias": [1, 2, 3, 4], "destacado": false}, {"nombre": "Novatos y adultos", "inicio": "20:00", "fin": "21:00", "detalle": "", "dias": [1, 2, 3, 4], "destacado": false}, {"nombre": "Sparring", "inicio": "19:00", "fin": "20:00", "detalle": "Viernes · 7:00 – 8:00 p. m.", "dias": [5], "destacado": true}], "nota_titulo": "Viernes de sparring:", "nota": "intermedios y avanzados se juntan con novatos y adultos en la clase de 7:00 a 8:00 p. m. Sábados y domingos no hay clases.", "precio": {"etiqueta": "Mensualidad", "monto": "$600", "beneficios": ["Entrena en tu grupo de lunes a viernes", "Grupos para niños y niñas, novatos y avanzados", "Clases familiares"], "inscripcion_titulo": "+ Inscripción:", "inscripcion": "tiene costo. Pregunta por las promociones vigentes.", "boton": "Pide informes"}}, "equipo": {"eyebrow": "Tale of the tape", "titulo": "Coaches", "texto": "Dos coaches con experiencia en competencia que acompañan a sus alumnos en cada clase y torneo.", "coaches": [{"rol": "Coach principal", "nombre": "Maestro Jorge García Morales", "foto": ""}, {"rol": "Coach matutino", "nombre": "David Herrejón", "foto": ""}], "comparativa": [{"izq": "Tarde y noche", "etiqueta": "Horario", "der": "Mañana"}, {"izq": "Kickboxing, K-1, Muay Thai y MMA", "etiqueta": "Disciplinas", "der": "Clase general"}, {"izq": "Niños, novatos y avanzados", "etiqueta": "Grupos", "der": "Todos los niveles"}, {"izq": "Coach principal", "etiqueta": "Rol", "der": "También compite"}], "uniforme_eyebrow": "Uniforme oficial", "uniforme_titulo": "Viste los colores del equipo", "uniforme": [{"nombre": "Playera", "foto": "img/uni-playera.jpg"}, {"nombre": "Short", "foto": "img/uni-short.jpg"}], "banda": {"eyebrow": "Competencias", "titulo": "WKU y Warrior Fight Night", "texto": "Torneos donde compiten nuestros alumnos y la liga de MMA Warrior Fight Night.", "boton": "Ver competencias →"}}, "nosotros": {"frase": "Creado para peleadores · hecho para familias", "palabras": ["Disciplina", "Constancia", "Respeto", "Humildad", "Lealtad"], "final": "Oss", "mision": "Formar personas disciplinadas a través del Kickboxing, el K-1, el Muay Thai y las MMA, con clases para niños y niñas, novatos y avanzados, en un ambiente 100% familiar.", "vision": "Ser la academia de artes marciales de referencia en Poza Rica, formando atletas que compitan dentro y fuera del estado sin perder los valores del equipo.", "foto_vision": "", "valores_eyebrow": "Lo que nos mueve", "valores_titulo": "Valores fundamentales", "valores": [{"nombre": "Disciplina", "texto": "Constancia en cada entrenamiento, dentro y fuera del tatami.", "foto": ""}, {"nombre": "Respeto", "texto": "Al coach, a los compañeros y al rival, en clase y en competencia.", "foto": ""}, {"nombre": "Familia", "texto": "Clases para todas las edades, donde todos se apoyan para crecer.", "foto": ""}, {"nombre": "Superación", "texto": "Cada cambio de cinta y cada pelea son un paso más.", "foto": ""}], "cta_titulo": "Entrena con nosotros", "cta_boton": "Comunícate"}, "competencias": {"wku": {"eyebrow": "Torneo internacional", "titulo": "Panamericano WKU México", "texto": "Alumnos de Team K-1 subieron al podio y regresaron con medallas, incluido un primer lugar.", "foto": "", "galeria": ["", "", "", "", "", ""]}, "wfn": {"eyebrow": "WFN Combat League", "titulo": "WFN · Warrior Fight Night", "texto": "Combat League de MMA en Poza Rica. Peleas en jaula con atletas de la región.", "foto": "", "galeria": ["", "", "", "", "", ""]}}, "cartelera": {"evento": "WFN · Próxima función", "fecha": "Fecha por anunciar", "lugar": "Poza Rica, Veracruz", "main": {"div": "Peso ligero", "rounds": "3 × 5 min", "rojo": {"nombre": "Nombre", "apellido": "Apellido", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Nombre", "apellido": "Apellido", "origen": "", "record": "", "foto": ""}}, "peleas": [{"tipo": "Co-main event", "div": "Peso wélter", "rounds": "3 × 5 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso pluma", "rounds": "3 × 3 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso mediano", "rounds": "3 × 3 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso gallo", "rounds": "3 × 3 min", "seccion": "estelar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso ligero", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso mosca", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso wélter", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso pluma", "rounds": "3 × 3 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso gallo", "rounds": "3 × 2 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}, {"tipo": "", "div": "Peso súper ligero", "rounds": "3 × 2 min", "seccion": "preliminar", "rojo": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}, "azul": {"nombre": "Peleador", "apellido": "", "origen": "", "record": "", "foto": ""}}], "fondo": ["WARRIOR", "FIGHT", "NIGHT", "WFN", "POZA RICA", "COATZINTLA", "AMAMM"]}, "pie": {"texto_inferior": "KICKBOXING · K-1 · MUAY THAI · MMA", "anio": "2026"}, "tema": {"principal": "#ff1f1f", "acento": "#c6f11a", "fondo": "#08080a", "main_event": ""}}</script>
 <script src="js/config.js"></script>
 <script src="js/sitio.js"></script>
 </body></html>
