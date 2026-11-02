@@ -32,9 +32,21 @@ function links(c) {
 }
 
 /* ---------- dibujar cada sección ---------- */
+const TEMA_DEF = { principal: "#ff1f1f", acento: "#c6f11a", fondo: "#08080a", main_event: "" };
+function tema(t) {
+  t = Object.assign({}, TEMA_DEF, t || {});
+  const ok = v => /^#[0-9a-f]{6}$/i.test(v || "");
+  const st = document.documentElement.style;
+  if (ok(t.principal)) { st.setProperty("--red", t.principal); st.setProperty("--acc", t.principal); }
+  if (ok(t.acento)) st.setProperty("--lime", t.acento);
+  if (ok(t.fondo)) st.setProperty("--bg", t.fondo);
+  st.setProperty("--mev", ok(t.main_event) ? t.main_event : "#f5c242");
+  const mt = document.querySelector('meta[name="theme-color"]'); if (mt && ok(t.fondo)) mt.content = t.fondo;
+}
 function render(c) {
   if (!c || typeof c !== "object") return;
   C = c;
+  tema(c.tema);
   const L = links(c), n = c.negocio || {}, i = c.inicio || {}, k = c.contacto || {};
   const set = (sel, html) => { const el = $(sel); if (el) el.innerHTML = html; };
   document.title = n.titulo_pestana || document.title;
@@ -166,10 +178,14 @@ function renderCard() {
   const rows = `${est.length ? `<div class="secl">Cartelera estelar <em>${est.length + 1} peleas</em></div><div class="bouts">${est.map((b, i) => row(b, total - 1 - i, false)).join("")}</div>` : ""}
    ${pre.length ? `<details class="prelims"${innerWidth > 560 ? " open" : ""}><summary><span class="secl">Preliminares <em>${pre.length} peleas</em></span></summary><div class="bouts">${pre.map((b, i) => row(b, pre.length - i, true)).join("")}</div></details>` : ""}`;
   const mr = meta(r), ma = meta(a);
+  const fig = p => { const u = safeUrl(p.foto); if (!u) return ""; const j = p.ajuste || {}, n = (v, d) => isFinite(+v) && v !== "" && v != null ? +v : d;
+    return `<i class="m3-beam"></i><span class="fx" style="--src:url('${esc(u)}');--ax:${n(j.x, 0)}%;--ay:${n(j.y, 0)}%;--as:${n(j.s, 100) / 100}">${pic(p)}<i class="m-shade"></i><i class="m-rim"></i></span>`; };
   box.innerHTML = `<div class="ev"><span><b>${esc(c.evento)}</b></span><span>${esc(c.fecha)} · ${esc(c.lugar)}</span></div>
-   <div class="mev"><div class="mev-bg"><div class="mev-rows">${rowsDe(c.fondo)}</div></div>
+   <div class="mev mev3"><div class="mev-bg"><div class="mev-rows">${rowsDe(c.fondo)}</div></div>
+    <div class="m3-luces"></div>
     <img class="mev-logo" src="img/wfn-logo.png" alt="WFN Combat League">
-    <div class="mev-duo"><div class="fa">${pic(r)}</div><div class="fb">${pic(a)}</div></div>
+    <div class="mev-duo"><div class="fa">${fig(r)}</div><div class="fb">${fig(a)}</div></div>
+    <div class="m3-fondo"></div>
     <div class="mev-names"><span class="ln">${esc(r.apellido || r.nombre)}</span><span class="ln"><span class="mvs">VS</span>${esc(a.apellido || a.nombre)}</span><span class="btype">${esc(m.div)} · Main event</span>${mr || ma ? `<span class="mev-meta">${mr} <i>vs</i> ${ma}</span>` : ""}</div>
     <div class="mev-date">${esc(String(c.fecha || "").toUpperCase())}</div><div class="mev-sp"><span>${esc(c.lugar)}</span><span>WFN Combat League</span></div></div>
    <div class="ordnote">La numeración indica el orden de la noche: la pelea 1 abre la función y el main event la cierra.</div>${rows}

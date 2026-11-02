@@ -89,9 +89,14 @@ const SCHEMA = [
      I("competencias.wfn.foto", "Foto principal", { folder: "wfn" }), Ls("competencias.wfn.galeria", "Galería", "img", { add: "Agregar foto", folder: "wfn" }) ] } ] },
  { id: "combates", tab: "Combates WFN", help: "La cartelera: main event arriba y la lista de peleas. Las fotos de peleadores se suben sin fondo; el filtro se aplica solo.", cards: [
    { l: "Evento", fields: [ T("cartelera.evento", "Nombre del evento"), { t: "row", fields: [T("cartelera.fecha", "Fecha"), T("cartelera.lugar", "Lugar")] },
-     Ls("cartelera.fondo", "Palabras del fondo del main event", "text", { add: "Agregar palabra" }) ] },
+ ] },
    { l: "Main event", fields: [ { t: "row", fields: [T("cartelera.main.div", "División"), T("cartelera.main.rounds", "Rounds")] },
      peleador("cartelera.main.rojo", "Esquina roja", "corner-r"), peleador("cartelera.main.azul", "Esquina azul", "corner-b") ] },
+   { l: "Acomodo de las fotos del main event", fields: [ { t: "help", l: "Mueve cada foto y cambia su tamaño. Guarda y revisa con «Ver página»." },
+     ...[["rojo", "Esquina roja", "corner-r"], ["azul", "Esquina azul", "corner-b"]].map(([k, l, c]) => ({ t: "group", l, k: "cartelera.main." + k + ".ajuste", cls: c, fields: [
+       { t: "range", k: "x", l: "Izquierda ↔ derecha", min: -60, max: 60, step: 1, def: 0 },
+       { t: "range", k: "y", l: "Arriba ↕ abajo", min: -40, max: 40, step: 1, def: 0 },
+       { t: "range", k: "s", l: "Tamaño", min: 60, max: 160, step: 1, def: 100, unit: "%" } ] })) ] },
    { l: "Demás peleas", fields: [ Ls("cartelera.peleas", "Peleas", [
        { t: "select", k: "seccion", l: "Sección", options: [["estelar", "Cartelera estelar"], ["preliminar", "Preliminares"]] },
        { t: "row3", fields: [T("tipo", "Etiqueta", { ph: "Ej. Co-main event" }), T("div", "División"), T("rounds", "Rounds")] },
@@ -99,6 +104,14 @@ const SCHEMA = [
        { add: "Agregar pelea", title: x => [x.rojo && (x.rojo.apellido || x.rojo.nombre), x.azul && (x.azul.apellido || x.azul.nombre)].filter(Boolean).join(" vs ") + (x.div ? " · " + x.div : "") }) ] } ] },
  { id: "pie", tab: "Pie de página", help: "El texto de abajo de la página.", cards: [
    { l: "Pie de página", fields: [ { t: "row", fields: [T("pie.anio", "Año"), T("pie.texto_inferior", "Texto inferior")] } ] } ] },
+ { id: "colores", tab: "Colores", help: "Los colores de toda la página. Toca el cuadro de color para elegir otro. Se ven en la página al guardar.", cards: [
+   { l: "Colores de la página", fields: [
+     { t: "color", k: "tema.principal", l: "Color principal", def: "#ff1f1f", help: "Botones, barras, títulos rojos, pie de página y brillo del fondo." },
+     { t: "color", k: "tema.acento", l: "Color de acento", def: "#c6f11a", help: "Puntos del horario y etiquetas pequeñas." },
+     { t: "color", k: "tema.fondo", l: "Color de fondo", def: "#08080a", help: "Fondo general. Se recomienda un color muy oscuro." } ] },
+   { l: "Main event (cartelera WFN)", fields: [
+     { t: "color", k: "tema.main_event", l: "Color del main event", def: "", help: "Letras del fondo, luces, VS, fecha y brillo de los peleadores. Si lo dejas vacío usa dorado." } ] },
+   { l: "Restablecer", fields: [ { t: "reset" } ] } ] },
  { id: "historial", tab: "Historial", special: "historial" }
 ];
 
@@ -139,6 +152,12 @@ function field(f, base) {
     case "select": return `<label class="f">${esc(f.l)}<select data-p="${p}">${f.options.map(([v, t]) => `<option value="${v}"${get(DRAFT, p) === v ? " selected" : ""}>${esc(t)}</option>`).join("")}</select></label>`;
     case "days": { const v = get(DRAFT, p) || []; return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span><div class="days">${DAYS.map(([d, t]) => `<label><input type="checkbox" data-days="${p}" value="${d}" ${v.includes(d) ? "checked" : ""}>${t}</label>`).join("")}</div></div>`; }
     case "img": return imgField(p, f);
+    case "color": { const v = get(DRAFT, p) || ""; const shown = /^#[0-9a-f]{6}$/i.test(v) ? v : (f.def || "#ff1f1f");
+      return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span><div class="colrow"><input type="color" data-color="${p}" value="${esc(shown)}"><input type="text" data-p="${p}" value="${esc(v)}" placeholder="${esc(f.def || "Usar color principal")}" maxlength="7"><button type="button" class="btn sm" data-clear="${p}">${f.def ? "Original" : "Vaciar"}</button></div>${help}</div>`; }
+    case "help": return `<p style="margin:0;color:var(--muted);font-size:13px">${esc(f.l)}</p>`;
+    case "range": { const v = get(DRAFT, p); const val = typeof v === "number" ? v : f.def;
+      return `<label class="f">${esc(f.l)} <output style="color:var(--gold);font-weight:800">${val}${f.unit || ""}</output><input type="range" data-p="${p}" data-num="1" data-unit="${f.unit || ""}" min="${f.min}" max="${f.max}" step="${f.step}" value="${val}"></label>`; }
+    case "reset": return `<button type="button" class="btn del" data-resettema="1" style="justify-self:start">Regresar a los colores originales</button>`;
     case "group": return `<div class="item ${f.cls || ""}" style="border-left-color:${f.cls ? "" : "#3a3a40"}"><div class="item-h"><b>${esc(f.l)}</b></div>${f.fields.map(x => field(x, p)).join("")}</div>`;
     case "list": return listField(p, f);
   }
@@ -230,13 +249,16 @@ function refreshBarAfterSave() { $("#b-save").disabled = true; }
 const form = $("#form");
 form.addEventListener("input", e => {
   const t = e.target;
+  if (t.dataset.color) { set(DRAFT, t.dataset.color, t.value); const tx = form.querySelector(`input[type=text][data-p="${t.dataset.color}"]`); if (tx) tx.value = t.value; refreshBar(); return; }
   if (t.dataset.days) { const p = t.dataset.days; set(DRAFT, p, [...form.querySelectorAll(`[data-days="${p}"]:checked`)].map(x => +x.value)); }
+  else if (t.dataset.num) { set(DRAFT, t.dataset.p, Number(t.value)); const o = t.parentElement.querySelector("output"); if (o) o.textContent = t.value + (t.dataset.unit || ""); }
   else if (t.dataset.p) set(DRAFT, t.dataset.p, t.dataset.bool !== undefined ? t.checked : t.value);
   refreshBar();
 });
 form.addEventListener("change", e => { const t = e.target; if (t.dataset.img) subir(t); else if (t.tagName === "SELECT" && t.dataset.p) { set(DRAFT, t.dataset.p, t.value); refreshBar(); } });
 form.addEventListener("click", async e => {
   const c = e.target.closest("[data-clear]"); if (c) { set(DRAFT, c.dataset.clear, ""); renderForm(); refreshBar(); return; }
+  if (e.target.closest("[data-resettema]")) { if (!confirmar("¿Regresar a los colores originales?")) return; DRAFT.tema = { principal: "#ff1f1f", acento: "#c6f11a", fondo: "#08080a", main_event: "" }; renderForm(); refreshBar(); return; }
   const h = e.target.closest("[data-hist]");
   if (h) { const { data, error } = await sb.from("sitios_historial").select("contenido").eq("id", h.dataset.hist).single(); if (error) return toast("No se pudo cargar"); DRAFT = data.contenido; refreshBar(); toast("Versión cargada. Revísala y presiona «Guardar cambios»."); return; }
   const o = e.target.closest("[data-op]"); if (!o) return;
