@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel · Team K-1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+:root{--bg:#070707;--panel:#111113;--panel2:#18181b;--line:#26262b;--ink:#f5f2ee;--muted:#9d958e;--red:#ff1f1f;--lime:#c6f11a;--gold:#d6ae56;--ok:#3ecf7a}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:500 15px/1.5 "Manrope",system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:"Anton",Impact,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.03em;margin:0}
+.hidden{display:none!important}
+/* encabezado */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;height:60px;padding:0 0 0 0;background:rgba(7,7,7,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .lg{width:60px;height:60px;background:var(--red);display:grid;place-items:center;flex:none}.top .lg img{height:44px}
+.top h1{font-size:20px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top h1 small{display:block;font:700 11px "Manrope";color:var(--muted);letter-spacing:.06em;text-transform:none}
+.top .acts{display:flex;gap:6px;padding-right:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 16px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-weight:800;font-size:13px;letter-spacing:.04em;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:#3a3a40}.btn.pri{background:var(--red);border-color:var(--red);color:#fff}.btn.sm{min-height:34px;padding:0 10px;font-size:12px}.btn.del{color:#ff8d8d}
+.btn:disabled{opacity:.5;cursor:default}
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lbox{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--red);padding:28px 22px}
+.lbox .lg2{width:84px;height:84px;background:var(--red);display:grid;place-items:center;margin:0 auto 14px}.lbox .lg2 img{height:64px}
+.lbox h2{text-align:center;font-size:28px}.lbox p.sub{text-align:center;color:var(--muted);margin:4px 0 18px;font-size:13.5px}
+/* campos */
+label.f{display:grid;gap:6px;font-weight:700;font-size:13px;color:#d9d3cc}
+label.f small{color:var(--muted);font-weight:600;font-size:12px}
+input[type=text],input[type=email],input[type=password],input[type=time],input:not([type]),select,textarea{width:100%;min-height:44px;padding:10px 12px;background:#0b0b0d;border:1px solid var(--line);outline:none;font-size:15px}
+textarea{min-height:92px;resize:vertical;line-height:1.45}
+input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,31,31,.15)}
+.msg{min-height:20px;font-size:13px;font-weight:700;color:var(--muted);margin:10px 0 0}.msg.err{color:#ff8d8d}.msg.ok{color:var(--ok)}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:13px;padding:6px 0}
+/* pestañas */
+.tabs{position:sticky;top:60px;z-index:15;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 12px;background:rgba(7,7,7,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;min-height:38px;padding:0 14px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase}
+.tabs button.on{background:var(--red);border-color:var(--red);color:#fff}
+main{max-width:860px;margin:0 auto;padding:18px 14px 120px}
+.sec h2{font-size:30px;margin:4px 0 4px}.sec>p.help{color:var(--muted);margin:0 0 16px;font-size:13.5px}
+.card{background:var(--panel);border:1px solid var(--line);padding:16px;display:grid;gap:14px;margin-bottom:14px}
+.card>h3{font-size:18px;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.g2{grid-template-columns:1fr}}
+/* listas */
+.list{display:grid;gap:10px}
+.item{border:1px solid var(--line);border-left:3px solid var(--red);background:#0d0d0f;padding:12px;display:grid;gap:12px}
+.item-h{display:flex;align-items:center;gap:6px}.item-h b{flex:1;min-width:0;font-size:13px;color:#d9d3cc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item.str{border-left-color:#3a3a40;grid-template-columns:1fr auto;align-items:center;padding:8px}
+.ops{display:flex;gap:4px}.ops .btn{min-width:34px;padding:0 8px}
+/* días */
+.days{display:flex;flex-wrap:wrap;gap:6px}
+.days label{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px;border:1px solid var(--line);background:#0b0b0d;cursor:pointer;font-weight:800;font-size:13px}
+.days input{accent-color:var(--lime);width:16px;height:16px}
+.days label:has(input:checked){border-color:var(--lime);color:var(--lime)}
+.chk{display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px}.chk input{width:20px;height:20px;accent-color:var(--red)}
+/* imágenes */
+.img{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center}
+.img .pv{width:96px;height:96px;border:1px solid var(--line);background:#0b0b0d center/contain no-repeat;display:grid;place-items:center;color:#4a4a50;font-size:11px;font-weight:800;letter-spacing:.1em}
+.img .pv.cut{background-color:#1a1307;background-image:radial-gradient(circle at 50% 40%,#3a2a0c,#0b0906)}
+.img .pv.cut img{width:100%;height:100%;object-fit:contain;object-position:bottom;filter:contrast(1.1) saturate(.82) sepia(.16) brightness(.96) drop-shadow(0 0 1px rgba(243,220,148,.55));-webkit-mask-image:linear-gradient(180deg,#000 52%,transparent 97%);mask-image:linear-gradient(180deg,#000 52%,transparent 97%)}
+.img .pv img{max-width:100%;max-height:100%}
+.img .ia{display:grid;gap:6px}.img .ia .row{display:flex;gap:6px;flex-wrap:wrap}
+.img input[type=file]{display:none}
+.img small{color:var(--muted);font-size:12px}
+/* combates */
+.corner-r{border-left-color:#e03a3a}.corner-b{border-left-color:#3f7be0}
+/* barra inferior */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(10,10,12,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.bar .st{flex:1;font-size:13px;font-weight:700;color:var(--muted);min-width:0}.bar .st.dirty{color:var(--gold)}.bar .st.ok{color:var(--ok)}.bar .st.err{color:#ff8d8d}
+.bar .btn.pri{min-width:150px}
+.hist{display:grid;gap:8px}.hist .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);background:#0d0d0f;font-size:13.5px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:40;background:#1b1b1f;border:1px solid var(--line);padding:10px 16px;font-weight:700;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+</style>
+</head>
+<body>
+
+<!-- ======= INICIAR SESIÓN ======= -->
+<section class="login" id="v-login">
+  <form class="lbox" id="f-login" autocomplete="on">
+    <div class="lg2"><img src="img/logo-tri.png" alt=""></div>
+    <h2>Panel de administración</h2>
+    <p class="sub">Solo para el administrador de la página.</p>
+    <div style="display:grid;gap:12px">
+      <label class="f">Correo<input type="email" id="l-email" required autocomplete="username"></label>
+      <label class="f">Contraseña<input type="password" id="l-pass" required autocomplete="current-password"></label>
+      <button class="btn pri" type="submit" id="l-btn">Entrar</button>
+      <button class="link" type="button" id="l-forgot">Olvidé mi contraseña</button>
+    </div>
+    <p class="msg" id="l-msg"></p>
+  </form>
+</section>
+
+<!-- ======= NUEVA CONTRASEÑA (al abrir el enlace del correo) ======= -->
+<section class="login hidden" id="v-reset">
+  <form class="lbox" id="f-reset">
+    <div class="lg2"><img src="img/logo-tri.png" alt=""></div>
+    <h2>Nueva contraseña</h2>
+    <p class="sub">Escribe tu nueva contraseña (mínimo 8 caracteres).</p>
+    <div style="display:grid;gap:12px">
+      <label class="f">Nueva contraseña<input type="password" id="r-pass" minlength="8" required autocomplete="new-password"></label>
+      <button class="btn pri" type="submit">Guardar contraseña</button>
+    </div>
+    <p class="msg" id="r-msg"></p>
+  </form>
+</section>
+
+<!-- ======= PANEL ======= -->
+<section id="v-panel" class="hidden">
+  <header class="top">
+    <a class="lg" href="index.html" target="_blank" rel="noopener" title="Ver página"><img src="img/logo-tri.png" alt=""></a>
+    <h1>Panel · Team K-1<small id="who"></small></h1>
+    <div class="acts"><a class="btn sm" href="index.html" target="_blank" rel="noopener">Ver página</a><button class="btn sm" id="b-out" type="button">Salir</button></div>
+  </header>
+  <nav class="tabs" id="tabs"></nav>
+  <main id="form"></main>
+  <div class="bar"><span class="st" id="st">Sin cambios</span><button class="btn pri" id="b-save" type="button" disabled>Guardar cambios</button></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/panel.js"></script>
+</body>
+</html>
