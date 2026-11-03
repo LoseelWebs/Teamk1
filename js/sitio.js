@@ -52,7 +52,7 @@ function render(c) {
   document.title = n.titulo_pestana || document.title;
 
   /* Inicio */
-  set(".hero .in", `<span class="over">${esc(i.lugar)}</span><h1>${esc(i.titulo1)}<span>${esc(i.titulo2)}</span></h1>
+  set(".hero .in", `<span class="over">${esc(i.lugar)}</span><h1>${esc(i.titulo1)}<span>${esc(i.titulo2)}</span><em class="sr">Academia de Kickboxing, K-1, Muay Thai y MMA en Poza Rica, Veracruz</em></h1>
     <p>${esc(i.texto)}</p>
     <div class="row" style="justify-content:center"><a class="btn-acc" href="${esc(L.wa)}" target="_blank" rel="noopener">${ICW}${esc(i.boton1)}</a><a class="btn-gh" href="#horarios">${esc(i.boton2)}</a></div>`);
   const fr = (i.franja || []).map(w => `<span>${esc(w)}</span><i>✦</i>`).join("");
@@ -106,9 +106,9 @@ function render(c) {
   const o = c.nosotros || {};
   set("#nosotros", `<div class="nos-hero"><p class="cap">${esc(o.frase)}</p><div class="rot2" id="rot2">${(o.palabras || []).map(w => `<span>${esc(w)}</span>`).join("")}<span class="oss">${esc(o.final)}</span></div></div>
     <div class="w">
-    <div class="nos-block"><p class="gt">Misión</p><p class="reveal">${esc(o.mision)}</p>
+    <div class="nos-block"><h2 class="gt">Misión</h2><p class="reveal">${esc(o.mision)}</p>
       <div class="nos-btns"><a class="btn-acc sq" href="#horarios">Ver horarios</a><a class="btn-out sq" href="#clases">Clases</a></div></div>
-    <div class="nos-split">${ph(o.foto_vision)}<div><p class="gt">Visión</p><p class="reveal">${esc(o.vision)}</p></div></div>
+    <div class="nos-split">${ph(o.foto_vision)}<div><h2 class="gt">Visión</h2><p class="reveal">${esc(o.vision)}</p></div></div>
     <div class="nos-block"><p class="cap red">${esc(o.valores_eyebrow)}</p><h2 class="gt big">${esc(o.valores_titulo)}</h2>
       <div class="vals">${(o.valores || []).map(v => `<div class="val">${ph(v.foto)}<h4>${esc(v.nombre)}</h4><p>${esc(v.texto)}</p></div>`).join("")}</div></div>
     <div class="nos-cta"><h3 class="gt">${esc(o.cta_titulo)}</h3><a class="btn-acc sq" href="${esc(L.wa)}" target="_blank" rel="noopener">${ICW}${esc(o.cta_boton)}</a></div>
@@ -141,7 +141,7 @@ function render(c) {
     <div><h5>Competencias</h5><a href="#" data-open="m-wfn" data-tab="peleas">WFN · Combates</a><a href="#" data-open="m-wfn" data-tab="liga">${esc(wfn.eyebrow)}</a><a href="#" data-open="m-wku">${esc(wku.titulo)}</a></div>
     <div><h5>Visítanos</h5><a href="${esc(L.mapa)}" target="_blank" rel="noopener">${esc(k.direccion1)}</a><a href="#contacto">${esc(k.direccion2)}</a><a href="${esc(L.tel)}">${esc(k.telefono)}</a></div>
     <div><h5>Redes</h5><a href="${esc(L.fb)}" target="_blank" rel="noopener">Facebook</a><a href="${esc(L.wa)}" target="_blank" rel="noopener">WhatsApp</a></div></div>
-    <div class="mft-bot"><span>${esc(String(n.nombre || "").toUpperCase())} ©${esc(pie.anio)}</span><span>${esc(String(n.ciudad || "").toUpperCase())}</span><span>${esc(pie.texto_inferior)}</span></div>`);
+    <div class="mft-bot"><span>${esc(String(n.nombre || "").toUpperCase())} ©${esc(pie.anio)}</span><span>${esc(String(n.ciudad || "").toUpperCase())}</span><span>${esc(pie.texto_inferior)}</span></div><div class="credito">Página hecha por <b>Loseel Webs</b></div>`);
 
   renderCard();
   hoy();
