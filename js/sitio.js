@@ -52,9 +52,8 @@ function render(c) {
   document.title = n.titulo_pestana || document.title;
 
   /* Inicio */
-  set(".hero .in", `<span class="over">${esc(i.lugar)}</span><h1>${esc(i.titulo1)}<span>${esc(i.titulo2)}</span><em class="sr">Academia de Kickboxing, K-1, Muay Thai y MMA en Poza Rica, Veracruz</em></h1>
-    <p>${esc(i.texto)}</p>
-    <div class="row" style="justify-content:center"><a class="btn-acc" href="${esc(L.wa)}" target="_blank" rel="noopener">${ICW}${esc(i.boton1)}</a><a class="btn-gh" href="#horarios">${esc(i.boton2)}</a></div>`);
+  set(".hero .in", `<span class="over">${esc(i.lugar)}</span><h1>${esc(i.titulo1)}<span>${esc(i.titulo2)}</span><em class="sr">Academia de Kickboxing, K-1, Muay Thai y MMA en Poza Rica, Veracruz</em></h1>`);
+  set(".hero-cta", `<div class="row"><a class="btn-acc" href="${esc(L.wa)}" target="_blank" rel="noopener">${ICW}${esc(i.boton1)}</a></div>`);
   const fr = (i.franja || []).map(w => `<span>${esc(w)}</span><i>✦</i>`).join("");
   set(".ribbon .mq", fr.repeat(4));
   const card = (t, cls, tag, attrs) => `<${tag} class="qc${cls}" ${attrs}><small>${esc(t.etiqueta)}</small><b>${esc(t.titulo)}</b><span>${esc(t.texto)}</span><em>${esc(t.enlace)}</em></${tag}>`;
@@ -110,7 +109,7 @@ function render(c) {
       <div class="nos-btns"><a class="btn-acc sq" href="#horarios">Ver horarios</a><a class="btn-out sq" href="#clases">Clases</a></div></div>
     <div class="nos-split">${ph(o.foto_vision)}<div><h2 class="gt">Visión</h2><p class="reveal">${esc(o.vision)}</p></div></div>
     <div class="nos-block"><p class="cap red">${esc(o.valores_eyebrow)}</p><h2 class="gt big">${esc(o.valores_titulo)}</h2>
-      <div class="vals">${(o.valores || []).map(v => `<div class="val">${ph(v.foto)}<h4>${esc(v.nombre)}</h4><p>${esc(v.texto)}</p></div>`).join("")}</div></div>
+      <div class="vals">${(o.valores || []).map((v, i) => `<div class="val"><em>${String(i + 1).padStart(2, "0")}</em><h4>${esc(v.nombre)}</h4><p>${esc(v.texto)}</p></div>`).join("")}</div></div>
     <div class="nos-cta"><h3 class="gt">${esc(o.cta_titulo)}</h3><a class="btn-acc sq" href="${esc(L.wa)}" target="_blank" rel="noopener">${ICW}${esc(o.cta_boton)}</a></div>
     </div>`);
 
@@ -200,6 +199,7 @@ function show(k, first) {
   if (!first) scrollTo({ top: 0, behavior: "auto" });
   const base = ((C || {}).negocio || {}).titulo_pestana || "Academia Team K-1";
   document.title = (k === "inicio" ? "" : k[0].toUpperCase() + k.slice(1) + " · ") + base;
+  document.querySelectorAll(".dnav a[data-k]").forEach(a => a.classList.toggle("on", a.dataset.k === k));
   if (k === "nosotros") rotRun();
   setTimeout(paintRv, 60);
 }

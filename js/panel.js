@@ -48,11 +48,10 @@ const SCHEMA = [
      I("contacto.foto", "Foto de la sección", { folder: "general" }) ] } ] },
  { id: "inicio", tab: "Inicio", help: "La portada y las tarjetas de la pantalla principal.", cards: [
    { l: "Portada", fields: [ T("inicio.lugar", "Texto arriba del título"), { t: "row", fields: [T("inicio.titulo1", "Título (línea 1)"), T("inicio.titulo2", "Título (línea 2, en contorno)")] },
-     A("inicio.texto", "Texto de bienvenida"), { t: "row", fields: [T("inicio.boton1", "Botón WhatsApp"), T("inicio.boton2", "Botón horarios")] } ] },
+     T("inicio.boton1", "Botón WhatsApp") ] },
    { l: "Franja que se mueve", fields: [ Ls("inicio.franja", "Palabras", "text", { add: "Agregar palabra" }) ] },
    { l: "Tarjetas", fields: [ tarjeta("inicio.tarjeta_hoy", "Tarjeta «Hoy» (cuando no hay clase; si hay, se calcula sola con los horarios)"),
-     tarjeta("inicio.tarjeta_precio", "Tarjeta de precio"), tarjeta("inicio.tarjeta_competencias", "Tarjeta de competencias"), tarjeta("inicio.tarjeta_ubicacion", "Tarjeta de ubicación"),
-     G("Botón de WFN", "inicio.boton_wfn", [T("etiqueta", "Etiqueta chica"), T("titulo", "Título"), T("enlace", "Texto del enlace")]) ] } ] },
+     tarjeta("inicio.tarjeta_precio", "Tarjeta de precio"), tarjeta("inicio.tarjeta_competencias", "Tarjeta de competencias"), tarjeta("inicio.tarjeta_ubicacion", "Tarjeta de ubicación") ] } ] },
  { id: "clases", tab: "Clases", help: "Disciplinas y grupos.", cards: [
    { l: "Encabezado", fields: [ { t: "row", fields: [T("clases.eyebrow", "Etiqueta chica"), T("clases.titulo", "Título")] }, A("clases.texto", "Texto") ] },
    { l: "Disciplinas", fields: [ Ls("clases.disciplinas", "Disciplinas", [T("nombre", "Nombre"), A("texto", "Descripción"), I("foto", "Foto", { folder: "clases" })], { add: "Agregar disciplina", title: "nombre" }) ] },
@@ -80,7 +79,7 @@ const SCHEMA = [
    { l: "Palabras animadas", fields: [ T("nosotros.frase", "Frase de arriba"), Ls("nosotros.palabras", "Palabras (aparecen una tras otra)", "text", { add: "Agregar palabra" }), T("nosotros.final", "Palabra final", { ph: "Oss" }) ] },
    { l: "Misión y visión", fields: [ A("nosotros.mision", "Misión"), A("nosotros.vision", "Visión"), I("nosotros.foto_vision", "Foto junto a la visión", { folder: "nosotros" }) ] },
    { l: "Valores", fields: [ { t: "row", fields: [T("nosotros.valores_eyebrow", "Etiqueta chica"), T("nosotros.valores_titulo", "Título")] },
-     Ls("nosotros.valores", "Valores", [T("nombre", "Nombre"), A("texto", "Texto"), I("foto", "Foto", { folder: "nosotros" })], { add: "Agregar valor", title: "nombre" }) ] },
+     Ls("nosotros.valores", "Valores", [T("nombre", "Nombre"), A("texto", "Texto")], { add: "Agregar valor", title: "nombre" }) ] },
    { l: "Llamado final", fields: [ { t: "row", fields: [T("nosotros.cta_titulo", "Título"), T("nosotros.cta_boton", "Texto del botón")] } ] } ] },
  { id: "competencias", tab: "Competencias", help: "Las ventanas del Panamericano WKU y de la liga WFN.", cards: [
    { l: "Panamericano WKU", fields: [ { t: "row", fields: [T("competencias.wku.eyebrow", "Etiqueta chica"), T("competencias.wku.titulo", "Título")] }, A("competencias.wku.texto", "Texto"),
@@ -123,7 +122,7 @@ const NUEVO = {
   "equipo.coaches": { rol: "", nombre: "", foto: "" },
   "equipo.comparativa": { izq: "", etiqueta: "", der: "" },
   "equipo.uniforme": { nombre: "", foto: "" },
-  "nosotros.valores": { nombre: "", texto: "", foto: "" },
+  "nosotros.valores": { nombre: "", texto: "" },
   "cartelera.peleas": { tipo: "", div: "", rounds: "3 × 3 min", seccion: "preliminar", rojo: { nombre: "", apellido: "", origen: "", record: "", foto: "" }, azul: { nombre: "", apellido: "", origen: "", record: "", foto: "" } }
 };
 
