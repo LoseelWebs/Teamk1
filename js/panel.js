@@ -87,7 +87,7 @@ const SCHEMA = [
    { l: "WFN · La liga", fields: [ { t: "row", fields: [T("competencias.wfn.eyebrow", "Etiqueta chica"), T("competencias.wfn.titulo", "Título")] }, A("competencias.wfn.texto", "Texto"),
      I("competencias.wfn.foto", "Foto principal", { folder: "wfn" }), Ls("competencias.wfn.galeria", "Galería", "img", { add: "Agregar foto", folder: "wfn" }) ] } ] },
  { id: "combates", tab: "Combates WFN", help: "La cartelera: main event arriba y la lista de peleas. Las fotos de peleadores se suben sin fondo; el filtro se aplica solo.", cards: [
-   { l: "Evento", fields: [ T("cartelera.evento", "Nombre del evento"), { t: "row", fields: [T("cartelera.fecha", "Fecha"), T("cartelera.lugar", "Lugar")] },
+   { l: "Evento", fields: [ { t: "row", fields: [T("cartelera.edicion", "Edición (número)", { ph: "Ej. 08" }), T("cartelera.lugar", "Lugar")] }, { t: "row", fields: [{ t: "date", k: "cartelera.dia", l: "Día de la función" }, { t: "time", k: "cartelera.hora", l: "Hora" }] }, T("cartelera.fecha", "Texto si aún no hay fecha", { help: "Se muestra solo mientras el día esté vacío, ej. «Fecha por anunciar»." }), T("cartelera.evento", "Nombre si no hay número de edición"),
  ] },
    { l: "Main event", fields: [ { t: "row", fields: [T("cartelera.main.div", "División"), T("cartelera.main.rounds", "Rounds")] },
      peleador("cartelera.main.rojo", "Esquina roja", "corner-r"), peleador("cartelera.main.azul", "Esquina azul", "corner-b") ] },
@@ -147,6 +147,7 @@ function field(f, base) {
     case "text": return `<label class="f">${esc(f.l)}<input type="text" data-p="${p}" value="${esc(get(DRAFT, p))}" placeholder="${esc(f.ph || "")}">${help}</label>`;
     case "area": return `<label class="f">${esc(f.l)}<textarea data-p="${p}" placeholder="${esc(f.ph || "")}">${esc(get(DRAFT, p))}</textarea>${help}</label>`;
     case "time": return `<label class="f">${esc(f.l)}<input type="time" data-p="${p}" value="${esc(get(DRAFT, p))}">${help}</label>`;
+    case "date": return `<label class="f">${esc(f.l)}<input type="date" data-p="${p}" value="${esc(get(DRAFT, p))}">${help}</label>`;
     case "bool": return `<label class="chk"><input type="checkbox" data-p="${p}" data-bool ${get(DRAFT, p) ? "checked" : ""}>${esc(f.l)}</label>`;
     case "select": return `<label class="f">${esc(f.l)}<select data-p="${p}">${f.options.map(([v, t]) => `<option value="${v}"${get(DRAFT, p) === v ? " selected" : ""}>${esc(t)}</option>`).join("")}</select></label>`;
     case "days": { const v = get(DRAFT, p) || []; return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span><div class="days">${DAYS.map(([d, t]) => `<label><input type="checkbox" data-days="${p}" value="${d}" ${v.includes(d) ? "checked" : ""}>${t}</label>`).join("")}</div></div>`; }

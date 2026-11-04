@@ -179,17 +179,47 @@ function renderCard() {
   const mr = meta(r), ma = meta(a);
   const fig = p => { const u = safeUrl(p.foto); if (!u) return ""; const j = p.ajuste || {}, n = (v, d) => isFinite(+v) && v !== "" && v != null ? +v : d;
     return `<i class="m3-beam"></i><span class="fx" style="--src:url('${esc(u)}');--ax:${n(j.x, 0)}%;--ay:${n(j.y, 0)}%;--as:${n(j.s, 100) / 100}">${pic(p)}<i class="m-shade"></i><i class="m-rim"></i></span>`; };
-  box.innerHTML = `<div class="ev"><span><b>${esc(c.evento)}</b></span><span>${esc(c.fecha)} · ${esc(c.lugar)}</span></div>
+  box.innerHTML = `${evHead(c)}
    <div class="mev mev3"><div class="mev-bg"><div class="mev-rows">${rowsDe(c.fondo)}</div></div>
     <div class="m3-luces"></div>
     <img class="mev-logo" src="img/wfn-logo.png" alt="WFN Combat League">
     <div class="mev-duo"><div class="fa">${fig(r)}</div><div class="fb">${fig(a)}</div></div>
     <div class="m3-fondo"></div>
     <div class="mev-names"><span class="ln">${esc(r.apellido || r.nombre)}</span><span class="ln"><span class="mvs">VS</span>${esc(a.apellido || a.nombre)}</span><span class="btype">${esc(m.div)} · Main event</span>${mr || ma ? `<span class="mev-meta">${mr} <i>vs</i> ${ma}</span>` : ""}</div>
-    <div class="mev-date">${esc(String(c.fecha || "").toUpperCase())}</div><div class="mev-sp"><span>${esc(c.lugar)}</span><span>WFN Combat League</span></div></div>
-   <div class="ordnote">La numeración indica el orden de la noche: la pelea 1 abre la función y el main event la cierra.</div>${rows}
+    <div class="mev-date">${esc(evCorta(c).toUpperCase())}</div><div class="mev-sp"><span>${esc(c.lugar)}</span><span>WFN Combat League</span></div></div>${rows}
    <p class="fnote">Récord: victorias – derrotas – empates. Combates sujetos a cambios.</p>`;
+  tickCD();
 }
+
+
+/* ---------- encabezado del evento WFN: calendario + cuenta regresiva ---------- */
+const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const DIAS_EV = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+function evFecha(c) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c.dia || ""); if (!m) return null;
+  const h = /^(\d{2}):(\d{2})$/.exec(c.hora || "");
+  const d = new Date(+m[1], +m[2] - 1, +m[3], h ? +h[1] : 0, h ? +h[2] : 0);
+  return isNaN(d) ? null : { d, conHora: !!h };
+}
+const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>';
+function evHead(c) {
+  const f = evFecha(c), ed = String(c.edicion || "").trim();
+  const titulo = ed ? (/^wfn/i.test(ed) ? ed : "WFN " + ed) : (c.evento || "WFN");
+  const cal = f ? `<div class="evx-cal"><span>${MESES[f.d.getMonth()]}</span><b>${f.d.getDate()}</b><small>${DIAS_EV[f.d.getDay()]}</small></div>` : "";
+  const cuando = f ? hora12(c.hora) : (c.fecha || "Fecha por anunciar");
+  const cd = f && f.d > new Date() ? `<div class="evx-cd" data-cd="${f.d.getTime()}"><div><b>00</b><small>Días</small></div><div><b>00</b><small>Horas</small></div><div><b>00</b><small>Min</small></div><div><b>00</b><small>Seg</small></div></div>` : "";
+  return `<div class="evx">${cal}<div class="evx-i"><b class="evx-t">${esc(titulo)}</b>${cuando ? `<span>${esc(cuando)}</span>` : ""}${c.lugar ? `<span class="evx-l">${PIN}${esc(c.lugar)}</span>` : ""}</div></div>${cd}`;
+}
+const DIAS_C = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+function evCorta(c) { const f = evFecha(c); if (!f) return c.fecha || ""; return `${DIAS_C[f.d.getDay()]} ${f.d.getDate()} ${MESES[f.d.getMonth()].slice(0, 3)}${f.conHora ? " · " + hora12(c.hora) : ""}`; }
+function tickCD() {
+  document.querySelectorAll("[data-cd]").forEach(el => {
+    let s = Math.max(0, Math.floor((+el.dataset.cd - Date.now()) / 1000));
+    const v = [Math.floor(s / 86400), Math.floor(s % 86400 / 3600), Math.floor(s % 3600 / 60), s % 60];
+    el.querySelectorAll("b").forEach((b, i) => { const t = String(v[i]).padStart(2, "0"); if (b.textContent !== t) b.textContent = t; });
+  });
+}
+setInterval(tickCD, 1000);
 
 /* ---------- navegación por pestañas ---------- */
 const K = ["inicio", "clases", "horarios", "equipo", "nosotros", "contacto"];
