@@ -32,7 +32,7 @@ const tarjeta = (k, l) => G(l, k, [T("etiqueta", "Etiqueta chica"), T("titulo", 
 const peleador = (k, l, cls) => ({ t: "group", l, k, cls, fields: [
   { t: "row", fields: [T("nombre", "Nombre"), T("apellido", "Apellido")] },
   { t: "row", fields: [T("origen", "De dónde viene", { ph: "Ej. Tuxpan, Ver." }), T("record", "Récord", { ph: "Ej. 5-1-0" })] },
-  I("foto", "Foto del peleador", { folder: "peleadores", cut: true, help: "Súbela SIN FONDO (PNG). El filtro dorado y el desvanecido de abajo se ponen solos." })] });
+  I("foto", "Foto del peleador", { folder: "peleadores", cut: true, help: "De preferencia SIN FONDO (PNG), de la cintura o el pecho para arriba. En el main event aparece a los lados; en las demás peleas, en un cuadro."  })] });
 
 const SCHEMA = [
  { id: "negocio", tab: "Negocio y contacto", help: "Nombre, teléfono, WhatsApp, dirección y redes. Se usan en toda la página (botones, pie de página, menú).", cards: [
@@ -42,16 +42,35 @@ const SCHEMA = [
      A("contacto.mensaje_whatsapp", "Mensaje que se escribe solo al abrir WhatsApp"),
      { t: "row", fields: [T("contacto.direccion1", "Dirección (línea 1)"), T("contacto.direccion2", "Dirección (línea 2)")] },
      T("contacto.mapa", "Enlace de Google Maps", { help: "En Google Maps: Compartir → Copiar vínculo." }),
-     T("contacto.facebook", "Enlace de Facebook") ] },
+     T("contacto.facebook", "Página de Facebook de Team K-1", { ph: "https://www.facebook.com/nombre-de-la-pagina", help: "Abre la página en Facebook y copia la dirección. Con este enlace se muestran sus publicaciones en Inicio." }),
+     T("contacto.facebook_wfn", "Página de Facebook de WFN", { ph: "https://www.facebook.com/nombre-de-la-pagina", help: "Para mostrar también las publicaciones de la liga." }) ] },
    { l: "Sección Contacto", fields: [ { t: "row", fields: [T("contacto.eyebrow", "Etiqueta chica"), T("contacto.titulo", "Título")] },
      { t: "row", fields: [T("contacto.resena_cifra", "Cifra destacada", { ph: "100%" }), T("contacto.resena_texto", "Texto de la reseña")] },
      I("contacto.foto", "Foto de la sección", { folder: "general" }) ] } ] },
  { id: "inicio", tab: "Inicio", help: "La portada y las tarjetas de la pantalla principal.", cards: [
-   { l: "Portada", fields: [ T("inicio.lugar", "Texto arriba del título"), { t: "row", fields: [T("inicio.titulo1", "Título (línea 1)"), T("inicio.titulo2", "Título (línea 2, en contorno)")] },
-     T("inicio.boton1", "Botón WhatsApp") ] },
+   { l: "Portada", fields: [ { t: "row", fields: [T("inicio.titulo1", "Título (línea 1)"), T("inicio.titulo2", "Título (línea 2, en contorno)")] },
+     I("inicio.foto_fondo", "Foto de fondo en PC", { folder: "portada", help: "Horizontal. Las letras van a la izquierda: conviene que la persona quede del lado derecho. Si la dejas vacía se usa la foto de la jaula." }),
+     I("inicio.foto_fondo_cel", "Foto de fondo en celular", { folder: "portada", help: "Vertical. Si la dejas vacía se usa la de PC." }),
+     T("inicio.boton1", "Texto del botón de WhatsApp (al final del inicio)") ] },
+   { l: "Seminario o evento", fields: [ { t: "bool", k: "inicio.seminario.activo", l: "Mostrar en Inicio (desactívalo cuando no haya seminario)" },
+     { t: "row", fields: [T("inicio.seminario.etiqueta", "Tipo", { ph: "Seminario" }), T("inicio.seminario.titulo", "Título", { ph: "Seminario de Muay Thai" })] },
+     T("inicio.seminario.fecha", "Fecha y hora (texto)", { ph: "Sábado 22 de noviembre · 10:00 a. m." }), A("inicio.seminario.texto", "Descripción"),
+     I("inicio.seminario.foto", "Foto o cartel del seminario", { folder: "seminarios" }), T("inicio.seminario.boton", "Texto del botón", { help: "El botón abre WhatsApp con un mensaje sobre el seminario." }) ] },
    { l: "Franja que se mueve", fields: [ Ls("inicio.franja", "Palabras", "text", { add: "Agregar palabra" }) ] },
+   { l: "Disciplinas en Inicio", fields: [ { t: "help", l: "Las fotos y nombres salen de la pestaña Clases." }, { t: "row", fields: [T("inicio.disciplinas_eyebrow", "Etiqueta chica"), T("inicio.disciplinas_titulo", "Título")] } ] },
+   { l: "Bloque con foto de fondo", fields: [ { t: "row", fields: [T("inicio.bloque.eyebrow", "Etiqueta chica"), T("inicio.bloque.titulo", "Título")] }, A("inicio.bloque.texto", "Texto"),
+     I("inicio.bloque.foto", "Foto de fondo", { folder: "inicio", help: "Se oscurece y se le ponen sombras rojas sola. Si la dejas vacía se usa una foto de las disciplinas." }), T("inicio.bloque.boton", "Texto del botón"),
+     Ls("inicio.bloque.datos", "Datos destacados", [{ t: "row", fields: [T("cifra", "Cifra", { ph: "4" }), T("texto", "Texto", { ph: "disciplinas de contacto" })] }], { add: "Agregar dato", title: "cifra" }) ] },
+   { l: "Botón ancho de WFN", fields: [ { t: "row", fields: [T("inicio.banner_wfn.etiqueta", "Etiqueta chica"), T("inicio.banner_wfn.titulo", "Título")] },
+     T("inicio.banner_wfn.texto", "Texto", { help: "Si hay fecha de la próxima función, se muestra la fecha en lugar de este texto." }),
+     I("inicio.banner_wfn.foto", "Foto de un combate de la liga", { folder: "wfn", help: "Se le aplica un tono dorado automáticamente." }) ] },
+   { l: "Novedades", fields: [ { t: "help", l: "A la izquierda van estas tarjetas con foto (la primera grande); a la derecha, las publicaciones de Facebook. Los enlaces de Facebook se ponen en «Negocio y contacto». Si no agregas tarjetas, se arman solas con WFN, clases y uniforme." },
+     Ls("inicio.destacados", "Tarjetas destacadas (máximo 5)", [ { t: "row", fields: [T("etiqueta", "Etiqueta chica", { ph: "WFN Combat League" }), T("titulo", "Título")] },
+       I("foto", "Foto", { folder: "destacados" }), T("enlace", "A dónde lleva", { ph: "#wfn, #clases, #horarios… o https://…", help: "Usa #wfn, #clases, #horarios, #equipo, #nosotros o #contacto para las secciones de la página, o pega un enlace completo." }) ],
+       { add: "Agregar tarjeta", title: "titulo" }) ] },
+   { l: "Llamado final", fields: [ T("inicio.cta.titulo", "Título"), T("inicio.cta.texto", "Texto"), I("inicio.cta.foto", "Foto de fondo", { folder: "inicio" }) ] },
    { l: "Tarjetas", fields: [ tarjeta("inicio.tarjeta_hoy", "Tarjeta «Hoy» (cuando no hay clase; si hay, se calcula sola con los horarios)"),
-     tarjeta("inicio.tarjeta_precio", "Tarjeta de precio"), tarjeta("inicio.tarjeta_competencias", "Tarjeta de competencias"), tarjeta("inicio.tarjeta_ubicacion", "Tarjeta de ubicación") ] } ] },
+     tarjeta("inicio.tarjeta_precio", "Tarjeta de precio"), tarjeta("inicio.tarjeta_competencias", "Tarjeta de competencias (lleva a WFN)"), tarjeta("inicio.tarjeta_ubicacion", "Tarjeta de ubicación") ] } ] },
  { id: "clases", tab: "Clases", help: "Disciplinas y grupos.", cards: [
    { l: "Encabezado", fields: [ { t: "row", fields: [T("clases.eyebrow", "Etiqueta chica"), T("clases.titulo", "Título")] }, A("clases.texto", "Texto") ] },
    { l: "Disciplinas", fields: [ Ls("clases.disciplinas", "Disciplinas", [T("nombre", "Nombre"), A("texto", "Descripción"), I("foto", "Foto", { folder: "clases" })], { add: "Agregar disciplina", title: "nombre" }) ] },
@@ -76,19 +95,29 @@ const SCHEMA = [
      Ls("equipo.uniforme", "Prendas", [T("nombre", "Nombre"), I("foto", "Foto", { folder: "uniforme" })], { add: "Agregar prenda", title: "nombre" }) ] },
    { l: "Banda de competencias", fields: [ { t: "row", fields: [T("equipo.banda.eyebrow", "Etiqueta chica"), T("equipo.banda.titulo", "Título")] }, A("equipo.banda.texto", "Texto"), T("equipo.banda.boton", "Texto del botón") ] } ] },
  { id: "nosotros", tab: "Nosotros", help: "Palabras animadas, misión, visión y valores.", cards: [
-   { l: "Palabras animadas", fields: [ T("nosotros.frase", "Frase de arriba"), Ls("nosotros.palabras", "Palabras (aparecen una tras otra)", "text", { add: "Agregar palabra" }), T("nosotros.final", "Palabra final", { ph: "Oss" }) ] },
+   { l: "Palabras animadas", fields: [ T("nosotros.frase", "Frase de arriba"), Ls("nosotros.palabras", "Palabras (aparecen una tras otra)", "text", { add: "Agregar palabra" }), T("nosotros.final", "Palabra final", { ph: "Oss" }),
+     { t: "video", k: "nosotros.video", l: "Video de fondo", help: "Se pone en blanco y negro solo. Usa un video corto (10 a 20 segundos, MP4) y sin audio importante; se reproduce sin sonido." },
+     I("nosotros.video_poster", "Imagen mientras carga el video", { folder: "nosotros" }) ] },
    { l: "Misión y visión", fields: [ A("nosotros.mision", "Misión"), A("nosotros.vision", "Visión"), I("nosotros.foto_vision", "Foto junto a la visión", { folder: "nosotros" }) ] },
    { l: "Valores", fields: [ { t: "row", fields: [T("nosotros.valores_eyebrow", "Etiqueta chica"), T("nosotros.valores_titulo", "Título")] },
      Ls("nosotros.valores", "Valores", [T("nombre", "Nombre"), A("texto", "Texto")], { add: "Agregar valor", title: "nombre" }) ] },
    { l: "Llamado final", fields: [ { t: "row", fields: [T("nosotros.cta_titulo", "Título"), T("nosotros.cta_boton", "Texto del botón")] } ] } ] },
- { id: "competencias", tab: "Competencias", help: "Las ventanas del Panamericano WKU y de la liga WFN.", cards: [
+ { id: "competencias", tab: "Competencias", help: "La ventana del Panamericano WKU y los textos de la sección WFN.", cards: [
    { l: "Panamericano WKU", fields: [ { t: "row", fields: [T("competencias.wku.eyebrow", "Etiqueta chica"), T("competencias.wku.titulo", "Título")] }, A("competencias.wku.texto", "Texto"),
      I("competencias.wku.foto", "Foto principal", { folder: "wku" }), Ls("competencias.wku.galeria", "Galería", "img", { add: "Agregar foto", folder: "wku" }) ] },
-   { l: "WFN · La liga", fields: [ { t: "row", fields: [T("competencias.wfn.eyebrow", "Etiqueta chica"), T("competencias.wfn.titulo", "Título")] }, A("competencias.wfn.texto", "Texto"),
+   { l: "WFN · Encabezado y «La liga»", fields: [ { t: "row", fields: [T("competencias.wfn.eyebrow", "Etiqueta chica"), T("competencias.wfn.titulo", "Título")] }, A("competencias.wfn.texto", "Texto"),
      I("competencias.wfn.foto", "Foto principal", { folder: "wfn" }), Ls("competencias.wfn.galeria", "Galería", "img", { add: "Agregar foto", folder: "wfn" }) ] } ] },
- { id: "combates", tab: "Combates WFN", help: "La cartelera: main event arriba y la lista de peleas. Las fotos de peleadores se suben sin fondo; el filtro se aplica solo.", cards: [
+ { id: "combates", tab: "Combates WFN", help: "La cartelera: main event arriba y la lista de peleas. Marca «Es el co-estelar» en la pelea que va destacada.", cards: [
    { l: "Evento", fields: [ { t: "row", fields: [T("cartelera.edicion", "Edición (número)", { ph: "Ej. 08" }), T("cartelera.lugar", "Lugar")] }, { t: "row", fields: [{ t: "date", k: "cartelera.dia", l: "Día de la función" }, { t: "time", k: "cartelera.hora", l: "Hora" }] }, T("cartelera.fecha", "Texto si aún no hay fecha", { help: "Se muestra solo mientras el día esté vacío, ej. «Fecha por anunciar»." }), T("cartelera.evento", "Nombre si no hay número de edición"),
+ { t: "row", fields: [T("cartelera.boletos", "Precio de boletos", { ph: "$250" }), T("cartelera.boletos_texto", "Nota de boletos", { ph: "Niños menores de 10 años entran gratis" })] },
+ { t: "row", fields: [T("cartelera.info_extra", "Dato extra (debajo de la hora)", { ph: "Puertas abren 6:00 p. m." }), T("cartelera.enlace_boletos", "Enlace para comprar boletos (opcional)", { help: "Si lo dejas vacío, el botón abre WhatsApp." })] },
+ T("cartelera.mapa_evento", "Enlace de Google Maps de la sede (opcional)"),
  ] },
+   { l: "Letras y colores del main event", fields: [ { t: "help", l: "Las palabras se repiten en el recuadro que se mueve detrás de los nombres." },
+     Ls("cartelera.fondo", "Palabras del fondo", "text", { add: "Agregar palabra" }),
+     { t: "color", k: "tema.wfn_letras", l: "Color de las letras del fondo", def: "#c8d6e6", help: "Las palabras que se mueven detrás de los nombres del main event." },
+     { t: "color", k: "tema.wfn_sombra", l: "Color de la sombra detrás de las letras", def: "#3a4048", help: "El recuadro donde se mueven las letras." },
+     { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#1b1f24" } ] },
    { l: "Main event", fields: [ { t: "row", fields: [T("cartelera.main.div", "División"), T("cartelera.main.rounds", "Rounds")] },
      peleador("cartelera.main.rojo", "Esquina roja", "corner-r"), peleador("cartelera.main.azul", "Esquina azul", "corner-b") ] },
    { l: "Acomodo de las fotos del main event", fields: [ { t: "help", l: "Mueve cada foto y cambia su tamaño. Guarda y revisa con «Ver página»." },
@@ -98,18 +127,43 @@ const SCHEMA = [
        { t: "range", k: "s", l: "Tamaño", min: 60, max: 160, step: 1, def: 100, unit: "%" } ] })) ] },
    { l: "Demás peleas", fields: [ Ls("cartelera.peleas", "Peleas", [
        { t: "select", k: "seccion", l: "Sección", options: [["estelar", "Cartelera estelar"], ["preliminar", "Preliminares"]] },
+       { t: "bool", k: "comain", l: "Es el co-estelar (se muestra destacado, debajo del main event)" },
        { t: "row3", fields: [T("tipo", "Etiqueta", { ph: "Ej. Co-main event" }), T("div", "División"), T("rounds", "Rounds")] },
        peleador("rojo", "Esquina roja", "corner-r"), peleador("azul", "Esquina azul", "corner-b") ],
        { add: "Agregar pelea", title: x => [x.rojo && (x.rojo.apellido || x.rojo.nombre), x.azul && (x.azul.apellido || x.azul.nombre)].filter(Boolean).join(" vs ") + (x.div ? " · " + x.div : "") }) ] } ] },
+ { id: "liga", tab: "Liga WFN", help: "Información de la liga, resultados de ediciones anteriores y la cinta de patrocinadores de la sección WFN.", cards: [
+   { l: "Información de «La liga»", fields: [ { t: "help", l: "Se muestra en la sección WFN, debajo de los patrocinadores." }, T("liga.acerca.titulo", "Título"), A("liga.acerca.texto", "Texto"),
+     Ls("liga.acerca.datos", "Datos destacados", [{ t: "row", fields: [T("cifra", "Cifra", { ph: "18" }), T("texto", "Texto", { ph: "ediciones" })] }], { add: "Agregar dato", title: "cifra" }),
+     { t: "row", fields: [T("liga.acerca.sede", "Dirección"), T("liga.acerca.telefono", "Teléfono")] } ] },
+   { l: "Pasar la función actual al historial", fields: [ { t: "help", l: "Copia las peleas de «Combates WFN» como una edición nueva del historial. Después solo marcas quién ganó." }, { t: "tohist" } ] },
+   { l: "Ediciones anteriores", fields: [ Ls("liga.ediciones", "Ediciones (la primera es la más reciente)", [
+       { t: "row3", fields: [T("edicion", "Edición", { ph: "07" }), { t: "date", k: "fecha", l: "Fecha" }, T("lugar", "Lugar")] },
+       T("titulo", "Nombre (opcional)", { help: "Si lo dejas vacío se escribe «WFN» y el número." }),
+       I("foto", "Cartel o foto de la función (opcional)", { folder: "historial" }),
+       Ls("peleas", "Peleas", [ { t: "select", k: "seccion", l: "Sección", options: [["principal", "Cartelera principal"], ["preliminar", "Cartelera preliminar"]] },
+         { t: "row", fields: [T("rojo", "Peleador esquina roja"), T("azul", "Peleador esquina azul")] },
+         { t: "row", fields: [T("rojo_record", "Récord esquina roja", { ph: "6-1-0" }), T("azul_record", "Récord esquina azul", { ph: "5-2-0" })] },
+         { t: "row", fields: [I("rojo_foto", "Foto esquina roja (opcional)", { folder: "historial" }), I("azul_foto", "Foto esquina azul (opcional)", { folder: "historial" })] },
+         { t: "row", fields: [T("div", "División", { ph: "Peso ligero" }), T("titulo", "Etiqueta (opcional)", { ph: "Pelea estelar, por el título…" })] },
+         { t: "row3", fields: [{ t: "select", k: "ganador", l: "¿Quién ganó?", options: [["", "Sin resultado aún"], ["rojo", "Esquina roja"], ["azul", "Esquina azul"], ["empate", "Empate"], ["nc", "Sin decisión"]] },
+           T("metodo", "Cómo ganó", { ph: "KO, TKO, SUB, UD…" }), T("round", "Round", { ph: "2" }), T("tiempo", "Tiempo", { ph: "4:54" })] } ],
+         { add: "Agregar pelea", title: x => [x.rojo, x.azul].filter(Boolean).join(" vs ") }) ],
+     { add: "Agregar edición", title: x => "WFN " + (x.edicion || "") + (x.fecha ? " · " + x.fecha : "") }) ] },
+   { l: "Patrocinadores", fields: [ T("liga.patrocinadores_titulo", "Título de la sección"),
+     Ls("liga.patrocinadores", "Logos (se mueven en una cinta de derecha a izquierda)", [ T("nombre", "Nombre del patrocinador"),
+       I("logo", "Logo", { folder: "patrocinadores", cut: true, help: "De preferencia PNG sin fondo." }), T("enlace", "Enlace (opcional)", { ph: "https://..." }) ],
+       { add: "Agregar patrocinador", title: "nombre" }) ] } ] },
  { id: "pie", tab: "Pie de página", help: "El texto de abajo de la página.", cards: [
    { l: "Pie de página", fields: [ { t: "row", fields: [T("pie.anio", "Año"), T("pie.texto_inferior", "Texto inferior")] } ] } ] },
  { id: "colores", tab: "Colores", help: "Los colores de toda la página. Toca el cuadro de color para elegir otro. Se ven en la página al guardar.", cards: [
    { l: "Colores de la página", fields: [
      { t: "color", k: "tema.principal", l: "Color principal", def: "#ff1f1f", help: "Botones, barras, títulos rojos, pie de página y brillo del fondo." },
      { t: "color", k: "tema.acento", l: "Color de acento", def: "#c6f11a", help: "Puntos del horario y etiquetas pequeñas." },
-     { t: "color", k: "tema.fondo", l: "Color de fondo", def: "#08080a", help: "Fondo general. Se recomienda un color muy oscuro." } ] },
-   { l: "Main event (cartelera WFN)", fields: [
-     { t: "color", k: "tema.main_event", l: "Color del main event", def: "", help: "Letras del fondo, luces, VS, fecha y brillo de los peleadores. Si lo dejas vacío usa dorado." } ] },
+     { t: "color", k: "tema.fondo", l: "Color de fondo", def: "#050505", help: "Fondo general. Se recomienda un color muy oscuro." } ] },
+   { l: "Main event (sección WFN)", fields: [
+     { t: "color", k: "tema.wfn_letras", l: "Color de las letras del fondo", def: "#c8d6e6", help: "Las palabras que se mueven detrás de los nombres del main event." },
+     { t: "color", k: "tema.wfn_sombra", l: "Color de la sombra detrás de las letras", def: "#3a4048", help: "El recuadro donde se mueven las letras." },
+     { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#1b1f24" } ] },
    { l: "Restablecer", fields: [ { t: "reset" } ] } ] },
  { id: "historial", tab: "Historial", special: "historial" }
 ];
@@ -123,8 +177,19 @@ const NUEVO = {
   "equipo.comparativa": { izq: "", etiqueta: "", der: "" },
   "equipo.uniforme": { nombre: "", foto: "" },
   "nosotros.valores": { nombre: "", texto: "" },
-  "cartelera.peleas": { tipo: "", div: "", rounds: "3 × 3 min", seccion: "preliminar", rojo: { nombre: "", apellido: "", origen: "", record: "", foto: "" }, azul: { nombre: "", apellido: "", origen: "", record: "", foto: "" } }
+  "inicio.bloque.datos": { cifra: "", texto: "" },
+  "liga.acerca.datos": { cifra: "", texto: "" },
+  "liga.patrocinadores": { nombre: "", logo: "", enlace: "" },
+  "liga.ediciones": { edicion: "", titulo: "", fecha: "", lugar: "", foto: "", peleas: [] },
+  "liga.ediciones.peleas": { seccion: "principal", rojo: "", azul: "", rojo_record: "", azul_record: "", rojo_foto: "", azul_foto: "", div: "", titulo: "", ganador: "", metodo: "", round: "", tiempo: "" },
+  "inicio.destacados": { etiqueta: "", titulo: "", foto: "", enlace: "" },
+  "cartelera.peleas": { tipo: "", div: "", rounds: "3 × 3 min", seccion: "preliminar", comain: false, rojo: { nombre: "", apellido: "", origen: "", record: "", foto: "" }, azul: { nombre: "", apellido: "", origen: "", record: "", foto: "" } }
 };
+
+/* las secciones nuevas toman sus textos iniciales de js/defaults.js */
+const isObj = v => v && typeof v === "object" && !Array.isArray(v);
+function fillDef(c, d) { for (const k in d) { if (c[k] === undefined || c[k] === null) c[k] = clone(d[k]); else if (isObj(c[k]) && isObj(d[k])) fillDef(c[k], d[k]); } return c; }
+const conDef = c => { c = fillDef(clone(c || {}), window.SITIO_DEF || {}); if (c.inicio) delete c.inicio.lugar; return c; };
 
 /* ---------------- estado ---------------- */
 let USER = null, SAVED = null, DRAFT = null, TAB = "negocio";
@@ -157,6 +222,11 @@ function field(f, base) {
     case "help": return `<p style="margin:0;color:var(--muted);font-size:13px">${esc(f.l)}</p>`;
     case "range": { const v = get(DRAFT, p); const val = typeof v === "number" ? v : f.def;
       return `<label class="f">${esc(f.l)} <output style="color:var(--gold);font-weight:800">${val}${f.unit || ""}</output><input type="range" data-p="${p}" data-num="1" data-unit="${f.unit || ""}" min="${f.min}" max="${f.max}" step="${f.step}" value="${val}"></label>`; }
+    case "video": { const v = get(DRAFT, p) || "";
+      return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span>${v ? `<video src="${esc(v)}" muted loop playsinline controls style="width:100%;max-width:360px;aspect-ratio:16/9;background:#000;filter:grayscale(1)"></video>` : ""}
+        <div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><label class="btn sm">${v ? "Cambiar video" : "Subir video"}<input type="file" accept="video/mp4,video/webm,video/quicktime" data-video="${p}" style="display:none"></label>${v ? `<button type="button" class="btn sm del" data-clear="${p}">Quitar</button>` : ""}</div>
+        <input type="text" data-p="${p}" value="${esc(v)}" placeholder="O pega aquí el enlace del video (https://… o img/video.mp4)">${help}</div>`; }
+    case "tohist": return `<button type="button" class="btn" data-tohist="1" style="justify-self:start">Pasar «Combates WFN» al historial</button>`;
     case "reset": return `<button type="button" class="btn del" data-resettema="1" style="justify-self:start">Regresar a los colores originales</button>`;
     case "group": return `<div class="item ${f.cls || ""}" style="border-left-color:${f.cls ? "" : "#3a3a40"}"><div class="item-h"><b>${esc(f.l)}</b></div>${f.fields.map(x => field(x, p)).join("")}</div>`;
     case "list": return listField(p, f);
@@ -234,6 +304,31 @@ async function subir(input) {
   } catch (e) { status("No se pudo subir la foto: " + (e.message || e), "err"); }
 }
 
+async function subirVideo(input) {
+  const f = input.files[0]; if (!f) return;
+  const p = input.dataset.video;
+  if (f.size > 50 * 1024 * 1024) { status("El video pesa más de 50 MB. Usa uno más corto o de menor calidad.", "err"); return; }
+  status("Subiendo video… (puede tardar)");
+  try {
+    const ext = (/\.(\w+)$/.exec(f.name) || [, "mp4"])[1].toLowerCase();
+    const name = `${CFG.SITIO_ID}/video/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
+    const { error } = await sb.storage.from(CFG.BUCKET).upload(name, f, { contentType: f.type || "video/mp4", upsert: false, cacheControl: "31536000" });
+    if (error) throw error;
+    set(DRAFT, p, sb.storage.from(CFG.BUCKET).getPublicUrl(name).data.publicUrl);
+    renderForm(); refreshBar(); toast("Video listo. Recuerda guardar los cambios.");
+  } catch (e) { status("No se pudo subir el video: " + (e.message || e) + ". Revisa el límite de tamaño del bucket (ver README).", "err"); }
+}
+function pasarAlHistorial() {
+  const c = DRAFT.cartelera || {}, nom = x => [x && x.nombre, x && x.apellido].filter(Boolean).join(" ");
+  const m = c.main || {};
+  const pel = (b, sec, tit) => ({ seccion: sec, rojo: nom(b.rojo), azul: nom(b.azul), rojo_record: (b.rojo || {}).record || "", azul_record: (b.azul || {}).record || "",
+    rojo_foto: (b.rojo || {}).foto || "", azul_foto: (b.azul || {}).foto || "", div: b.div || "", titulo: tit || b.tipo || "", ganador: "", metodo: "", round: "", tiempo: "" });
+  const peleas = [pel(m, "principal", "Main event")].concat((c.peleas || []).map(b => pel(b, b.seccion === "preliminar" ? "preliminar" : "principal")));
+  if (!DRAFT.liga) DRAFT.liga = {}; if (!DRAFT.liga.ediciones) DRAFT.liga.ediciones = [];
+  DRAFT.liga.ediciones.unshift({ edicion: c.edicion || "", titulo: c.edicion ? "" : (c.evento || ""), fecha: c.dia || "", lugar: c.lugar || "", foto: "", peleas });
+  renderForm(); refreshBar(); toast("Listo: se agregó al inicio de «Ediciones anteriores». Marca quién ganó y guarda.");
+}
+
 /* ---------------- guardar ---------------- */
 async function guardar() {
   const b = $("#b-save"); b.disabled = true; status("Guardando…");
@@ -255,12 +350,13 @@ form.addEventListener("input", e => {
   else if (t.dataset.p) set(DRAFT, t.dataset.p, t.dataset.bool !== undefined ? t.checked : t.value);
   refreshBar();
 });
-form.addEventListener("change", e => { const t = e.target; if (t.dataset.img) subir(t); else if (t.tagName === "SELECT" && t.dataset.p) { set(DRAFT, t.dataset.p, t.value); refreshBar(); } });
+form.addEventListener("change", e => { const t = e.target; if (t.dataset.video) subirVideo(t); else if (t.dataset.img) subir(t); else if (t.tagName === "SELECT" && t.dataset.p) { set(DRAFT, t.dataset.p, t.value); refreshBar(); } });
 form.addEventListener("click", async e => {
   const c = e.target.closest("[data-clear]"); if (c) { set(DRAFT, c.dataset.clear, ""); renderForm(); refreshBar(); return; }
-  if (e.target.closest("[data-resettema]")) { if (!confirmar("¿Regresar a los colores originales?")) return; DRAFT.tema = { principal: "#ff1f1f", acento: "#c6f11a", fondo: "#08080a", main_event: "" }; renderForm(); refreshBar(); return; }
+  if (e.target.closest("[data-tohist]")) { if (confirmar("¿Copiar la cartelera actual al historial?")) pasarAlHistorial(); return; }
+  if (e.target.closest("[data-resettema]")) { if (!confirmar("¿Regresar a los colores originales?")) return; DRAFT.tema = { principal: "#ff1f1f", acento: "#c6f11a", fondo: "#050505", main_event: "", wfn_letras: "", wfn_sombra: "", wfn_fondo: "" }; renderForm(); refreshBar(); return; }
   const h = e.target.closest("[data-hist]");
-  if (h) { const { data, error } = await sb.from("sitios_historial").select("contenido").eq("id", h.dataset.hist).single(); if (error) return toast("No se pudo cargar"); DRAFT = data.contenido; refreshBar(); toast("Versión cargada. Revísala y presiona «Guardar cambios»."); return; }
+  if (h) { const { data, error } = await sb.from("sitios_historial").select("contenido").eq("id", h.dataset.hist).single(); if (error) return toast("No se pudo cargar"); DRAFT = conDef(data.contenido); refreshBar(); toast("Versión cargada. Revísala y presiona «Guardar cambios»."); return; }
   const o = e.target.closest("[data-op]"); if (!o) return;
   const p = o.dataset.l, arr = get(DRAFT, p) || [], i = +o.dataset.i;
   if (!get(DRAFT, p)) set(DRAFT, p, arr);
@@ -283,7 +379,7 @@ async function entrarPanel(user) {
   if (!adm || !adm.length) { await sb.auth.signOut(); show("v-login"); const m = $("#l-msg"); m.textContent = "Esta cuenta no es administradora de esta página."; m.className = "msg err"; return; }
   const { data, error } = await sb.from("sitios").select("contenido").eq("id", CFG.SITIO_ID).single();
   if (error || !data) { show("v-login"); const m = $("#l-msg"); m.textContent = "No se encontró el contenido de la página en Supabase."; m.className = "msg err"; return; }
-  SAVED = data.contenido; DRAFT = clone(SAVED);
+  SAVED = conDef(data.contenido); DRAFT = clone(SAVED);
   $("#who").textContent = user.email; show("v-panel"); renderTabs(); renderForm(); status("Sin cambios");
 }
 $("#f-login").addEventListener("submit", async e => {
