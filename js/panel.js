@@ -115,9 +115,9 @@ const SCHEMA = [
  ] },
    { l: "Letras y colores del main event", fields: [ { t: "help", l: "Las palabras se repiten en el recuadro que se mueve detrás de los nombres." },
      Ls("cartelera.fondo", "Palabras del fondo", "text", { add: "Agregar palabra" }),
-     { t: "color", k: "tema.wfn_letras", l: "Color de las letras del fondo", def: "#c8d6e6", help: "Las palabras que se mueven detrás de los nombres del main event." },
-     { t: "color", k: "tema.wfn_sombra", l: "Color de la sombra detrás de las letras", def: "#3a4048", help: "El recuadro donde se mueven las letras." },
-     { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#1b1f24" } ] },
+     { t: "color", k: "tema.wfn_letras", l: "Color del contorno de las letras", def: "#cfcfca", help: "Las palabras que se mueven detrás de los nombres del main event." },
+     { t: "color", k: "tema.wfn_sombra", l: "Color de las letras rellenas", def: "#c8102e", help: "Una de cada cuatro palabras va rellena de este color." },
+     { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#f4f4f2", help: "Se recomienda un color claro para que los nombres negros se lean bien." } ] },
    { l: "Main event", fields: [ { t: "row", fields: [T("cartelera.main.div", "División"), T("cartelera.main.rounds", "Rounds")] },
      peleador("cartelera.main.rojo", "Esquina roja", "corner-r"), peleador("cartelera.main.azul", "Esquina azul", "corner-b") ] },
    { l: "Acomodo de las fotos del main event", fields: [ { t: "help", l: "Mueve cada foto y cambia su tamaño. Guarda y revisa con «Ver página»." },
@@ -161,9 +161,9 @@ const SCHEMA = [
      { t: "color", k: "tema.acento", l: "Color de acento", def: "#c6f11a", help: "Puntos del horario y etiquetas pequeñas." },
      { t: "color", k: "tema.fondo", l: "Color de fondo", def: "#050505", help: "Fondo general. Se recomienda un color muy oscuro." } ] },
    { l: "Main event (sección WFN)", fields: [
-     { t: "color", k: "tema.wfn_letras", l: "Color de las letras del fondo", def: "#c8d6e6", help: "Las palabras que se mueven detrás de los nombres del main event." },
-     { t: "color", k: "tema.wfn_sombra", l: "Color de la sombra detrás de las letras", def: "#3a4048", help: "El recuadro donde se mueven las letras." },
-     { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#1b1f24" } ] },
+     { t: "color", k: "tema.wfn_letras", l: "Color del contorno de las letras", def: "#cfcfca", help: "Las palabras que se mueven detrás de los nombres del main event." },
+     { t: "color", k: "tema.wfn_sombra", l: "Color de las letras rellenas", def: "#c8102e", help: "Una de cada cuatro palabras va rellena de este color." },
+     { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#f4f4f2", help: "Se recomienda un color claro para que los nombres negros se lean bien." } ] },
    { l: "Restablecer", fields: [ { t: "reset" } ] } ] },
  { id: "historial", tab: "Historial", special: "historial" }
 ];
