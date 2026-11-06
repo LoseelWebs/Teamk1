@@ -1,0 +1,42 @@
+/* =========================================================
+   Team K-1 Academy · estilos de la página pública
+   Colores base (el panel puede cambiar --red, --lime y --bg)
+   ========================================================= */
+:root{
+  --bg:#050505; --ink:#f5f2ee; --ink2:#d9d3cc; --muted:#9e978f; --line:rgba(255,255,255,.12);
+  --red:#ff1f1f; --lime:#c6f11a; --mev:#f2b01e;
+  --g1:#fff3c4; --g2:#ffd14a; --g3:#e9a514; --g4:#a96f08;
+  --gold:linear-gradient(180deg,var(--g1) 0%,var(--g2) 34%,var(--g3) 62%,var(--g4) 100%);
+  --fa:"Anton",Impact,"Arial Narrow",sans-serif;
+  --fd:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --fb:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --hd:72px; --gut:max(18px,env(safe-area-inset-left)); --max:1240px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:dark
+}
+@media(min-width:1024px){:root{--hd:88px;--gut:48px}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hd) + 12px);-webkit-text-size-adjust:100%}
+html,body{overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 clamp(15px,.3vw + 14px,17px)/1.6 var(--fb);-webkit-font-smoothing:antialiased}
+img,svg,video{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0;font-weight:400}
+p{margin:0}
+[hidden]{display:none!important}
+.sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.ic{width:18px;height:18px;flex:none}
+.w{max-width:var(--max);margin:0 auto;padding-left:var(--gut);padding-right:var(--gut)}
+.gold{background:var(--gold);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- textos ---------- */
+/* escala: 13 · 16 · 20 · 28 · 40 · 56 · 80 (se ajusta entre celular y PC) */
+.eb{display:block;margin-bottom:10px;font:400 clamp(12px,.2vw + 11px,14px)/1.2 var(--fa);letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+.h2{font:900 clamp(38px,4.6vw,72px)/.98 var(--fd);text-transform:uppercase;letter-spacing:0;text-wrap:balance}
+.h3{font:400 clamp(26px,2.4vw,36px)/1.05 var(--fa);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.lead{color:var(--ink2);max-width:56ch;font-size:clamp(15px,.35vw + 14px,18px);line-height:1.6}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:16px 40px;flex-wrap:wrap;padding-bottom:16px;margin-bottom:28px;border-bottom:2px solid #fff}
+.sh .lead{color:var(--muted);max-width:46ch}
+.sec{padding:clamp(56px,7vw,110px) 0 0}
