@@ -4,9 +4,11 @@ Página promocional de **Academia Team K-1** (Poza Rica, Ver.) publicada con **G
 Todo el contenido (textos, precios, horarios, teléfonos, coaches, fotos y combates WFN) se guarda en **Supabase** y el dueño lo edita desde **`panel.html`**.
 
 ```
-index.html                 → la página pública
+index.html                 → la página pública (estructura y datos para Google)
+css/sitio.css              → todos los estilos de la página
 panel.html                 → panel del administrador (iniciar sesión y editar)
 js/config.js               → ⚠️ aquí van la URL y la llave pública de Supabase
+js/defaults.js             → textos iniciales de las secciones nuevas (los usan página y panel)
 js/sitio.js                → dibuja la página con el contenido de Supabase
 js/panel.js                → formularios del panel, subida de fotos y guardado
 supabase.sql               → crea tablas, seguridad, bucket de fotos y contenido inicial
@@ -67,7 +69,7 @@ Si algún día se pausa de todos modos: entra a Supabase y presiona **Restore pr
 
 ## 6. Cómo edita el dueño
 1. Abre `…/panel.html` e inicia sesión.
-2. Elige la sección en las pestañas de arriba: *Negocio y contacto, Inicio, Clases, Horarios y precio, Equipo, Nosotros, Competencias, Combates WFN, Pie de página*.
+2. Elige la sección en las pestañas de arriba: *Negocio y contacto, Inicio, Clases, Horarios y precio, Equipo, Nosotros, Competencias, Combates WFN, Historial y patrocinadores, Pie de página, Colores*.
 3. Cambia lo que necesite. En las listas puede **agregar**, **quitar** (✕) y **ordenar** (↑ ↓).
 4. Presiona **Guardar cambios**. La página se actualiza al instante.
 5. Si se equivoca: pestaña **Historial** → **Cargar esta versión** → **Guardar cambios**.
@@ -78,6 +80,22 @@ Si algún día se pausa de todos modos: entra a Supabase y presiona **Restore pr
   - En iPhone: abre la foto, mantén presionado sobre la persona → **Copiar** o **Compartir** (iOS quita el fondo).
   - En Android/PC: <https://www.remove.bg> o la opción «Quitar fondo» de la galería.
 - Los horarios de la tabla y la tarjeta «Hoy» de Inicio se calculan con las horas y días de **Horarios y precio**.
+
+### Secciones nuevas
+- **Fotos de portada** (Inicio): agrega varias; cambian solas cada 6 segundos y en PC se numeran (01, 02…) junto a las redes. Cada una lleva su versión vertical opcional para celular.
+- **Seminario o evento** (Inicio): se prende y apaga con la casilla «Mostrar en Inicio».
+- **Novedades de Facebook**: en *Negocio y contacto* pega la dirección de la página de Facebook de Team K-1 y la de WFN (ej. `https://www.facebook.com/nombre-de-la-pagina`). Las publicaciones se muestran solas; la página de Facebook debe ser pública.
+- **Combates WFN**: marca «Es el co-estelar» en la pelea que va destacada debajo del main event. También hay campos para boletos y la sede.
+- **Liga WFN**: texto del botón «La liga» (tomado del Facebook de WFN), resultados y patrocinadores.
+- **Historial**: el botón «Pasar Combates WFN al historial» copia la cartelera como edición nueva; después solo marcas quién ganó en cada pelea.
+- **Video de Nosotros**: se pone en blanco y negro solo. Con la configuración original el bucket acepta archivos de hasta 5 MB y solo imágenes. Para permitir videos de hasta 50 MB corre esto una vez en **SQL Editor**:
+  ```sql
+  update storage.buckets
+  set file_size_limit = 52428800,
+      allowed_mime_types = array['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm','video/quicktime']
+  where id = 'fotos';
+  ```
+  Otra opción: sube el video a la carpeta `img/` del repositorio y escribe `img/nombre.mp4` en el campo del enlace.
 
 ## 7. Agregar más clientes con el mismo Supabase
 Un solo proyecto de Supabase puede guardar varias páginas:
