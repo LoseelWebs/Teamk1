@@ -335,12 +335,23 @@ function hoy() {
 
 /* ---------- Facebook: publicaciones de la página ---------- */
 const esFb = u => /^https:\/\/(www\.|m\.|web\.)?(facebook|fb)\.com\/(?!search|sharer|login|plugins)[^?#]+/i.test(String(u || ""));
+/* Facebook solo acepta ciertas formas de enlace en el cuadro de publicaciones:
+   facebook.com/people/Nombre/123… y m.facebook.com se convierten a facebook.com/123… */
+function fbHref(u) {
+  try {
+    const x = new URL(String(u).trim()); let m;
+    if ((m = /\/people\/[^/]+\/(\d+)/.exec(x.pathname))) return "https://www.facebook.com/" + m[1];
+    if (/profile\.php$/.test(x.pathname) && x.searchParams.get("id")) return "https://www.facebook.com/" + x.searchParams.get("id");
+    return "https://www.facebook.com" + x.pathname.replace(/\/+$/, "");
+  } catch (e) { return u; }
+}
 let fbIO = null;
 function fbLoad() {
   if (fbIO) fbIO.disconnect();
   const put = el => { if (el.querySelector("iframe")) return; const w = Math.max(280, Math.min(500, Math.floor(el.clientWidth - 28) || 340));
-    const src = "https://www.facebook.com/plugins/page.php?href=" + encodeURIComponent(el.dataset.fb) + `&tabs=timeline&width=${w}&height=620&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&locale=es_LA`;
-    el.innerHTML = `<iframe src="${esc(src)}" width="${w}" height="620" title="Publicaciones de Facebook" loading="lazy" allow="encrypted-media; clipboard-write; picture-in-picture; web-share"></iframe>`; };
+    const src = "https://www.facebook.com/plugins/page.php?href=" + encodeURIComponent(fbHref(el.dataset.fb)) + `&tabs=timeline&width=${w}&height=620&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&locale=es_LA`;
+    el.innerHTML = `<iframe src="${esc(src)}" width="${w}" height="620" title="Publicaciones de Facebook" loading="lazy" allow="encrypted-media; clipboard-write; picture-in-picture; web-share"></iframe>
+      <a class="fb-alt" href="${esc(el.dataset.fb)}" target="_blank" rel="noopener">¿No se ven las publicaciones? Ábrelas en Facebook</a>`; };
   const els = $$("[data-fb]");
   if (!("IntersectionObserver" in window)) return els.forEach(put);
   fbIO = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting && x.target.offsetParent) { put(x.target); fbIO.unobserve(x.target); } }), { rootMargin: "400px 0px" });
