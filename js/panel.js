@@ -65,6 +65,8 @@ const SCHEMA = [
      T("inicio.banner_wfn.texto", "Texto", { help: "Si hay fecha de la próxima función, se muestra la fecha en lugar de este texto." }),
      I("inicio.banner_wfn.foto", "Foto de un combate de la liga", { folder: "wfn", help: "Se le aplica un tono dorado automáticamente." }) ] },
    { l: "Novedades", fields: [ { t: "help", l: "A la izquierda van estas tarjetas con foto (la primera grande); a la derecha, las publicaciones de Facebook. Los enlaces de Facebook se ponen en «Negocio y contacto». Si no agregas tarjetas, se arman solas con WFN, clases y uniforme." },
+     Ls("inicio.publicaciones", "Publicaciones destacadas de Facebook o Instagram", [ T("enlace", "Enlace de la publicación", { ph: "https://www.facebook.com/…/posts/…  o  https://www.instagram.com/p/…", help: "En Facebook: en la publicación toca ··· → Copiar enlace. En Instagram: ··· → Copiar enlace. La publicación debe ser pública. Si agregas publicaciones, se muestran en lugar del muro de Facebook." }) ],
+       { add: "Agregar publicación", title: x => (x.enlace || "").replace(/^https?:\/\/(www\.)?/, "").slice(0, 48) }),
      Ls("inicio.destacados", "Tarjetas destacadas (máximo 5)", [ { t: "row", fields: [T("etiqueta", "Etiqueta chica", { ph: "WFN Combat League" }), T("titulo", "Título")] },
        I("foto", "Foto", { folder: "destacados" }), T("enlace", "A dónde lleva", { ph: "#wfn, #clases, #horarios… o https://…", help: "Usa #wfn, #clases, #horarios, #equipo, #nosotros o #contacto para las secciones de la página, o pega un enlace completo." }) ],
        { add: "Agregar tarjeta", title: "titulo" }) ] },
@@ -183,6 +185,7 @@ const NUEVO = {
   "liga.ediciones": { edicion: "", titulo: "", fecha: "", lugar: "", foto: "", peleas: [] },
   "liga.ediciones.peleas": { seccion: "principal", rojo: "", azul: "", rojo_record: "", azul_record: "", rojo_foto: "", azul_foto: "", div: "", titulo: "", ganador: "", metodo: "", round: "", tiempo: "" },
   "inicio.destacados": { etiqueta: "", titulo: "", foto: "", enlace: "" },
+  "inicio.publicaciones": { enlace: "" },
   "cartelera.peleas": { tipo: "", div: "", rounds: "3 × 3 min", seccion: "preliminar", comain: false, rojo: { nombre: "", apellido: "", origen: "", record: "", foto: "" }, azul: { nombre: "", apellido: "", origen: "", record: "", foto: "" } }
 };
 

@@ -109,7 +109,10 @@ function render(c) {
   const lista = (dest.length ? dest : auto).slice(0, 5);
   const dCard = (x, j) => { const href = String(x.enlace || "").trim(), ext = /^https?:/.test(href);
     return `<a class="dcard${j === 0 ? " big" : ""}" href="${esc(ext ? safeUrl(href) : (href || "#inicio"))}"${ext ? ' target="_blank" rel="noopener"' : ""}${rv("rl", j * .08)}>${ph(x.foto)}<span class="dc-t">${x.etiqueta ? `<small>${esc(x.etiqueta)}</small>` : ""}<b>${esc(x.titulo)}</b></span></a>`; };
-  const fbCol = `<aside class="fbcol"${rv("", .1)}><div class="news-tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-nt="nw-k1">Team K-1</button><button type="button" role="tab" aria-selected="false" data-nt="nw-wfn">WFN</button></div>
+  /* publicaciones destacadas (como UFC): enlaces de publicaciones sueltas de Facebook o Instagram */
+  const posts = (i.publicaciones || []).map(x => typeof x === "string" ? { enlace: x } : x).filter(x => x && embedDe(x.enlace));
+  const postCol = posts.length ? `<aside class="fbcol posts"${rv("", .1)}><p class="posts-t">Publicaciones destacadas</p><div class="posts-l">${posts.map(x => embedDe(x.enlace)).join("")}</div></aside>` : "";
+  const fbCol = postCol || `<aside class="fbcol"${rv("", .1)}><div class="news-tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-nt="nw-k1">Team K-1</button><button type="button" role="tab" aria-selected="false" data-nt="nw-wfn">WFN</button></div>
     ${fbBox("k1", n.nombre || "Team K-1", "img/logo-tri.png", L.fb !== "#" ? L.fb : "", "nw-k1")}${fbBox("wfn", "WFN Combat League", "img/wfn-logo.png", L.fbw, "nw-wfn", true)}</aside>`;
   const news = `<section class="sec" id="novedades"><div class="w news2"><div class="dgrid">${lista.map(dCard).join("")}</div>${fbCol}</div></section>`;
 
@@ -331,6 +334,20 @@ function hoy() {
   $$("[data-today-l]").forEach(e => e.textContent = cur ? "En clase ahora" : sig ? "Siguiente clase hoy" : (t0.etiqueta || "Hoy"));
   $$("[data-today-n]").forEach(e => e.textContent = q ? q.nombre : (t0.titulo || ""));
   $$("[data-today-h]").forEach(e => e.textContent = q ? rango(q) : (t0.texto || ""));
+}
+
+/* ---------- publicaciones sueltas de Facebook o Instagram ---------- */
+function embedDe(u) {
+  u = String(u || "").trim(); if (!/^https:\/\//i.test(u)) return "";
+  let m;
+  if ((m = /instagram\.com\/(?:[^/]+\/)?(p|reel|tv)\/([A-Za-z0-9_-]+)/i.exec(u)))
+    return `<div class="post ig"><iframe src="https://www.instagram.com/${m[1] === "tv" ? "p" : m[1]}/${esc(m[2])}/embed/captioned/" title="Publicación de Instagram" loading="lazy" scrolling="no" allowtransparency="true"></iframe><a class="fb-alt" href="${esc(u)}" target="_blank" rel="noopener">Ver en Instagram</a></div>`;
+  if (/(facebook|fb)\.(com|watch)\//i.test(u)) {
+    const vid = /\/(videos|reel|watch)\b|fb\.watch/i.test(u);
+    const src = `https://www.facebook.com/plugins/${vid ? "video" : "post"}.php?href=${encodeURIComponent(u)}&show_text=true&width=500&locale=es_LA`;
+    return `<div class="post fb${vid ? " vid" : ""}"><iframe src="${esc(src)}" title="Publicación de Facebook" loading="lazy" scrolling="no" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe><a class="fb-alt" href="${esc(u)}" target="_blank" rel="noopener">Ver en Facebook</a></div>`;
+  }
+  return "";
 }
 
 /* ---------- Facebook: publicaciones de la página ---------- */

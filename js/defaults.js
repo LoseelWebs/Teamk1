@@ -5,7 +5,7 @@
    ========================================================= */
 window.SITIO_DEF = {
   inicio: {
-    foto_fondo: "img/fondo-academia.jpg", foto_fondo_cel: "img/fondo-academia-cel.jpg", destacados: [],
+    foto_fondo: "img/fondo-academia.jpg", foto_fondo_cel: "img/fondo-academia-cel.jpg", destacados: [], publicaciones: [],
     seminario: { activo: false, etiqueta: "Seminario", titulo: "", fecha: "", texto: "", foto: "", boton: "Quiero inscribirme" },
     disciplinas_eyebrow: "Qué entrenamos", disciplinas_titulo: "Cuatro disciplinas, un mismo equipo",
     bloque: { eyebrow: "La academia", titulo: "Entrena con peleadores que compiten",
