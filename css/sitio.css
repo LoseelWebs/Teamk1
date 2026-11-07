@@ -579,3 +579,7 @@ body:has(#wfn:not([hidden])) .hd::before{opacity:0}
 /* co-estelar: los espacios sin foto quedan del mismo negro que la franja */
 .comain .ph{border:0}
 .comain .ph:not(.has){background:#111!important}
+
+/* Facebook: fondo mientras carga y enlace de respaldo */
+.nw-b{background:#f0f2f5;gap:10px}
+.fb-alt{display:block;text-align:center;font:700 13.5px var(--fb);color:#1c1e21;text-decoration:underline;padding:4px 0 2px}
