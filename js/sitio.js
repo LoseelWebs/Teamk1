@@ -223,10 +223,13 @@ function renderWfn() {
 
   /* main event con letras en el recuadro */
   const words = (c.fondo || []).filter(Boolean).length ? c.fondo.filter(Boolean) : DEF_WORDS;
-  const rows = Array.from({ length: 6 }, (_, k) => `<div class="row">${Array.from({ length: 18 }, (_, i) => `<span>${esc(String(words[(i + k) % words.length]))}</span>`).join("")}</div>`).join("");
+  /* cada fila = dos mitades idénticas, así la animación (-50%) da la vuelta sin huecos ni saltos */
+  const chars = words.reduce((t, w) => t + String(w).length + 1, 0) / words.length;
+  const half = Math.max(12, Math.ceil(Math.ceil(90 / chars) / 4) * 4);
+  const rows = Array.from({ length: 6 }, (_, k) => { const h = Array.from({ length: half }, (_, i) => `<span>${esc(String(words[(i + k) % words.length]))}</span>`).join(""); return `<div class="row">${h}${h}</div>`; }).join("");
   const fig = (p, side) => { const u = safeUrl(p.foto); if (!u) return `<div class="tvf ${side}"></div>`; const j = p.ajuste || {}, nn = (v, d) => isFinite(+v) && v !== "" && v != null ? +v : d;
     return `<div class="tvf ${side}"><img src="${esc(u)}" alt="${esc(fname(p))}" style="--ax:${nn(j.x, 0)}%;--ay:${nn(j.y, 0)}%;--as:${nn(j.s, 100) / 100}"></div>`; };
-  const cd = f && f.d > new Date() ? `<div class="tvcd" data-cd="${f.d.getTime()}"><div><b>00</b><small>Días</small></div><div><b>00</b><small>Hrs</small></div><div><b>00</b><small>Min</small></div><div><b>00</b><small>Seg</small></div></div>` : "";
+  const cd = f && f.d > new Date() ? `<div class="tvcd" data-cd="${f.d.getTime()}"><em>Faltan</em><div><b>00</b><small>Días</small></div><div><b>00</b><small>Hrs</small></div><div><b>00</b><small>Min</small></div><div><b>00</b><small>Seg</small></div></div>` : "";
   const hero = `<section class="tvh" id="w-evento" aria-label="Main event"><div class="lz" aria-hidden="true"><div class="rows">${rows}</div></div>${fig(r, "l")}${fig(a, "r")}
     <div class="tvc"><span class="tag">Main event · ${esc(titulo)}</span><span class="nm">${esc(r.apellido || r.nombre || "Por anunciar")}</span><span class="vs"><i></i><b>vs</b><i></i></span><span class="nm">${esc(a.apellido || a.nombre || "Por anunciar")}</span>
     <p class="dv">${esc([m.div, m.rounds].filter(Boolean).join(" · "))}</p></div>${cd}</section>`;
@@ -244,8 +247,12 @@ function renderWfn() {
 
   /* cartelera: co-estelar destacado y demás peleas */
   const av = (p, cl) => `<span class="av${cl}"${safeUrl(p.foto) ? ` style="background-image:url('${esc(abs(safeUrl(p.foto)))}')"` : ""} role="img" aria-label="${esc(fname(p))}"></span>`;
-  const coH = comain ? (() => { const cr = comain.rojo || {}, ca = comain.azul || {}; return `<div class="comain"${rv("rl")}>${ph(cr.foto)}<div class="p"><small>${esc(comain.tipo || "Co-estelar")}</small><b>${esc(fname(cr))}</b><span>${meta(cr) || "&nbsp;"}</span></div>
-    <div class="m">vs<span>${esc([comain.div, comain.rounds].filter(Boolean).join(" · "))}</span></div><div class="p r"><small>&nbsp;</small><b>${esc(fname(ca))}</b><span>${meta(ca) || "&nbsp;"}</span></div>${ph(ca.foto)}</div>`; })() : "";
+  const coH = comain ? (() => { const cr = comain.rojo || {}, ca = comain.azul || {}, dv = esc([comain.div, comain.rounds].filter(Boolean).join(" · "));
+    const cf = (p, side) => { const u = safeUrl(p.foto); return u ? `<div class="cm-f ${side}"><img src="${esc(u)}" alt="${esc(fname(p))}" loading="lazy"></div>` : ""; };
+    const cn = (p, side) => { const a = p.nombre && p.apellido, top = a ? p.nombre : "", big = a ? p.apellido : (p.apellido || p.nombre || "Por anunciar"), mt = meta(p);
+      return `<div class="cm-n ${side}">${top ? `<small>${esc(top)}</small>` : ""}<b>${esc(big)}</b>${mt ? `<span>${mt}</span>` : ""}</div>`; };
+    return `<div class="cm"${rv("rl")}><div class="cm-tag">${esc(comain.tipo || "Co-main event")}</div>${cf(cr, "l")}${cf(ca, "r")}${cn(cr, "l")}
+    <div class="cm-vs"><b>vs</b>${dv ? `<span>${dv}</span>` : ""}</div>${cn(ca, "r")}${dv ? `<div class="cm-dv">${dv}</div>` : ""}</div>`; })() : "";
   const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}; return `<div class="bout"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, "")}<div class="nm l"><b>${esc(fname(rr))}</b><span>${meta(rr) || "&nbsp;"}</span></div>
     <div class="mid"><small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span></div><div class="nm r"><b>${esc(fname(aa))}</b><span>${meta(aa) || "&nbsp;"}</span></div>${av(aa, " b")}</div>`; };
   const card = (comain || est.length || pre.length) ? `<section class="wsec" id="w-card">
@@ -255,7 +262,7 @@ function renderWfn() {
 
   /* patrocinadores */
   const sp = (liga.patrocinadores || []).filter(x => safeUrl(x.logo));
-  const spItem = (x, dup) => { const d = dup ? ' class="dup" aria-hidden="true" tabindex="-1"' : "", img = `<img src="${esc(safeUrl(x.logo))}" alt="${dup ? "" : esc(x.nombre || "Patrocinador")}" loading="lazy">`; return safeUrl(x.enlace) ? `<a href="${esc(safeUrl(x.enlace))}" target="_blank" rel="noopener"${d}>${img}</a>` : `<span${d}>${img}</span>`; };
+  const spItem = (x, dup) => { const d = dup ? ' class="dup" aria-hidden="true" tabindex="-1"' : "", img = `<img src="${esc(safeUrl(x.logo))}" alt="${dup ? "" : esc(x.nombre || "Patrocinador")}" decoding="async">`; return safeUrl(x.enlace) ? `<a href="${esc(safeUrl(x.enlace))}" target="_blank" rel="noopener"${d}>${img}</a>` : `<span${d}>${img}</span>`; };
   const reps = sp.length ? Math.max(2, Math.ceil(10 / sp.length) * 2) : 0;
   const spons = sp.length ? `<section class="spons" id="w-spons" aria-label="${esc(liga.patrocinadores_titulo || "Patrocinadores")}"><span class="sp-l">${esc(liga.patrocinadores_titulo || "Patrocinadores")}</span>
     <div class="sp-v"><div class="sp-trk" style="--dur:${Math.max(20, sp.length * 6)}s">${Array.from({ length: reps }, (_, q) => sp.map(x => spItem(x, q > 0)).join("")).join("")}</div></div></section>` : "";
