@@ -443,9 +443,9 @@ main{min-height:100vh}
 .tvcd b{display:block;font:800 clamp(30px,3vw,44px)/1 var(--fc);font-variant-numeric:tabular-nums}
 .tvcd small{font:700 12px var(--fc);letter-spacing:.08em;text-transform:uppercase}
 @media(max-width:700px){
-  .tvh{height:640px}
-  .tvf{width:52%;top:auto;height:46%}
-  .tvc{top:31%}
+  .tvh{height:560px}
+  .tvf{width:54%;top:auto;height:56%}
+  .tvc{top:24%}
   .tvc .nm{font-size:clamp(48px,14vw,64px)}
   .tvcd{bottom:16px}.tvcd div{padding:8px 12px}
 }
@@ -489,12 +489,12 @@ main{min-height:100vh}
 }
 
 /* patrocinadores: cinta */
-.spons{position:relative;width:100vw;margin:clamp(48px,5vw,80px) 0 0 calc(50% - 50vw);background:#e6e6e2;padding:14px 0 16px;overflow:hidden}
+.spons{position:relative;width:100vw;margin:clamp(48px,5vw,80px) 0 0 calc(50% - 50vw);background:#e6e6e2;padding:18px 0 22px;overflow:hidden}
 .sp-l{display:block;padding:0 var(--gut) 10px;font:800 11px/1 var(--fb);letter-spacing:.26em;text-transform:uppercase;color:var(--tvm)}
 .sp-v{overflow:hidden}
 .sp-trk{display:flex;align-items:center;gap:clamp(40px,6vw,90px);width:max-content;animation:mq var(--dur,30s) linear infinite}
 .sp-trk a,.sp-trk span{display:block;flex:none}
-.sp-trk img{height:clamp(40px,4.5vw,60px);width:auto;max-width:200px;object-fit:contain}
+.sp-trk img{height:clamp(60px,6.5vw,92px);width:auto;max-width:280px;object-fit:contain}
 @media(prefers-reduced-motion:reduce){.sp-trk{animation:none;flex-wrap:wrap;justify-content:center;width:auto;row-gap:20px;padding:0 var(--gut)}.sp-trk .dup{display:none}}
 
 /* la liga */
@@ -595,3 +595,18 @@ body:has(#wfn:not([hidden])) .hd::before{opacity:0}
 .post .fb-alt{padding:8px 0 10px;background:#fff}
 @media(min-width:1024px){.posts-l{max-height:min(78vh,780px);overflow-y:auto;overscroll-behavior:contain;padding-right:4px}}
 @media(max-width:1023px){.posts-l{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:6px}.post{flex:0 0 min(86%,420px);scroll-snap-align:start}}
+
+/* pantalla «Muy pronto» entre funciones (opción 1: número en contorno) */
+.soon{position:relative;overflow:hidden;background:#0b0b0b;color:#fff;min-height:clamp(480px,46vw,640px);display:flex;align-items:center}
+.soon-n{position:absolute;right:-.06em;top:50%;transform:translateY(-50%);font:800 clamp(360px,52vw,780px)/.8 var(--fc);color:transparent;-webkit-text-stroke:3px var(--red);letter-spacing:-.04em;pointer-events:none;animation:soonIn 1.2s var(--ease) both}
+@keyframes soonIn{from{opacity:0;transform:translate(60px,-50%)}}
+.soon-in{position:relative;z-index:1;max-width:1280px;width:100%;margin:0 auto;padding:clamp(48px,6vw,90px) var(--gut);display:grid;justify-items:start;gap:12px}
+.soon-lg{width:clamp(130px,13vw,190px);height:auto}
+.soon-k{margin:14px 0 0;font:700 clamp(15px,1.3vw,22px) var(--fc);letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
+.soon-t{margin:0;font:800 clamp(72px,10vw,150px)/.85 var(--fc);text-transform:uppercase;max-width:min(100%,640px);overflow-wrap:break-word;animation:soonUp .9s .15s var(--ease) both}
+@keyframes soonUp{from{opacity:0;transform:translateY(24px)}}
+.soon-l{display:block;width:120px;height:6px;background:var(--red);margin:12px 0}
+.soon-p{margin:0;max-width:40ch;font-size:clamp(15px,.4vw + 14px,19px);line-height:1.55;color:#bdbdbd}
+.soon-b{margin-top:14px}
+#wfn .soon .btn.out{color:#fff;box-shadow:inset 0 0 0 1.5px #fff}#wfn .soon .btn.out:hover{background:#fff;color:#111}
+@media(max-width:700px){.soon-n{right:-.1em;top:auto;bottom:-.08em;transform:none;font-size:clamp(300px,90vw,420px);-webkit-text-stroke-width:2px;opacity:.85}@keyframes soonIn{from{opacity:0}}}
