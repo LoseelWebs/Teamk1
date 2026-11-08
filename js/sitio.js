@@ -102,7 +102,6 @@ function render(c) {
   const dest = (i.destacados || []).filter(x => x && (x.titulo || safeUrl(x.foto)));
   const eq = c.equipo || {}, g0 = (cl.grupos || [])[0] || {};
   const auto = [
-    { etiqueta: "WFN Combat League", titulo: prox || bw.titulo || "WFN", foto: fotoDe(bw.foto, ((c.competencias || {}).wfn || {}).foto, fpc), enlace: "#wfn" },
     { etiqueta: g0.etiqueta || "Clases", titulo: g0.nombre || "Clases para todas las edades", foto: fotoDe(dis[0] && dis[0].foto, fpc), enlace: "#clases" },
     { etiqueta: eq.uniforme_eyebrow || "Uniforme oficial", titulo: eq.uniforme_titulo || "Viste los colores del equipo", foto: fotoDe(((eq.uniforme || [])[0] || {}).foto, fpc), enlace: "#equipo" }
   ];
@@ -292,7 +291,21 @@ function renderWfn() {
     ${L2.fbw ? `<a class="btn out" href="${esc(L2.fbw)}" target="_blank" rel="noopener" style="margin-top:16px">Ver en Facebook</a>` : ""}
     ${gal.length ? `<div class="liga-g">${gal.map(u => ph(u)).join("")}</div>` : ""}</div></section>`;
 
-  box.innerHTML = `${bar}${hero}<div class="w"><section>${info}</section>${card}</div>${spons}<div class="w">${ligaH}${hist}</div>`;
+  /* «Muy pronto»: se activa desde el panel o solo, un día después de la función */
+  const pasada = f && (Date.now() - f.d.getTime()) > 24 * 3600 * 1000;
+  if (c.proximamente || pasada) {
+    const n = String(c.proxima_edicion || "").trim() || (/^\d+$/.test(String(c.edicion || "").trim()) ? String(+c.edicion + 1) : "");
+    const t = n ? (/^wfn/i.test(n) ? n : "WFN " + n) : "WFN";
+    const num = (n.match(/\d+/) || [""])[0];
+    const soon = `<section class="soon" id="w-evento" aria-label="Próxima función">${num ? `<span class="soon-n" aria-hidden="true">${esc(num)}</span>` : ""}
+      <div class="soon-in"><img src="img/wfn-logo.png" alt="WFN Combat League" class="soon-lg"><p class="soon-k">${esc(c.proximamente_etiqueta ? "Próxima función" : "Próxima función")} · ${esc(t)}</p>
+      <h2 class="soon-t">${esc(c.proximamente_etiqueta || "Muy pronto")}</h2><i class="soon-l"></i>
+      <p class="soon-p">${esc(c.proximamente_texto || "Fecha, sede y cartelera por anunciar. Síguenos para enterarte primero.")}</p>
+      <div class="row soon-b">${L2.fbw ? `<a class="btn red" href="${esc(L2.fbw)}" target="_blank" rel="noopener">Síguenos en Facebook</a>` : ""}<a class="btn out" href="#w-hist">Ver resultados</a></div></div></section>`;
+    box.innerHTML = `${soon}${spons}<div class="w">${ligaH}${hist}</div>`;
+    tickCD(); return;
+  }
+  box.innerHTML = `${bar}${hero}<div class="w">${card}</div>${spons}<div class="w"><section class="einfo-s">${info}</section>${ligaH}${hist}</div>`;
   tickCD();
 }
 
@@ -338,7 +351,11 @@ function hoy() {
 
 /* ---------- publicaciones sueltas de Facebook o Instagram ---------- */
 function embedDe(u) {
-  u = String(u || "").trim(); if (!/^https:\/\//i.test(u)) return "";
+  u = String(u || "").trim();
+  /* también acepta el código de «Insertar» de Facebook: se toma el enlace que trae adentro */
+  const em = /plugins\/(?:post|video)\.php\?[^"' ]*?href=([^&"' ]+)/i.exec(u); if (em) { try { u = decodeURIComponent(em[1]); } catch (e) {} }
+  const ig = /<blockquote[^>]+data-instgrm-permalink="([^"]+)"/i.exec(u); if (ig) u = ig[1];
+  if (!/^https:\/\//i.test(u)) return "";
   let m;
   if ((m = /instagram\.com\/(?:[^/]+\/)?(p|reel|tv)\/([A-Za-z0-9_-]+)/i.exec(u)))
     return `<div class="post ig"><iframe src="https://www.instagram.com/${m[1] === "tv" ? "p" : m[1]}/${esc(m[2])}/embed/captioned/" title="Publicación de Instagram" loading="lazy" scrolling="no" allowtransparency="true"></iframe><a class="fb-alt" href="${esc(u)}" target="_blank" rel="noopener">Ver en Instagram</a></div>`;
