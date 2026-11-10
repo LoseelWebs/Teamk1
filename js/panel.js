@@ -82,11 +82,10 @@ const SCHEMA = [
    { l: "Clases de la semana", fields: [ Ls("horarios.clases", "Clases", [ T("nombre", "Nombre de la clase"),
        { t: "row", fields: [{ t: "time", k: "inicio", l: "Empieza" }, { t: "time", k: "fin", l: "Termina" }] },
        { t: "days", k: "dias", l: "Días con clase" },
-       T("detalle", "Texto de horario (opcional)", { help: "Si lo dejas vacío se escribe solo, ej. «7:00 – 8:00 p. m.»" }),
-       T("nota", "Nota en verde debajo del horario (opcional)", { ph: "Viernes: 7:00 p. m. en sparring", help: "Si la dejas vacía y la clase se junta en la clase combinada a otra hora, se escribe sola." }),
-       { t: "bool", k: "destacado", l: "Es clase combinada (ej. sparring): se muestra como bloque verde en su día, juntando las clases que ese día no tienen clase propia" },
-       T("etiqueta", "Texto chico del bloque verde (solo clase combinada)", { ph: "Las dos clases" }) ], { add: "Agregar clase", title: "nombre" }) ] },
-   { l: "Leyenda debajo de la tabla", fields: [ T("horarios.leyenda", "Texto al final de la leyenda", { ph: "Sábados y domingos no hay clases." }) ] },
+       T("detalle", "Texto de horario (opcional)", { help: "Si lo dejas vacío se escribe solo, ej. «7:00 p. m. – 8:00 p. m.»" }),
+       { t: "bool", k: "destacado", l: "Resaltar en verde (ej. sparring)" },
+       T("junta", "Clases que se juntan (opcional)", { ph: "Intermedios y avanzados, Novatos y adultos", help: "Solo para clases como el sparring. Escribe los nombres de las clases que se unen, separados por coma, igual que como están escritos arriba. En la tabla esas filas se juntan en un solo recuadro verde los días de esta clase, y esta clase ya no sale como fila aparte." }) ], { add: "Agregar clase", title: "nombre" }) ] },
+   { l: "Nota debajo de la tabla", fields: [ T("horarios.nota_titulo", "Inicio en negritas", { ph: "Viernes de sparring:" }), A("horarios.nota", "Texto de la nota") ] },
    { l: "Precio", fields: [ { t: "row", fields: [T("horarios.precio.etiqueta", "Etiqueta", { ph: "Mensualidad" }), T("horarios.precio.monto", "Precio", { ph: "$600" })] },
      Ls("horarios.precio.beneficios", "Lo que incluye", "text", { add: "Agregar renglón" }),
      { t: "row", fields: [T("horarios.precio.inscripcion_titulo", "Inscripción (negritas)"), T("horarios.precio.inscripcion", "Inscripción (texto)")] },
@@ -126,6 +125,9 @@ const SCHEMA = [
      { t: "color", k: "tema.wfn_letras", l: "Color del contorno de las letras", def: "#cfcfca", help: "Las palabras que se mueven detrás de los nombres del main event." },
      { t: "color", k: "tema.wfn_sombra", l: "Color de las letras rellenas", def: "#c8102e", help: "Una de cada cuatro palabras va rellena de este color." },
      { t: "color", k: "tema.wfn_fondo", l: "Color de fondo del main event", def: "#f4f4f2", help: "Se recomienda un color claro para que los nombres negros se lean bien." } ] },
+   { l: "Cartel del evento (estilo póster)", fields: [ { t: "help", l: "Sube aquí los recortes del cartel oficial. Con la imagen de la pelea estelar, el main event cambia al diseño del cartel (fondo rojo animado y destellos dorados). Si la dejas vacía se usa el diseño de letras." },
+     I("cartelera.cartel.estelar", "Imagen de la pelea estelar", { folder: "carteles", help: "El recuadro con los dos peleadores y sus nombres, recortado del cartel (horizontal, como 940 × 760)." }),
+     { t: "row", fields: [I("cartelera.cartel.co_rojo", "Coestelar · tarjeta izquierda", { folder: "carteles", help: "Tarjeta del primer peleador del co-estelar, con su nombre." }), I("cartelera.cartel.co_azul", "Coestelar · tarjeta derecha", { folder: "carteles", help: "Tarjeta del segundo peleador. Se usan las dos juntas en un marco dorado." })] } ] },
    { l: "Main event", fields: [ { t: "row", fields: [T("cartelera.main.div", "División"), T("cartelera.main.rounds", "Rounds")] },
      peleador("cartelera.main.rojo", "Esquina roja", "corner-r"), peleador("cartelera.main.azul", "Esquina azul", "corner-b") ] },
    { l: "Acomodo de las fotos del main event", fields: [ { t: "help", l: "Mueve cada foto y cambia su tamaño. Guarda y revisa con «Ver página»." },
@@ -137,10 +139,7 @@ const SCHEMA = [
        { t: "select", k: "seccion", l: "Sección", options: [["estelar", "Cartelera estelar"], ["preliminar", "Preliminares"]] },
        { t: "bool", k: "comain", l: "Es el co-estelar (se muestra destacado, debajo del main event)" },
        { t: "row3", fields: [T("tipo", "Etiqueta", { ph: "Ej. Co-main event" }), T("div", "División"), T("rounds", "Rounds")] },
-       peleador("rojo", "Esquina roja", "corner-r"), peleador("azul", "Esquina azul", "corner-b"),
-       { t: "help", l: "Resultado: llénalo durante la función. El lado del ganador se pinta de su color en la página." },
-       { t: "row3", fields: [{ t: "select", k: "ganador", l: "¿Quién ganó?", options: [["", "Sin resultado aún"], ["rojo", "Esquina roja"], ["azul", "Esquina azul"], ["empate", "Empate"], ["nc", "Sin decisión"]] },
-         T("metodo", "Cómo ganó", { ph: "KO, TKO, SUB, UD…" }), T("round", "Round", { ph: "2" }), T("tiempo", "Tiempo", { ph: "4:54" })] } ],
+       peleador("rojo", "Esquina roja", "corner-r"), peleador("azul", "Esquina azul", "corner-b") ],
        { add: "Agregar pelea", title: x => [x.rojo && (x.rojo.apellido || x.rojo.nombre), x.azul && (x.azul.apellido || x.azul.nombre)].filter(Boolean).join(" vs ") + (x.div ? " · " + x.div : "") }) ] } ] },
  { id: "liga", tab: "Liga WFN", help: "Información de la liga, resultados de ediciones anteriores y la cinta de patrocinadores de la sección WFN.", cards: [
    { l: "Información de «La liga»", fields: [ { t: "help", l: "Se muestra en la sección WFN, debajo de los patrocinadores." }, T("liga.acerca.titulo", "Título"), A("liga.acerca.texto", "Texto"),
@@ -183,7 +182,7 @@ const SCHEMA = [
 const NUEVO = {
   "clases.disciplinas": { nombre: "", texto: "", foto: "" },
   "clases.grupos": { etiqueta: "", nombre: "", horario: "" },
-  "horarios.clases": { nombre: "", inicio: "19:00", fin: "20:00", detalle: "", nota: "", dias: [1, 2, 3, 4, 5], destacado: false, etiqueta: "" },
+  "horarios.clases": { nombre: "", inicio: "19:00", fin: "20:00", detalle: "", dias: [1, 2, 3, 4, 5], destacado: false, junta: "" },
   "equipo.coaches": { rol: "", nombre: "", foto: "" },
   "equipo.comparativa": { izq: "", etiqueta: "", der: "" },
   "equipo.uniforme": { nombre: "", foto: "" },
@@ -195,7 +194,7 @@ const NUEVO = {
   "liga.ediciones.peleas": { seccion: "principal", rojo: "", azul: "", rojo_record: "", azul_record: "", rojo_foto: "", azul_foto: "", div: "", titulo: "", ganador: "", metodo: "", round: "", tiempo: "" },
   "inicio.destacados": { etiqueta: "", titulo: "", foto: "", enlace: "" },
   "inicio.publicaciones": { enlace: "" },
-  "cartelera.peleas": { tipo: "", div: "", rounds: "3 × 3 min", seccion: "preliminar", comain: false, ganador: "", metodo: "", round: "", tiempo: "", rojo: { nombre: "", apellido: "", origen: "", record: "", foto: "" }, azul: { nombre: "", apellido: "", origen: "", record: "", foto: "" } }
+  "cartelera.peleas": { tipo: "", div: "", rounds: "3 × 3 min", seccion: "preliminar", comain: false, rojo: { nombre: "", apellido: "", origen: "", record: "", foto: "" }, azul: { nombre: "", apellido: "", origen: "", record: "", foto: "" } }
 };
 
 /* las secciones nuevas toman sus textos iniciales de js/defaults.js */
@@ -334,7 +333,7 @@ function pasarAlHistorial() {
   const c = DRAFT.cartelera || {}, nom = x => [x && x.nombre, x && x.apellido].filter(Boolean).join(" ");
   const m = c.main || {};
   const pel = (b, sec, tit) => ({ seccion: sec, rojo: nom(b.rojo), azul: nom(b.azul), rojo_record: (b.rojo || {}).record || "", azul_record: (b.azul || {}).record || "",
-    rojo_foto: (b.rojo || {}).foto || "", azul_foto: (b.azul || {}).foto || "", div: b.div || "", titulo: tit || b.tipo || "", ganador: b.ganador || "", metodo: b.metodo || "", round: b.round || "", tiempo: b.tiempo || "" });
+    rojo_foto: (b.rojo || {}).foto || "", azul_foto: (b.azul || {}).foto || "", div: b.div || "", titulo: tit || b.tipo || "", ganador: "", metodo: "", round: "", tiempo: "" });
   const peleas = [pel(m, "principal", "Main event")].concat((c.peleas || []).map(b => pel(b, b.seccion === "preliminar" ? "preliminar" : "principal")));
   if (!DRAFT.liga) DRAFT.liga = {}; if (!DRAFT.liga.ediciones) DRAFT.liga.ediciones = [];
   DRAFT.liga.ediciones.unshift({ edicion: c.edicion || "", titulo: c.edicion ? "" : (c.evento || ""), fecha: c.dia || "", lugar: c.lugar || "", foto: "", peleas });
