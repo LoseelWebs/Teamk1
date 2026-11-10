@@ -24,7 +24,7 @@ const DIAS = [[1,"Lun"],[2,"Mar"],[3,"Mié"],[4,"Jue"],[5,"Vie"],[6,"Sáb"],[0,"
 const abs = u => { try { return new URL(u, location.href).href; } catch (e) { return u; } };
 const ph = (url, extra = "") => { const u0 = safeUrl(url), u = u0 && abs(u0); return `<span class="ph${u ? " has" : ""}${extra ? " " + extra : ""}"${u ? ` style="--img:url('${esc(u)}')"` : ""} aria-hidden="true"></span>`; };
 const hora12 = s => { const m = /^(\d{1,2}):(\d{2})/.exec(s || ""); if (!m) return s || ""; const H = +m[1]; return ((H + 11) % 12 + 1) + ":" + m[2] + (H >= 12 ? " p. m." : " a. m."); };
-const rango = c => hora12(c.inicio) + " – " + hora12(c.fin);
+const rango = c => { const a = hora12(c.inicio), b = hora12(c.fin), sa = a.slice(-6), sb = b.slice(-6); return sa === sb && / [ap]\. m\.$/.test(a) ? a.slice(0, -6) + " – " + b : a + " – " + b; };
 const rv = (kind, d) => ` data-rv${kind ? `="${kind}"` : ""}${d ? ` style="--d:${d}s"` : ""}`;
 
 /* ---------- valores para lo que aún no existe en Supabase ---------- */
@@ -32,7 +32,7 @@ const DEF = window.SITIO_DEF || {};
 const isObj = v => v && typeof v === "object" && !Array.isArray(v);
 function fill(c, d) { for (const k in d) { if (c[k] === undefined || c[k] === null) c[k] = JSON.parse(JSON.stringify(d[k])); else if (isObj(c[k]) && isObj(d[k])) fill(c[k], d[k]); } return c; }
 
-let C = null, WA = "#";
+let C = null, WA = "#", ULT = "";
 function links(c) {
   const k = c.contacto || {};
   WA = "https://wa.me/" + String(k.whatsapp || "").replace(/\D/g, "") + (k.mensaje_whatsapp ? "?text=" + encodeURIComponent(k.mensaje_whatsapp) : "");
@@ -135,13 +135,27 @@ function render(c) {
   const h = c.horarios || {}, cs = h.clases || [];
   const usados = new Set(cs.flatMap(x => x.dias || []));
   const cols = DIAS.filter(([d]) => d >= 1 && d <= 5 || usados.has(d));
-  const grid = `<div class="sgrid" role="table" aria-label="Horario semanal" style="grid-template-columns:minmax(118px,1.6fr) repeat(${cols.length},1fr)"${rv()}>
+  /* clase combinada (ej. sparring del viernes): ocupa en un solo bloque el día de las clases que ese día no tienen clase propia */
+  const comb = [], norm = cs.filter(x => !x.destacado), sueltas = [];
+  cs.filter(x => x.destacado).forEach(sp => { let usada = false;
+    (sp.dias || []).forEach(d => { const ci = cols.findIndex(([k]) => k === d); if (ci < 0) return;
+      const idx = norm.map((x, k) => (x.dias || []).includes(d) ? -1 : k).filter(k => k >= 0);
+      const seguidas = idx.length > 1 && idx.every((k, n) => n === 0 || k === idx[n - 1] + 1);
+      if (seguidas) { comb.push({ sp, d, ci, r0: idx[0], n: idx.length }); usada = true; } });
+    if (!usada) sueltas.push(sp); });
+  const filas = norm.concat(sueltas), oculto = (r, d) => comb.some(b => b.d === d && r >= b.r0 && r < b.r0 + b.n);
+  const notaDe = (x, r) => { if (x.nota) return x.nota; const b = comb.find(b => r >= b.r0 && r < b.r0 + b.n);
+    return b && x.inicio !== b.sp.inicio ? `${(DIAS.find(([k]) => k === b.d) || [, ""])[1].replace("Mié", "Miércoles").replace("Lun", "Lunes").replace("Mar", "Martes").replace("Jue", "Jueves").replace("Vie", "Viernes").replace("Sáb", "Sábado").replace("Dom", "Domingo")}: ${hora12(b.sp.inicio)} en ${String(b.sp.nombre || "").toLowerCase()}` : ""; };
+  const grid = `<div class="sgrid" role="table" aria-label="Horario semanal" style="--cols:${cols.length}"${rv()}>
     <div class="h c">Clase</div>${cols.map(([, t]) => `<div class="h">${t}</div>`).join("")}
-    ${cs.map(x => `<div class="c${x.destacado ? " spar" : ""}"><b>${esc(x.nombre)}</b><small>${esc(x.detalle || rango(x))}</small></div>` +
-      cols.map(([d]) => (x.dias || []).includes(d) ? '<div class="y"><i></i></div>' : '<div class="n"><i></i></div>').join("")).join("")}</div>`;
+    ${filas.map((x, r) => { const nt = r < norm.length ? notaDe(x, r) : "";
+      return `<div class="c${x.destacado ? " spar" : ""}"><b>${esc(x.nombre)}</b><small>${esc(x.detalle && !x.destacado ? x.detalle : rango(x))}</small>${nt ? `<em>${esc(nt)}</em>` : ""}</div>` +
+      cols.map(([d]) => oculto(r, d) && r < norm.length ? "" : (x.dias || []).includes(d) ? '<div class="y"><i></i></div>' : '<div class="n"><i></i></div>').join(""); }).join("")}
+    ${comb.map(b => `<div class="cb" style="grid-row:${b.r0 + 2}/span ${b.n};grid-column:${b.ci + 2}"><small>${esc(b.sp.etiqueta || (b.n === 2 ? "Las dos clases" : "Clases juntas"))}</small><b>${esc(b.sp.nombre)}</b><span>${esc(rango(b.sp))}</span></div>`).join("")}</div>`;
+  const ley = `<div class="sley"><span><i class="dot"></i>Hay clase</span>${comb.length ? `<span><i class="pill"></i>Clase combinada (${esc(String(comb[0].sp.nombre || "").toLowerCase())})</span>` : ""}${h.leyenda ? `<span>${esc(h.leyenda)}</span>` : ""}</div>`;
   const p = h.precio || {};
   set("#horarios .w", `<div class="sh"${rv()}><div><span class="eb">${esc(h.eyebrow)}</span><h2 class="h2">${esc(h.titulo)}</h2></div><p class="lead">${esc(h.texto)}</p></div>
-    ${grid}<p class="snote">${h.nota_titulo ? `<b>${esc(h.nota_titulo)}</b> ` : ""}${esc(h.nota)}</p>
+    ${grid}${ley}
     <div class="admit"${rv("up")}><div class="left"><small>${esc(p.etiqueta)}</small><div class="big">${esc(p.monto)}</div></div>
     <div><ul>${(p.beneficios || []).map(b => `<li>${esc(b)}</li>`).join("")}</ul><p class="insc"><b>${esc(p.inscripcion_titulo)}</b> ${esc(p.inscripcion)}</p></div>
     <a class="btn lime" href="${esc(L.wa)}" target="_blank" rel="noopener">${ICW}${esc(p.boton)}</a></div>`);
@@ -214,7 +228,7 @@ function renderWfn() {
   const okc = v => /^#[0-9a-f]{6}$/i.test(v || "");
   const vars = [okc(T.wfn_letras) ? "--wl:" + T.wfn_letras : "", okc(T.wfn_sombra) ? "--wsh:" + T.wfn_sombra : "", okc(T.wfn_fondo) ? "--wbg:" + T.wfn_fondo : ""].filter(Boolean).join(";");
   box.setAttribute("style", vars);
-  const f = evFecha(c), titulo = tituloEv(c);
+  const f = evFecha(c), titulo = tituloEv(c), edN = String(c.edicion || "").replace(/^wfn\s*/i, "").trim();
 
   /* barra del evento */
   const bar = `<div class="tvbar"><div class="tvbar-in"><img src="img/wfn-logo.png" alt="WFN Combat League"><div class="t"><b>${esc(titulo)}${c.lugar ? " · " + esc(String(c.lugar).split(",")[0]) : ""}</b>
@@ -226,12 +240,12 @@ function renderWfn() {
   /* cada fila = dos mitades idénticas, así la animación (-50%) da la vuelta sin huecos ni saltos */
   const chars = words.reduce((t, w) => t + String(w).length + 1, 0) / words.length;
   const half = Math.max(12, Math.ceil(Math.ceil(90 / chars) / 4) * 4);
-  const rows = Array.from({ length: 6 }, (_, k) => { const h = Array.from({ length: half }, (_, i) => `<span>${esc(String(words[(i + k) % words.length]))}</span>`).join(""); return `<div class="row">${h}${h}</div>`; }).join("");
+  const rows = Array.from({ length: 10 }, (_, k) => { const h = Array.from({ length: half }, (_, i) => `<span>${esc(String(words[(i + k) % words.length]))}</span>`).join(""); return `<div class="row">${h}${h}</div>`; }).join("");
   const fig = (p, side) => { const u = safeUrl(p.foto); if (!u) return `<div class="tvf ${side}"></div>`; const j = p.ajuste || {}, nn = (v, d) => isFinite(+v) && v !== "" && v != null ? +v : d;
     return `<div class="tvf ${side}"><img src="${esc(u)}" alt="${esc(fname(p))}" style="--ax:${nn(j.x, 0)}%;--ay:${nn(j.y, 0)}%;--as:${nn(j.s, 100) / 100}"></div>`; };
   const cd = f && f.d > new Date() ? `<div class="tvcd" data-cd="${f.d.getTime()}"><em>Faltan</em><div><b>00</b><small>Días</small></div><div><b>00</b><small>Hrs</small></div><div><b>00</b><small>Min</small></div><div><b>00</b><small>Seg</small></div></div>` : "";
   const hero = `<section class="tvh" id="w-evento" aria-label="Main event"><div class="lz" aria-hidden="true"><div class="rows">${rows}</div></div>${fig(r, "l")}${fig(a, "r")}
-    <div class="tvc"><span class="tag">Main event · ${esc(titulo)}</span><span class="nm">${esc(r.apellido || r.nombre || "Por anunciar")}</span><span class="vs"><i></i><b>vs</b><i></i></span><span class="nm">${esc(a.apellido || a.nombre || "Por anunciar")}</span>
+    <div class="tvc"><div class="tved"><img src="img/wfn-logo-claro.png" alt="WFN Combat League">${edN ? `<i></i><b>${esc(edN)}</b>` : ""}</div><span class="nm">${esc(r.apellido || r.nombre || "Por anunciar")}</span><span class="vs"><i></i><b>vs</b><i></i></span><span class="nm">${esc(a.apellido || a.nombre || "Por anunciar")}</span>
     <p class="dv">${esc([m.div, m.rounds].filter(Boolean).join(" · "))}</p></div>${cd}</section>`;
 
   /* datos importantes */
@@ -246,15 +260,24 @@ function renderWfn() {
     <div class="eacts"${rv()}>${mapa ? `<a class="btn out" href="${esc(mapa)}" target="_blank" rel="noopener">Cómo llegar a la sede</a>` : ""}<span class="fnote" style="margin:0">${all.length + 1} peleas en la cartelera</span></div>`;
 
   /* cartelera: co-estelar destacado y demás peleas */
+  const MET = { KO: "KO", TKO: "TKO", SUB: "SUB", UD: "UD", SD: "SD", MD: "MD" };
+  const metCorto = m => { const t = String(m || "").trim(), u = t.toUpperCase();
+    if (MET[u]) return u; if (/sumis/i.test(t)) return "SUB"; if (/ko t|t\.?k\.?o|t[eé]cnico/i.test(t)) return "TKO"; if (/^k\.?o/i.test(t)) return "KO";
+    if (/un[aá]nime/i.test(t)) return "UD"; if (/dividida/i.test(t)) return "SD"; if (/mayor/i.test(t)) return "MD"; if (/decisi/i.test(t)) return "DEC"; return t; };
+  const resDe = x => { const g = x.ganador; if (!g) return null;
+    const top = g === "empate" ? "Empate" : g === "nc" ? "NC" : (metCorto(x.metodo) || "Ganó");
+    return { g, top, sub: [x.round ? "R" + x.round : "", x.tiempo].filter(Boolean).join(" · ") }; };
   const av = (p, cl) => `<span class="av${cl}"${safeUrl(p.foto) ? ` style="background-image:url('${esc(abs(safeUrl(p.foto)))}')"` : ""} role="img" aria-label="${esc(fname(p))}"></span>`;
   const coH = comain ? (() => { const cr = comain.rojo || {}, ca = comain.azul || {}, dv = esc([comain.div, comain.rounds].filter(Boolean).join(" · "));
     const cf = (p, side) => { const u = safeUrl(p.foto); return u ? `<div class="cm-f ${side}"><img src="${esc(u)}" alt="${esc(fname(p))}" loading="lazy"></div>` : ""; };
     const cn = (p, side) => { const a = p.nombre && p.apellido, top = a ? p.nombre : "", big = a ? p.apellido : (p.apellido || p.nombre || "Por anunciar"), mt = meta(p);
       return `<div class="cm-n ${side}">${top ? `<small>${esc(top)}</small>` : ""}<b>${esc(big)}</b>${mt ? `<span>${mt}</span>` : ""}</div>`; };
-    return `<div class="cm"${rv("rl")}><div class="cm-tag">${esc(comain.tipo || "Co-main event")}</div>${cf(cr, "l")}${cf(ca, "r")}${cn(cr, "l")}
-    <div class="cm-vs"><b>vs</b>${dv ? `<span>${dv}</span>` : ""}</div>${cn(ca, "r")}${dv ? `<div class="cm-dv">${dv}</div>` : ""}</div>`; })() : "";
-  const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}; return `<div class="bout"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, "")}<div class="nm l"><b>${esc(fname(rr))}</b><span>${meta(rr) || "&nbsp;"}</span></div>
-    <div class="mid"><small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span></div><div class="nm r"><b>${esc(fname(aa))}</b><span>${meta(aa) || "&nbsp;"}</span></div>${av(aa, " b")}</div>`; };
+    const R = resDe(comain), wp = R && R.g === "rojo" ? cr : R && R.g === "azul" ? ca : null;
+    const dvR = R ? esc([wp ? "Gana " + (wp.apellido || wp.nombre || "") : R.top, wp ? R.top : "", R.sub].filter(Boolean).join(" · ")) : dv;
+    return `<div class="cm${R ? " hasr w-" + R.g : ""}"${rv("rl")}><div class="cm-tag">${esc(comain.tipo || "Co-main event")}</div>${cf(cr, "l")}${cf(ca, "r")}${cn(cr, "l")}
+    <div class="cm-vs">${R ? `<b class="cm-met">${esc(R.top)}</b>${R.sub ? `<span>${esc(R.sub)}</span>` : ""}` : `<b>vs</b>${dv ? `<span>${dv}</span>` : ""}`}</div>${cn(ca, "r")}${dvR ? `<div class="cm-dv">${dvR}</div>` : ""}</div>`; })() : "";
+  const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}, R = resDe(x); return `<div class="bout${R ? " hasr w-" + R.g : ""}"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, "")}<div class="nm l"><b>${esc(fname(rr))}</b><span>${meta(rr) || "&nbsp;"}</span></div>
+    <div class="mid"><small>${esc(x.tipo || x.div)}</small>${R ? `<b class="chip">${esc(R.top)}</b><span>${esc(R.sub || x.rounds || "")}</span>` : `<b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span>`}</div><div class="nm r"><b>${esc(fname(aa))}</b><span>${meta(aa) || "&nbsp;"}</span></div>${av(aa, " b")}</div>`; };
   const card = (comain || est.length || pre.length) ? `<section class="wsec" id="w-card">
     <div class="ctabs" role="tablist"><button type="button" role="tab" data-ct="est" aria-selected="true">Cartelera estelar<em>${est.length + (comain ? 1 : 0)}</em></button>${pre.length ? `<button type="button" role="tab" data-ct="pre" aria-selected="false">Preliminares<em>${pre.length}</em></button>` : ""}</div>
     <div data-cp="est">${coH}${est.map(row).join("")}</div>${pre.length ? `<div data-cp="pre" hidden>${pre.map(row).join("")}</div>` : ""}
@@ -269,10 +292,6 @@ function renderWfn() {
 
   /* historial de ediciones */
   const eds = (liga.ediciones || []).slice();
-  const MET = { KO: "KO", TKO: "TKO", SUB: "SUB", UD: "UD", SD: "SD", MD: "MD" };
-  const metCorto = m => { const t = String(m || "").trim(), u = t.toUpperCase();
-    if (MET[u]) return u; if (/sumis/i.test(t)) return "SUB"; if (/ko t|t\.?k\.?o|t[eé]cnico/i.test(t)) return "TKO"; if (/^k\.?o/i.test(t)) return "KO";
-    if (/un[aá]nime/i.test(t)) return "UD"; if (/dividida/i.test(t)) return "SD"; if (/mayor/i.test(t)) return "MD"; if (/decisi/i.test(t)) return "DEC"; return t; };
   const lado = (x, k) => { const v = x[k] || ""; return typeof v === "string" ? { n: v, rec: x[k + "_record"] || "", foto: x[k + "_foto"] || "" } : { n: fname(v), rec: v.record || "", foto: v.foto || "" }; };
   const fighter = (p, win, r) => `<div class="rf${r ? " r" : ""}${win ? " win" : ""}">${r ? "" : `<span class="rav"${safeUrl(p.foto) ? ` style="background-image:url('${esc(safeUrl(p.foto))}')"` : ""}></span>`}
     <span class="rn"><b>${esc(p.n || "Por anunciar")}${win ? '<i class="ck" aria-label="ganó"></i>' : ""}</b>${p.rec ? `<small>${esc(p.rec)}</small>` : ""}</span>${r ? `<span class="rav"${safeUrl(p.foto) ? ` style="background-image:url('${esc(safeUrl(p.foto))}')"` : ""}></span>` : ""}</div>`;
@@ -502,9 +521,25 @@ async function cargar() {
     const r = await fetch(`${CFG.SUPABASE_URL}/rest/v1/sitios?id=eq.${encodeURIComponent(CFG.SITIO_ID)}&select=contenido`, { headers: { apikey: CFG.SUPABASE_ANON_KEY }, cache: "no-store" });
     if (!r.ok) throw new Error(r.status);
     const rows = await r.json();
-    if (rows[0] && rows[0].contenido) { render(rows[0].contenido); try { localStorage.setItem(CACHE_KEY, JSON.stringify(rows[0].contenido)); } catch (e) {} }
+    if (rows[0] && rows[0].contenido) { ULT = JSON.stringify(rows[0].contenido); render(rows[0].contenido); try { localStorage.setItem(CACHE_KEY, JSON.stringify(rows[0].contenido)); } catch (e) {} }
   } catch (e) { console.warn("No se pudo leer Supabase; se muestra la última copia.", e); }
 }
+/* el día de la función los resultados se actualizan solos (sin recargar la página) */
+async function refrescar() {
+  const f = C && C.cartelera ? evFecha(C.cartelera) : null; if (!f || document.hidden) return;
+  const dt = Date.now() - f.d.getTime(); if (dt < -3 * 3600e3 || dt > 12 * 3600e3) return;
+  try {
+    const r = await fetch(`${CFG.SUPABASE_URL}/rest/v1/sitios?id=eq.${encodeURIComponent(CFG.SITIO_ID)}&select=contenido`, { headers: { apikey: CFG.SUPABASE_ANON_KEY }, cache: "no-store" });
+    if (!r.ok) return; const rows = await r.json(), c = rows[0] && rows[0].contenido; if (!c) return;
+    const txt = JSON.stringify(c); if (!ULT) { ULT = txt; return; } if (txt === ULT) return; ULT = txt;
+    const tab = document.querySelector('#w-card [data-ct][aria-selected="true"]'), ct = tab && tab.dataset.ct, y = scrollY;
+    render(c); try { localStorage.setItem(CACHE_KEY, txt); } catch (e) {}
+    document.querySelectorAll("#wfn [data-rv]").forEach(el => el.classList.add("in"));
+    if (ct && ct !== "est") { const b = document.querySelector(`#w-card [data-ct="${ct}"]`); if (b) b.click(); }
+    scrollTo(0, y);
+  } catch (e) {}
+}
+setInterval(refrescar, 30000);
 try { const el = document.getElementById("contenido-respaldo"); if (el) render(JSON.parse(el.textContent)); } catch (e) { console.error(e); }
 show(location.hash.slice(1) || "inicio", true);
 cargar();

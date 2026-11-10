@@ -17,6 +17,7 @@ window.SITIO_DEF = {
   },
   contacto: { facebook_wfn: "https://www.facebook.com/people/WFN/61566772024184/", },
   nosotros: { video: "", video_poster: "" },
+  horarios: { leyenda: "Sábados y domingos no hay clases." },
   cartelera: { boletos: "", boletos_texto: "", info_extra: "", enlace_boletos: "", mapa_evento: "" },
   liga: { patrocinadores_titulo: "Patrocinadores", patrocinadores: [], ediciones: [],
     acerca: { titulo: "La liga",
