@@ -640,3 +640,73 @@ body:has(#wfn:not([hidden])) .hd::before{opacity:0}
  .cm-vs{top:78px;transform:translateX(-50%)}.cm-vs b{font-size:44px}.cm-vs span{display:none}
  .cm-dv{display:block}
 }
+
+/* ===== main event: logo + número de edición dorado, peleadores con brillo, letras desvanecidas al centro ===== */
+.tved{display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.4vw,22px);margin-bottom:clamp(4px,.8vw,12px)}
+.tved img{height:clamp(52px,5.4vw,90px);width:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.tved i{width:2px;align-self:stretch;margin:4px 0;background:linear-gradient(transparent,#c9a54a 20%,#c9a54a 80%,transparent)}
+.tved b{font:italic 900 clamp(54px,5.8vw,96px)/.9 var(--fc);padding-right:.08em;background:linear-gradient(180deg,#fff6c4 0%,#f0cf6a 30%,#b98a2b 56%,#ecca68 78%,#8f6a1e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 1px rgba(0,0,0,.35))}
+.tvc .nm:first-of-type{margin-top:4px}
+.tvf img{filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 22px rgba(255,255,255,.9))}
+.lz::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 36% 58% at 50% 48%,var(--wbg,#f4f4f2) 0%,color-mix(in srgb,var(--wbg,#f4f4f2) 72%,transparent) 48%,transparent 100%)}
+@media(max-width:700px){.tvh{height:590px}.tvc{top:20px;transform:translateX(-50%)}.tvf{height:58%}.tved{margin-bottom:24px}.tved img{height:40px}.tved b{font-size:42px}.lz::after{background:radial-gradient(ellipse 70% 30% at 50% 24%,var(--wbg,#f4f4f2) 0%,color-mix(in srgb,var(--wbg,#f4f4f2) 70%,transparent) 50%,transparent 100%)}}
+
+/* ===== resultados en la cartelera: esquina ganadora iluminada ===== */
+.bout.hasr{position:relative;isolation:isolate}
+.bout.hasr::before{content:"";position:absolute;top:0;bottom:0;width:50%;z-index:-1}
+.bout.w-rojo::before{left:0;background:linear-gradient(90deg,rgba(200,16,46,.95),rgba(200,16,46,.75) 70%,rgba(200,16,46,0))}
+.bout.w-azul::before{right:0;background:linear-gradient(270deg,rgba(47,111,224,.95),rgba(47,111,224,.75) 70%,rgba(47,111,224,0))}
+.bout.w-rojo .nm.l b,.bout.w-rojo .nm.l span,.bout.w-azul .nm.r b,.bout.w-azul .nm.r span{color:#fff}
+.bout.w-rojo .nm.r,.bout.w-rojo .av.b,.bout.w-azul .nm.l,.bout.w-azul .av:first-child{opacity:.4;filter:grayscale(1)}
+.bout .mid .chip{justify-self:center;padding:5px 10px;background:#111;color:#fff;font:800 18px/1 var(--fc)}
+.cm.hasr::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none}
+.cm.w-azul::after{background:linear-gradient(270deg,rgba(47,111,224,.88),rgba(47,111,224,0) 58%)}
+.cm.w-rojo::after{background:linear-gradient(270deg,rgba(0,0,0,.45),rgba(0,0,0,0) 55%)}
+.cm.hasr .cm-met{color:#fff}
+.cm.w-rojo .cm-f.r img,.cm.w-rojo .cm-n.r,.cm.w-azul .cm-f.l img,.cm.w-azul .cm-n.l{filter:grayscale(1);opacity:.45}
+@media(max-width:700px){
+ .bout.hasr::before{width:100%;height:50%}
+ .bout.w-rojo::before{top:0;bottom:auto;background:linear-gradient(90deg,rgba(200,16,46,.92),rgba(200,16,46,.6) 65%,rgba(200,16,46,0))}
+ .bout.w-azul::before{top:auto;bottom:0;left:0;right:auto;background:linear-gradient(90deg,rgba(47,111,224,.92),rgba(47,111,224,.6) 65%,rgba(47,111,224,0))}
+ .cm.w-azul::after{background:linear-gradient(270deg,rgba(47,111,224,.85),rgba(47,111,224,0) 60%)}
+}
+
+/* ===== horarios ===== */
+#horarios .sgrid{grid-template-columns:minmax(150px,1.8fr) repeat(var(--cols,5),minmax(0,1fr))!important;border:1px solid #1d1d1d;background:#0b0b0b}
+#horarios .sgrid>div{padding:18px 6px;min-height:86px;border-bottom:1px solid #1b1b1b}
+#horarios .sgrid .h{min-height:0;padding:15px 6px;background:#141414;font:700 13px var(--fd);letter-spacing:.16em;text-transform:uppercase;color:#9a9a9a}
+#horarios .sgrid .h.c{padding-left:18px}
+#horarios .sgrid .c{padding-left:18px;align-content:center;gap:3px}
+#horarios .sgrid .c b{font:700 16px/1.25 var(--fb)}
+#horarios .sgrid .c small{font-size:13px;font-weight:600;color:#9a9a9a}
+#horarios .sgrid .c em{font-style:normal;font-size:12px;font-weight:700;color:var(--lime);margin-top:2px}
+#horarios .sgrid .y i{width:16px;height:16px;box-shadow:none}
+#horarios .sgrid .n i{width:12px;height:1.5px;background:#3a3a3a}
+#horarios .sgrid .cb{margin:8px;padding:14px 8px;border:0;border-radius:6px;background:var(--lime);color:#0b0b0b;display:grid;place-content:center;gap:5px;text-align:center}
+#horarios .cb small{font:700 11px var(--fd);letter-spacing:.14em;text-transform:uppercase}
+#horarios .cb b{font:800 clamp(24px,2.4vw,34px)/.9 var(--fd);text-transform:uppercase}
+#horarios .cb span{font:700 13px var(--fb)}
+.sley{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;margin-top:16px;font-size:14px;color:#cfcfcf}
+.sley span{display:inline-flex;align-items:center;gap:9px}
+.sley span:last-child:not(:first-child){color:#9a9a9a}
+.sley .dot{width:13px;height:13px;border-radius:50%;background:var(--lime)}
+.sley .pill{width:22px;height:13px;border-radius:4px;background:var(--lime)}
+@media(max-width:700px){
+ #horarios .sgrid{grid-template-columns:minmax(108px,1.5fr) repeat(var(--cols,5),minmax(0,1fr))!important}
+ #horarios .sgrid>div{padding:14px 2px;min-height:74px}
+ #horarios .sgrid .h{padding:12px 2px;font-size:11px;letter-spacing:.06em}
+ #horarios .sgrid .h.c,#horarios .sgrid .c{padding-left:10px}
+ #horarios .sgrid .c b{font-size:13.5px}#horarios .sgrid .c small{font-size:11.5px}#horarios .sgrid .c em{font-size:10.5px;line-height:1.25}
+ #horarios .sgrid .y i{width:12px;height:12px}
+ #horarios .sgrid .cb{margin:6px 3px;padding:8px 0;display:flex;justify-content:center;align-items:center;gap:3px}
+ #horarios .cb small{display:none}
+ #horarios .cb b,#horarios .cb span{writing-mode:vertical-rl;transform:rotate(180deg)}
+ #horarios .cb b{font-size:20px}#horarios .cb span{font-size:10px}
+ .sley{gap:8px 18px;font-size:13px}
+}
+
+/* letras del fondo más juntas (sin huecos) y línea del VS sin encimarse a los peleadores */
+.lz .rows{inset:-22% -25%;justify-content:space-evenly}
+.lz .row{line-height:.92}
+.tvc .vs{width:min(34vw,520px);margin:8px auto}
+@media(max-width:700px){.lz .rows{inset:-12% -40%}.tvc .vs{width:100%}}
