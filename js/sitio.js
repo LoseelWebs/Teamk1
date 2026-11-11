@@ -295,15 +295,8 @@ function renderWfn() {
   const eI = safeUrl(ct.est_izq), eD = safeUrl(ct.est_der);
   const franja = (cls, txt) => `<div class="fz-s${cls}"><img src="img/wfn-logo-contorno.png" alt="WFN Combat League">${num ? `<b>${esc(num)}</b>` : ""}<i></i><span>${txt}</span></div>`;
   if (eI && eD) {
-    const lp = String(c.lugar || "").split(","), sedeA = lp[0].trim() || "Por anunciar", sedeB = lp.slice(1).join(",").trim();
-    const fl = f ? `${f.d.getDate()} de ${MESES[f.d.getMonth()].toLowerCase()}` : "", fy = f ? `de ${f.d.getFullYear()}` : "";
-    const hr = f && f.conHora ? esc(hora12(c.hora)) : "";
-    const fecha = f ? `${fl} <br>${fy}` : esc(c.fecha || "Por anunciar");
     hero = `<section class="fz" id="w-evento" aria-label="Pelea estelar · ${esc(titulo)}">
-    <div class="fz-v"><div class="fz-h l" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')"></div>${franja("", "Pelea estelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')"></div>
-      <div class="fz-i l"><small>Fecha</small><b>${fecha}</b>${hr ? `<i></i><small>Hora</small><b>${hr}</b>` : ""}</div>
-      <div class="fz-i r"><small>Sede</small><b>${esc(sedeA)}</b>${sedeB ? `<span>${esc(sedeB)}</span>` : ""}<i></i><small>Boletos</small><b>${esc(c.boletos || "Próximamente")}</b></div></div>
-    <div class="fz-m"><div><small>Fecha</small><b>${f ? `${fl} ${fy}` : esc(c.fecha || "Por anunciar")}</b></div><div>${hr ? `<small>Hora</small><b>${hr}</b>` : ""}<span>${esc(c.lugar || "")}</span></div></div>${cd}</section>`;
+    <div class="fz-v"><div class="fz-h l" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')"></div>${franja("", "Pelea estelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')"></div></div>${cd}</section>`;
   }
   /* coestelar estilo cartel: con las dos tarjetas del panel */
   const coR = safeUrl(ct.co_rojo), coA = safeUrl(ct.co_azul);
@@ -311,8 +304,8 @@ function renderWfn() {
     coH = `<div class="cm2"${rv()}><div class="cx-bg" aria-hidden="true"></div><div class="cx-row"><span class="shm" style="--m:url('img/wfn-pelea-coestelar.png')"><img src="img/wfn-pelea-coestelar.png" alt="Pelea coestelar"></span></div>
       <div class="cx-frame"><div><img class="cx-card" src="${esc(coR)}" alt="${esc(fname(cr))}" loading="lazy"><img class="cx-card" src="${esc(coA)}" alt="${esc(fname(ca))}" loading="lazy"></div></div>${dv ? `<span class="cm2-dv">${dv}</span>` : ""}</div>`; }
   const cI = safeUrl(ct.co_izq), cD = safeUrl(ct.co_der);
-  if (comain && cI && cD) { const cr = comain.rojo || {}, ca = comain.azul || {}, dv = esc([comain.div, comain.rounds].filter(Boolean).join(" · "));
-    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')"></div>${franja(" co", "Coestelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')"></div></div>${dv ? `<p class="fzc-d">${dv}</p>` : ""}</div>`; }
+  if (comain && cI && cD) { const cr = comain.rojo || {}, ca = comain.azul || {};
+    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')"></div>${franja(" co", "Coestelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')"></div></div></div>`; }
   const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}; return `<div class="bout"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, "")}<div class="nm l"><b>${esc(fname(rr))}</b><span>${meta(rr) || "&nbsp;"}</span></div>
     <div class="mid"><small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span></div><div class="nm r"><b>${esc(fname(aa))}</b><span>${meta(aa) || "&nbsp;"}</span></div>${av(aa, " b")}</div>`; };
   const card = (comain || est.length || pre.length) ? `<section class="wsec" id="w-card">
@@ -341,7 +334,8 @@ function renderWfn() {
     const sub = [x.round ? "R" + x.round : "", x.tiempo].filter(Boolean).join(" · ");
     return `<div class="res"><div class="rm"><b>${esc(top)}</b>${sub ? `<span>${esc(sub)}</span>` : ""}</div>${fighter(R, g === "rojo")}<div class="rd">${esc(x.div || "")}${x.titulo ? `<em>${esc(x.titulo)}</em>` : ""}</div>${fighter(A, g === "azul", true)}</div>`; };
   const grupo = (t, ps) => ps.length ? `<div class="rg"><p class="rg-t">${esc(t)}</p>${ps.map(res).join("")}</div>` : "";
-  const hist = `<section class="wsec" id="w-hist"><div class="sh"${rv()}><div><span class="eb">Resultados</span><h2 class="h2">Ediciones anteriores</h2></div></div>
+  const verHist = !liga.ocultar_ediciones;
+  const hist = !verHist ? "" : `<section class="wsec" id="w-hist"><div class="sh"${rv()}><div><span class="eb">Resultados</span><h2 class="h2">Ediciones anteriores</h2></div></div>
     ${eds.length ? `<div class="hist">${eds.map((x, j) => { const ps = x.peleas || []; const ed = String(x.edicion || "").replace(/^wfn\s*/i, "");
       const pri = ps.filter(p => p.seccion !== "preliminar"), pre = ps.filter(p => p.seccion === "preliminar");
       return `<details class="ed"${j === 0 ? " open" : ""}${rv("rl", Math.min(j, 4) * .06)}><summary><span class="ed-n">${esc(ed || "—")}</span><span class="ed-i"><b>${esc(x.titulo || "WFN " + ed)}</b><span>${[fechaTxt(x.fecha), x.lugar].filter(Boolean).map(esc).join(" · ")}</span></span><span class="ed-k">${ps.length ? ps.length + (ps.length === 1 ? " pelea" : " peleas") : ""}</span><span class="ed-c">${DOWN}</span></summary>
@@ -368,7 +362,7 @@ function renderWfn() {
       <div class="soon-in"><img src="img/wfn-logo.png" alt="WFN Combat League" class="soon-lg"><p class="soon-k">${esc(c.proximamente_etiqueta ? "Próxima función" : "Próxima función")} · ${esc(t)}</p>
       <h2 class="soon-t">${esc(c.proximamente_etiqueta || "Muy pronto")}</h2><i class="soon-l"></i>
       <p class="soon-p">${esc(c.proximamente_texto || "Fecha, sede y cartelera por anunciar. Síguenos para enterarte primero.")}</p>
-      <div class="row soon-b">${L2.fbw ? `<a class="btn red" href="${esc(L2.fbw)}" target="_blank" rel="noopener">Síguenos en Facebook</a>` : ""}<a class="btn out" href="#w-hist">Ver resultados</a></div></div></section>`;
+      <div class="row soon-b">${L2.fbw ? `<a class="btn red" href="${esc(L2.fbw)}" target="_blank" rel="noopener">Síguenos en Facebook</a>` : ""}${verHist ? '<a class="btn out" href="#w-hist">Ver resultados</a>' : ""}</div></div></section>`;
     box.innerHTML = `${soon}${spons}<div class="w">${ligaH}${hist}</div>`;
     tickCD(); return;
   }

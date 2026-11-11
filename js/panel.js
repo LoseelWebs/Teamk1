@@ -149,7 +149,7 @@ const SCHEMA = [
      Ls("liga.acerca.datos", "Datos destacados", [{ t: "row", fields: [T("cifra", "Cifra", { ph: "18" }), T("texto", "Texto", { ph: "ediciones" })] }], { add: "Agregar dato", title: "cifra" }),
      { t: "row", fields: [T("liga.acerca.sede", "Dirección"), T("liga.acerca.telefono", "Teléfono")] } ] },
    { l: "Pasar la función actual al historial", fields: [ { t: "help", l: "Copia las peleas de «Combates WFN» como una edición nueva del historial. Después solo marcas quién ganó." }, { t: "tohist" } ] },
-   { l: "Ediciones anteriores", fields: [ Ls("liga.ediciones", "Ediciones (la primera es la más reciente)", [
+   { l: "Ediciones anteriores", fields: [ { t: "bool", k: "liga.ocultar_ediciones", l: "Ocultar la sección «Ediciones anteriores» en la página" }, Ls("liga.ediciones", "Ediciones (la primera es la más reciente)", [
        { t: "row3", fields: [T("edicion", "Edición", { ph: "07" }), { t: "date", k: "fecha", l: "Fecha" }, T("lugar", "Lugar")] },
        T("titulo", "Nombre (opcional)", { help: "Si lo dejas vacío se escribe «WFN» y el número." }),
        I("foto", "Cartel o foto de la función (opcional)", { folder: "historial" }),
