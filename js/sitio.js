@@ -291,11 +291,28 @@ function renderWfn() {
       return `<div class="cm-n ${side}">${top ? `<small>${esc(top)}</small>` : ""}<b>${esc(big)}</b>${mt ? `<span>${mt}</span>` : ""}</div>`; };
     return `<div class="cm"${rv("rl")}><div class="cm-tag">${esc(comain.tipo || "Co-main event")}</div>${cf(cr, "l")}${cf(ca, "r")}${cn(cr, "l")}
     <div class="cm-vs"><b>vs</b>${dv ? `<span>${dv}</span>` : ""}</div>${cn(ca, "r")}${dv ? `<div class="cm-dv">${dv}</div>` : ""}</div>`; })() : "";
+  /* main event cara a cara: cada peleador con su fondo extendido y franja central */
+  const eI = safeUrl(ct.est_izq), eD = safeUrl(ct.est_der);
+  const franja = (cls, txt) => `<div class="fz-s${cls}"><img src="img/wfn-logo-contorno.png" alt="WFN Combat League">${num ? `<b>${esc(num)}</b>` : ""}<i></i><span>${txt}</span></div>`;
+  if (eI && eD) {
+    const lp = String(c.lugar || "").split(","), sedeA = lp[0].trim() || "Por anunciar", sedeB = lp.slice(1).join(",").trim();
+    const fl = f ? `${f.d.getDate()} de ${MESES[f.d.getMonth()].toLowerCase()}` : "", fy = f ? `de ${f.d.getFullYear()}` : "";
+    const hr = f && f.conHora ? esc(hora12(c.hora)) : "";
+    const fecha = f ? `${fl} <br>${fy}` : esc(c.fecha || "Por anunciar");
+    hero = `<section class="fz" id="w-evento" aria-label="Pelea estelar · ${esc(titulo)}">
+    <div class="fz-v"><div class="fz-h l" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')"></div>${franja("", "Pelea estelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')"></div>
+      <div class="fz-i l"><small>Fecha</small><b>${fecha}</b>${hr ? `<i></i><small>Hora</small><b>${hr}</b>` : ""}</div>
+      <div class="fz-i r"><small>Sede</small><b>${esc(sedeA)}</b>${sedeB ? `<span>${esc(sedeB)}</span>` : ""}<i></i><small>Boletos</small><b>${esc(c.boletos || "Próximamente")}</b></div></div>
+    <div class="fz-m"><div><small>Fecha</small><b>${f ? `${fl} ${fy}` : esc(c.fecha || "Por anunciar")}</b></div><div>${hr ? `<small>Hora</small><b>${hr}</b>` : ""}<span>${esc(c.lugar || "")}</span></div></div>${cd}</section>`;
+  }
   /* coestelar estilo cartel: con las dos tarjetas del panel */
   const coR = safeUrl(ct.co_rojo), coA = safeUrl(ct.co_azul);
   if (comain && coR && coA) { const cr = comain.rojo || {}, ca = comain.azul || {}, dv = esc([comain.div, comain.rounds].filter(Boolean).join(" · "));
     coH = `<div class="cm2"${rv()}><div class="cx-bg" aria-hidden="true"></div><div class="cx-row"><span class="shm" style="--m:url('img/wfn-pelea-coestelar.png')"><img src="img/wfn-pelea-coestelar.png" alt="Pelea coestelar"></span></div>
       <div class="cx-frame"><div><img class="cx-card" src="${esc(coR)}" alt="${esc(fname(cr))}" loading="lazy"><img class="cx-card" src="${esc(coA)}" alt="${esc(fname(ca))}" loading="lazy"></div></div>${dv ? `<span class="cm2-dv">${dv}</span>` : ""}</div>`; }
+  const cI = safeUrl(ct.co_izq), cD = safeUrl(ct.co_der);
+  if (comain && cI && cD) { const cr = comain.rojo || {}, ca = comain.azul || {}, dv = esc([comain.div, comain.rounds].filter(Boolean).join(" · "));
+    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')"></div>${franja(" co", "Coestelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')"></div></div>${dv ? `<p class="fzc-d">${dv}</p>` : ""}</div>`; }
   const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}; return `<div class="bout"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, "")}<div class="nm l"><b>${esc(fname(rr))}</b><span>${meta(rr) || "&nbsp;"}</span></div>
     <div class="mid"><small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span></div><div class="nm r"><b>${esc(fname(aa))}</b><span>${meta(aa) || "&nbsp;"}</span></div>${av(aa, " b")}</div>`; };
   const card = (comain || est.length || pre.length) ? `<section class="wsec" id="w-card">
