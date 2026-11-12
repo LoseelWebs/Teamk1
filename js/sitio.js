@@ -254,23 +254,7 @@ function renderWfn() {
     <div class="tvc">${num ? `<span class="wlog" role="img" aria-label="Main event · ${esc(titulo)}"><img src="img/wfn-logo-contorno.png" alt=""><i></i><b>${esc(num)}</b></span>` : `<span class="tag">Main event · ${esc(titulo)}</span>`}<span class="nm">${esc(r.apellido || r.nombre || "Por anunciar")}</span><span class="vs"><i></i><b>vs</b><i></i></span><span class="nm">${esc(a.apellido || a.nombre || "Por anunciar")}</span>
     <p class="dv">${esc([m.div, m.rounds].filter(Boolean).join(" · "))}</p></div>${cd}</section>`;
 
-  /* main event estilo cartel: se usa cuando el panel tiene la imagen de la pelea estelar */
-  const ct = c.cartel || {}, cEst = safeUrl(ct.estelar);
-  if (cEst) {
-    const shm = (src, img) => `<span class="shm" style="--m:url('${src}')">${img}</span>`;
-    const lp = String(c.lugar || "").split(","), sedeA = lp[0].trim() || "Por anunciar", sedeB = lp.slice(1).join(",").trim();
-    const fl = f ? `${f.d.getDate()} de ${MESES[f.d.getMonth()].toLowerCase()} <br>de ${f.d.getFullYear()}` : esc(c.fecha || "Fecha por anunciar");
-    const hr = f && f.conHora ? esc(hora12(c.hora)) : "";
-    const head = `<div class="cx-head" role="img" aria-label="WFN Combat League ${esc(num)}">${shm("img/wfn-logo-contorno.png", '<img src="img/wfn-logo-contorno.png" alt="">')}${num ? `<i></i><b>${esc(num)}</b>` : ""}</div>`;
-    hero = `<section class="cx" id="w-evento" aria-label="Pelea estelar · ${esc(titulo)}"><div class="cx-bg" aria-hidden="true"></div><div class="cx-vig" aria-hidden="true"></div>
-    <div class="cx-in">
-      <div class="cx-top"><div class="cx-row"><i></i>${head}<i></i></div></div>
-      <div class="cx-row cx-labrow">${shm("img/wfn-pelea-estelar.png", '<img class="cx-lab" src="img/wfn-pelea-estelar.png" alt="Pelea estelar">')}</div>
-      <img class="cx-main" src="${esc(cEst)}" alt="Pelea estelar: ${esc(fname(r))} vs ${esc(fname(a))}">
-      <div class="cx-co cx-side"><small>Sede</small><span class="cx-v">${esc(sedeA)}</span>${sedeB ? `<span class="cx-s">${esc(sedeB)}</span>` : ""}<div class="cx-sep"></div><small>Boletos</small><span class="cx-v">${esc(c.boletos || "Próximamente")}</span></div>
-      <div class="cx-info"><small class="cx-k">Fecha</small><div class="cx-dt"><b>${fl}</b>${hr ? `<i></i><b>${hr}</b>` : ""}</div><span class="cx-mv">${esc(c.lugar || "")}</span></div>
-    </div>${cd}</section>`;
-  }
+  const ct = c.cartel || {};
 
   /* datos importantes */
   const mapa = safeUrl(c.mapa_evento) || (c.lugar ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(c.lugar) : "");
@@ -298,11 +282,6 @@ function renderWfn() {
     hero = `<section class="fz" id="w-evento" aria-label="Pelea estelar · ${esc(titulo)}">
     <div class="fz-v"><div class="fz-h l" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')"></div>${franja("", "Pelea estelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')"></div></div>${cd}</section>`;
   }
-  /* coestelar estilo cartel: con las dos tarjetas del panel */
-  const coR = safeUrl(ct.co_rojo), coA = safeUrl(ct.co_azul);
-  if (comain && coR && coA) { const cr = comain.rojo || {}, ca = comain.azul || {}, dv = esc([comain.div, comain.rounds].filter(Boolean).join(" · "));
-    coH = `<div class="cm2"${rv()}><div class="cx-bg" aria-hidden="true"></div><div class="cx-row"><span class="shm" style="--m:url('img/wfn-pelea-coestelar.png')"><img src="img/wfn-pelea-coestelar.png" alt="Pelea coestelar"></span></div>
-      <div class="cx-frame"><div><img class="cx-card" src="${esc(coR)}" alt="${esc(fname(cr))}" loading="lazy"><img class="cx-card" src="${esc(coA)}" alt="${esc(fname(ca))}" loading="lazy"></div></div>${dv ? `<span class="cm2-dv">${dv}</span>` : ""}</div>`; }
   const cI = safeUrl(ct.co_izq), cD = safeUrl(ct.co_der);
   if (comain && cI && cD) { const cr = comain.rojo || {}, ca = comain.azul || {};
     coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')"></div>${franja(" co", "Coestelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')"></div></div></div>`; }
@@ -565,17 +544,25 @@ function rotRun() {
 }
 
 /* ---------- cargar contenido ---------- */
+/* Orden: 1) la copia guardada en este navegador (aparece al instante), 2) si no hay copia,
+   se espera un momento a Supabase antes de usar el respaldo del HTML, para no descargar
+   fotos de ejemplo que enseguida se reemplazan, 3) lo de Supabase siempre al final. */
+const respaldo = () => { try { const el = document.getElementById("contenido-respaldo"); return el ? JSON.parse(el.textContent) : null; } catch (e) { return null; } };
+const leerCopia = () => { try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); } catch (e) { return null; } };
 async function cargar() {
-  try { const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); if (c) render(c); } catch (e) {}
-  if (!CFG.SUPABASE_URL || /TU-PROYECTO/.test(CFG.SUPABASE_URL)) return;
+  let listo = false;
+  const pintar = c => { if (c) { render(c); if (!listo) { listo = true; show(location.hash.slice(1) || "inicio", true); } } };
+  pintar(leerCopia());
+  if (!CFG.SUPABASE_URL || /TU-PROYECTO/.test(CFG.SUPABASE_URL)) return pintar(listo ? null : respaldo());
+  const espera = listo ? null : setTimeout(() => { if (!listo) pintar(respaldo()); }, 1200);
   try {
     const r = await fetch(`${CFG.SUPABASE_URL}/rest/v1/sitios?id=eq.${encodeURIComponent(CFG.SITIO_ID)}&select=contenido`, { headers: { apikey: CFG.SUPABASE_ANON_KEY }, cache: "no-store" });
     if (!r.ok) throw new Error(r.status);
-    const rows = await r.json();
-    if (rows[0] && rows[0].contenido) { render(rows[0].contenido); try { localStorage.setItem(CACHE_KEY, JSON.stringify(rows[0].contenido)); } catch (e) {} }
-  } catch (e) { console.warn("No se pudo leer Supabase; se muestra la última copia.", e); }
+    const rows = await r.json(), c = rows[0] && rows[0].contenido;
+    if (c) { clearTimeout(espera); pintar(c); try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch (e) {} }
+    else throw new Error("sin contenido");
+  } catch (e) { console.warn("No se pudo leer Supabase; se muestra la última copia.", e); clearTimeout(espera); if (!listo) pintar(respaldo()); }
 }
-try { const el = document.getElementById("contenido-respaldo"); if (el) render(JSON.parse(el.textContent)); } catch (e) { console.error(e); }
-show(location.hash.slice(1) || "inicio", true);
+K.forEach(id => { const v = document.getElementById(id); if (v) v.hidden = id !== (K.includes(location.hash.slice(1)) ? location.hash.slice(1) : "inicio"); });
 cargar();
 })();
