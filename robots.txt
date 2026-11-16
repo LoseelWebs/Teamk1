@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://loseelwebs.github.io/Teamk1/sitemap.xml
+Sitemap: https://teamk1.loseelwebs.workers.dev/sitemap.xml
