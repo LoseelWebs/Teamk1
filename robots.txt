@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://teamk1.loseelwebs.workers.dev/sitemap.xml
+Sitemap: https://academiateamk1.com.mx/sitemap.xml
