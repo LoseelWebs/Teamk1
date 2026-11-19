@@ -237,9 +237,8 @@ function renderWfn() {
   const num = (String(c.edicion || "").match(/(\d+)\s*$/) || [])[1] || "";   // número de la edición, ej. 18
 
   /* barra del evento */
-  const bar = `<div class="tvbar"><div class="tvbar-in"><img src="img/wfn-logo.png" alt="WFN Combat League"><div class="t"><b>${esc(titulo)}${c.lugar ? " · " + esc(String(c.lugar).split(",")[0]) : ""}</b>
-    <span>${esc([f ? evCorta(c) : (c.fecha || "Fecha por anunciar"), c.lugar].filter(Boolean).join(" · "))}</span></div>
-    ${safeUrl(c.enlace_boletos) ? `<a class="btn red" href="${esc(safeUrl(c.enlace_boletos))}" target="_blank" rel="noopener">Boletos</a>` : `<a class="btn red" href="${esc(waTxt("Hola, quiero boletos para " + titulo))}" target="_blank" rel="noopener">${ICW}Boletos</a>`}</div></div>`;
+  /* sin barra arriba: al entrar solo se ve la cartelera; los boletos quedan en un botón flotante */
+  const bar = safeUrl(c.enlace_boletos) ? `<a class="btn red w-pill" href="${esc(safeUrl(c.enlace_boletos))}" target="_blank" rel="noopener">Boletos ${esc(titulo)}</a>` : `<a class="btn red w-pill" href="${esc(waTxt("Hola, quiero boletos para " + titulo))}" target="_blank" rel="noopener">${ICW}Boletos ${esc(titulo)}</a>`;
 
   /* main event con letras en el recuadro */
   const words = (c.fondo || []).filter(Boolean).length ? c.fondo.filter(Boolean) : DEF_WORDS;
@@ -255,17 +254,21 @@ function renderWfn() {
     <p class="dv">${esc([m.div, m.rounds].filter(Boolean).join(" · "))}</p></div>${cd}</section>`;
 
   const ct = c.cartel || {};
+  /* resultados en vivo (se marcan en el panel) */
+  const resDet = x => [String(x.metodo || "").trim(), x.round ? "R" + String(x.round).replace(/^r/i, "") : "", x.tiempo].filter(Boolean).join(" · ");
+  const gana = (x, lado) => x.ganador === lado ? " win" : (x.ganador === "rojo" || x.ganador === "azul") ? " lose" : "";
 
   /* datos importantes */
   const mapa = safeUrl(c.mapa_evento) || (c.lugar ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(c.lugar) : "");
   const all = c.peleas || [], comain = all.find(esCo), resto = all.filter(x => x !== comain);
   const est = resto.filter(x => x.seccion !== "preliminar"), pre = resto.filter(x => x.seccion === "preliminar");
-  const info = `<div class="einfo"${rv()}>
-    <div><small>Fecha</small><b>${esc(f ? `${DIAS_EV[f.d.getDay()]} ${f.d.getDate()} de ${MESES[f.d.getMonth()].toLowerCase()}` : (c.fecha || "Por anunciar"))}</b>${f ? `<span>${f.d.getFullYear()}</span>` : ""}</div>
-    <div><small>Hora</small><b>${esc(f && f.conHora ? hora12(c.hora) : "Por anunciar")}</b>${c.info_extra ? `<span>${esc(c.info_extra)}</span>` : ""}</div>
-    <div><small>Sede</small><b>${esc(c.lugar || "Por anunciar")}</b></div>
-    <div><small>Boletos</small><b>${esc(c.boletos || "Próximamente")}</b>${c.boletos_texto ? `<span>${esc(c.boletos_texto)}</span>` : ""}</div></div>
-    <div class="eacts"${rv()}>${mapa ? `<a class="btn out" href="${esc(mapa)}" target="_blank" rel="noopener">Cómo llegar a la sede</a>` : ""}<span class="fnote" style="margin:0">${all.length + 1} peleas en la cartelera</span></div>`;
+  /* datos de la función: bloque negro tipo créditos de póster */
+  const fGr = f ? `${DIAS_EV[f.d.getDay()]} ${f.d.getDate()} de ${MESES[f.d.getMonth()].toLowerCase()}` : (c.fecha || "Fecha por anunciar");
+  const linea = [f && f.conHora ? hora12(c.hora) : "Hora por anunciar", c.lugar || "Sede por anunciar", "Boletos " + String(c.boletos || "próximamente")];
+  const extra = [c.info_extra, c.boletos_texto].filter(Boolean).join(" · ");
+  const info = `<div class="ep"${rv()}><small>${esc(titulo)} · Datos de la función</small><b>${esc(fGr)}</b>${f ? `<em>${f.d.getFullYear()}</em>` : ""}<i></i>
+    <p>${linea.map(esc).join(" &nbsp;·&nbsp; ")}</p>${extra ? `<span class="ex">${esc(extra)}</span>` : ""}
+    <div class="eacts">${mapa ? `<a class="btn red" href="${esc(mapa)}" target="_blank" rel="noopener">Cómo llegar a la sede</a>` : ""}<span class="fnote">${all.length + 1} peleas en la cartelera</span></div></div>`;
 
   /* cartelera: co-estelar destacado y demás peleas */
   const av = (p, cl) => `<span class="av${cl}"${safeUrl(p.foto) ? ` style="background-image:url('${esc(abs(safeUrl(p.foto)))}')"` : ""} role="img" aria-label="${esc(fname(p))}"></span>`;
@@ -280,13 +283,17 @@ function renderWfn() {
   const franja = (cls, txt) => `<div class="fz-s${cls}"><img src="img/wfn-logo-contorno.png" alt="WFN Combat League">${num ? `<b>${esc(num)}</b>` : ""}<i></i><span>${txt}</span></div>`;
   if (eI && eD) {
     hero = `<section class="fz" id="w-evento" aria-label="Pelea estelar · ${esc(titulo)}">
-    <div class="fz-v"><div class="fz-h l" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')"></div>${franja("", "Pelea estelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')"></div></div>${cd}</section>`;
+    <div class="fz-v"><div class="fz-h l${gana(m, "rojo")}" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')">${m.ganador === "rojo" ? '<span class="fz-w2">Victoria</span>' : ""}</div>${franja("", "Pelea estelar")}<div class="fz-h r${gana(m, "azul")}" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')">${m.ganador === "azul" ? '<span class="fz-w2">Victoria</span>' : ""}</div></div>${cd}</section>`;
   }
   const cI = safeUrl(ct.co_izq), cD = safeUrl(ct.co_der);
   if (comain && cI && cD) { const cr = comain.rojo || {}, ca = comain.azul || {};
-    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')"></div>${franja(" co", "Coestelar")}<div class="fz-h r" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')"></div></div></div>`; }
-  const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}; return `<div class="bout"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, "")}<div class="nm l"><b>${esc(fname(rr))}</b><span>${meta(rr) || "&nbsp;"}</span></div>
-    <div class="mid"><small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span></div><div class="nm r"><b>${esc(fname(aa))}</b><span>${meta(aa) || "&nbsp;"}</span></div>${av(aa, " b")}</div>`; };
+    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l${gana(comain, "rojo")}" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')">${comain.ganador === "rojo" ? '<span class="fz-w2">Victoria</span>' : ""}</div>${franja(" co", "Coestelar")}<div class="fz-h r${gana(comain, "azul")}" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')">${comain.ganador === "azul" ? '<span class="fz-w2">Victoria</span>' : ""}</div></div></div>`; }
+  const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}, g = x.ganador, det = resDet(x);
+    const mid = g ? `<small>Resultado</small><b class="rs">${g === "empate" ? "Empate" : g === "nc" ? "NC" : esc(String(x.metodo || "").trim().split(/\s+/)[0] || "Gana")}</b><span>${esc([x.round ? "R" + String(x.round).replace(/^r/i, "") : "", x.tiempo].filter(Boolean).join(" · ") || x.div || "")}</span>`
+      : `<small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span>`;
+    const nm = (p, l, lado) => `<div class="nm ${l}${gana(x, lado)}"><b>${esc(fname(p))}</b><span>${x.ganador === lado ? '<em class="vic">Victoria</em>' + (meta(p) ? " · " : "") : ""}${meta(p) || (x.ganador === lado ? "" : "&nbsp;")}</span></div>`;
+    return `<div class="bout${g ? " done" : ""}"${rv("rl", Math.min(j, 6) * .05)}>${av(rr, gana(x, "rojo"))}${nm(rr, "l", "rojo")}
+    <div class="mid">${mid}</div>${nm(aa, "r", "azul")}${av(aa, " b" + gana(x, "azul"))}</div>`; };
   const card = (comain || est.length || pre.length) ? `<section class="wsec" id="w-card">
     <div class="ctabs" role="tablist"><button type="button" role="tab" data-ct="est" aria-selected="true">Cartelera estelar<em>${est.length + (comain ? 1 : 0)}</em></button>${pre.length ? `<button type="button" role="tab" data-ct="pre" aria-selected="false">Preliminares<em>${pre.length}</em></button>` : ""}</div>
     <div data-cp="est">${coH}${est.map(row).join("")}</div>${pre.length ? `<div data-cp="pre" hidden>${pre.map(row).join("")}</div>` : ""}
@@ -468,7 +475,7 @@ function parallax() { pxT = 0; if (matchMedia("(prefers-reduced-motion: reduce)"
 /* ---------- cabecera y botón Menú según el scroll ---------- */
 function onScroll() {
   const y = scrollY, hd = $(".hd"); hd && hd.classList.toggle("sc", y > 30);
-  const mb = $(".mbtn"), ini = !$("#inicio").hidden; mb && mb.classList.toggle("esc", ini && y < Math.min(innerHeight * .5, 360));
+  const rb = $(".rbtn"); if (rb) { const max = document.documentElement.scrollHeight - innerHeight; rb.style.setProperty("--p", max > 0 ? Math.min(100, Math.max(0, y / max * 100)).toFixed(1) : 0); }
   paintRv(); if (!pxT) pxT = requestAnimationFrame(parallax);
 }
 addEventListener("scroll", onScroll, { passive: true });
@@ -521,13 +528,22 @@ document.addEventListener("click", e => {
 });
 addEventListener("keydown", e => { if (e.key === "Escape") { $$(".modal:not([hidden])").forEach(mClose); dr && dr.classList.remove("open"); } });
 
-/* ---------- botón Menú (celular) ---------- */
+/* ---------- botón Menú (celular): redondo con anillo de avance ---------- */
 (() => {
-  const b = $(".mbtn"), m = $("#fmenu"); if (!b || !m) return; const t = b.querySelector("span");
-  const set = o => { m.hidden = !o; b.setAttribute("aria-expanded", o); b.classList.toggle("on", o); t.textContent = o ? "Cerrar" : "Menú"; document.documentElement.classList.toggle("fm-open", o); };
+  const b = $(".rbtn"), m = $("#fmenu"); if (!b || !m) return;
+  const set = o => { m.hidden = !o; b.setAttribute("aria-expanded", o); b.setAttribute("aria-label", o ? "Cerrar menú" : "Abrir menú"); b.classList.toggle("on", o); document.documentElement.classList.toggle("fm-open", o); };
   b.addEventListener("click", () => set(m.hidden));
   m.addEventListener("click", e => { if (e.target.closest("a,button")) set(false); });
   addEventListener("keydown", e => { if (e.key === "Escape" && !m.hidden) set(false); });
+  matchMedia("(min-width:1024px)").addEventListener("change", e => { if (e.matches && !m.hidden) set(false); });
+})();
+
+/* ---------- intro «brasas y zoom»: solo la primera vez que se entra al inicio ---------- */
+(() => {
+  const h = document.documentElement, d = $("#intro"); if (!d || !h.classList.contains("intro")) return;
+  try { sessionStorage.setItem("tk1-intro", "1"); } catch (e) {}
+  setTimeout(() => { d.classList.add("out"); document.body.classList.add("intro-rev"); h.classList.remove("intro-lock"); }, 1450);
+  setTimeout(() => { d.remove(); h.classList.remove("intro"); document.body.classList.remove("intro-rev"); }, 2700);
 })();
 
 /* ---------- Nosotros: video, palabras y textos que se iluminan ---------- */
@@ -551,7 +567,8 @@ const respaldo = () => { try { const el = document.getElementById("contenido-res
 const leerCopia = () => { try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); } catch (e) { return null; } };
 async function cargar() {
   let listo = false;
-  const pintar = c => { if (c) { render(c); if (!listo) { listo = true; show(location.hash.slice(1) || "inicio", true); } } };
+  let ultimo = "";
+  const pintar = c => { if (c) { const j = JSON.stringify(c); if (j === ultimo) return; ultimo = j; render(c); if (!listo) { listo = true; show(location.hash.slice(1) || "inicio", true); } } };
   pintar(leerCopia());
   if (!CFG.SUPABASE_URL || /TU-PROYECTO/.test(CFG.SUPABASE_URL)) return pintar(listo ? null : respaldo());
   const espera = listo ? null : setTimeout(() => { if (!listo) pintar(respaldo()); }, 1200);

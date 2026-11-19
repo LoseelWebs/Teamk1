@@ -57,7 +57,8 @@ p{margin:0}
 /* ===================== CABECERA ===================== */
 .hd{position:fixed;inset:0 0 auto;z-index:50;height:var(--hd);transition:background .35s,box-shadow .35s,backdrop-filter .35s}
 .hd::before{content:"";position:absolute;inset:0 0 -40px;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.75),transparent);transition:opacity .35s}
-.hd.sc{background:rgba(6,6,6,.62);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);box-shadow:0 1px 0 rgba(255,255,255,.07),0 10px 30px -12px rgba(0,0,0,.8)}
+.hd.sc{background:none!important;box-shadow:none;pointer-events:none}.hd.sc .hd-logo,.hd.sc .hd-wfn{pointer-events:auto}
+.hd .nav,.hd .hd-cta{transition:opacity .3s,visibility .3s}.hd.sc.nv .nav,.hd.sc.nv .hd-cta{opacity:0;visibility:hidden}
 .hd.sc::before{opacity:0}
 .hd-in{position:relative;height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 var(--gut)}
 .hd-logo{display:block;flex:none}
@@ -690,3 +691,226 @@ body:has(#wfn:not([hidden])) .hd::before{opacity:0}
   .fz-s.co{gap:4px}.fz-s.co img{width:28px}.fz-s.co b{font-size:12px}.fz-s.co i{display:none}.fz-s.co span{font-size:8px;letter-spacing:.1em}
 }
 @media(prefers-reduced-motion:reduce){.fz-s::after{animation:none}}
+
+/* ===== Resultados en vivo ===== */
+.fz-v,.fzc-v{--pw:calc(var(--h) * .6833)}.fzc-v{--pw:314px}
+.fz-h{position:relative}
+.fz-h.lose{filter:grayscale(1) brightness(.5)}
+.fz-h.win::before{content:"";position:absolute;top:0;bottom:0;width:var(--pw);background:radial-gradient(ellipse 70% 55% at 50% 0%,rgba(255,244,210,.55),transparent 70%);pointer-events:none;z-index:1}
+.fz-h.l.win::before{right:0}.fz-h.r.win::before{left:0}
+.fz-w2{position:absolute;top:22px;z-index:2;white-space:nowrap;font:900 clamp(16px,2vw,28px)/1 var(--fc);letter-spacing:.35em;text-transform:uppercase;color:#fff4d2;text-shadow:0 0 18px rgba(255,220,140,.9),0 2px 6px rgba(0,0,0,.5)}
+.fz-h.l .fz-w2{right:calc(var(--pw) / 2);transform:translateX(50%)}.fz-h.r .fz-w2{left:calc(var(--pw) / 2);transform:translateX(-50%)}
+.fzc .fz-w2{font-size:14px;top:12px;letter-spacing:.3em}
+.bout .nm.win{background:linear-gradient(90deg,rgba(241,201,90,.28),transparent);padding:10px 12px}.bout .nm.r.win{background:linear-gradient(270deg,rgba(241,201,90,.28),transparent)}
+.bout .nm .vic{font-style:normal;color:#b8841a;font-weight:800}
+.bout .av.lose,.bout .nm.lose{opacity:.35}
+.bout .mid .rs{color:#d01818}
+@media(max-width:900px){.fz-v,.fzc-v{--pw:100%}.fz-w2{font-size:11px;top:8px;letter-spacing:.2em}.fzc .fz-w2{font-size:9px;top:5px}.bout .nm.win{padding:6px 8px}}
+
+/* ===================== CABECERA «DÚO A LA IZQUIERDA» (18 nov) ===================== */
+.hd-duo{display:flex;align-items:center;gap:12px;flex:none}
+.hd-sep{width:1px;height:32px;background:rgba(255,255,255,.35);transition:height .3s}
+.hd-duo .hd-logo img{height:52px;transition:height .3s}
+.hd-duo .hd-wfn{padding:0}.hd-duo .hd-wfn img{width:72px;transition:width .3s,filter .25s,transform .25s}
+.hd{transition:height .3s var(--ease),background .3s,box-shadow .3s}
+.hd.sc{background:#0b0b0b!important;box-shadow:0 1px 0 rgba(255,255,255,.08),0 8px 24px rgba(0,0,0,.5);pointer-events:auto}
+/* botón de menú redondo con anillo que se llena al bajar */
+.rbtn{--p:0;display:none;width:48px;height:48px;flex:none;border-radius:50%;border:0;padding:0;place-items:center;color:#fff;cursor:pointer;
+  background:radial-gradient(closest-side,#0e0e10 84%,transparent 86%),conic-gradient(var(--red) calc(var(--p) * 1%),rgba(255,255,255,.25) 0);transition:background-color .25s,transform .2s}
+.rbtn:active{transform:scale(.94)}
+.rbtn i{display:grid;gap:4px;width:20px}.rbtn b{display:block;height:2px;background:currentColor;transition:transform .3s var(--ease),opacity .2s,width .3s}.rbtn b:nth-child(2){width:13px}
+.rbtn.on{background:#fff;color:#0a0a0a}
+.rbtn.on b:nth-child(1){transform:translateY(6px) rotate(45deg)}.rbtn.on b:nth-child(2){opacity:0}.rbtn.on b:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.rbtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(max-width:1023px){
+  .hd-in{padding:0 14px}
+  .rbtn{display:grid}
+  .hd.sc{height:60px}
+  .hd.sc .hd-logo img{height:42px}.hd.sc .hd-wfn img{width:60px}.hd.sc .hd-sep{height:26px}
+  html.fm-open .hd{z-index:80;background:#050505!important;box-shadow:none}
+}
+@media(min-width:1024px){
+  .hd-in{justify-content:flex-start;gap:0}
+  .hd-duo{gap:18px}.hd-sep{height:46px}
+  .hd-duo .hd-logo img{height:calc(var(--hd) - 18px)}
+  .hd-duo .hd-wfn img{width:clamp(84px,7.5vw,108px)}
+  .nav{position:static;transform:none;margin:0 18px 0 auto;padding:0;gap:0;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .nav a{padding:9px clamp(10px,1vw,14px) 8px;color:rgba(255,255,255,.72);text-shadow:0 1px 8px rgba(0,0,0,.7)}
+  .nav a+a{border-left:1px solid rgba(255,255,255,.22)}
+  .nav a::before{display:none}
+  .nav a::after{left:clamp(10px,1vw,14px);right:clamp(10px,1vw,14px);bottom:0;width:auto;height:2px;transform:scaleX(0);opacity:1;transition:transform .3s var(--ease)}
+  .nav a:hover::after,.nav a.on::after{transform:scaleX(1);opacity:1}
+  .hd-r{gap:0}
+  .hd.sc{height:64px}
+  .hd.sc .hd-logo img{height:44px}.hd.sc .hd-wfn img{width:76px}.hd.sc .hd-sep{height:30px}
+  .hd.sc .hd-cta{min-height:36px}
+}
+
+/* ===================== INTRO «BRASAS Y ZOOM» (solo la primera visita) ===================== */
+#intro{display:none}
+html.intro body{overflow:hidden}
+html.intro #intro{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;pointer-events:none;overflow:hidden;animation:introSafe 0s 5s forwards}
+@keyframes introSafe{to{visibility:hidden}}
+#intro .bg{position:absolute;inset:0;background:#0a0a0a}
+#intro .glow{position:absolute;inset:auto 0 0;height:60%;background:radial-gradient(ellipse 80% 70% at 50% 100%,rgba(208,24,24,.35),transparent 70%)}
+#intro .em{position:absolute;bottom:-10px;border-radius:50%;background:#ff6a2a;box-shadow:0 0 8px 2px rgba(255,90,30,.8);animation:introEm linear infinite}
+@keyframes introEm{0%{transform:translate(0,0);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx),-110vh);opacity:0}}
+#intro .lw{position:relative;z-index:5;animation:introIn .6s ease both}
+#intro .lw img{display:block;width:clamp(140px,22vw,230px);height:auto;filter:drop-shadow(0 6px 24px rgba(0,0,0,.6))}
+#intro .lw::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,236,170,.95) 50%,transparent 65%) no-repeat;background-size:250% 100%;background-position:150% 0;-webkit-mask:url(../img/logo-tri.png) center/contain no-repeat;mask:url(../img/logo-tri.png) center/contain no-repeat;animation:introSh .9s .45s ease-in-out both}
+html.intro #intro.out{animation:introOut .8s .15s ease both}
+#intro.out .lw{animation:introBlur .6s ease both}
+@keyframes introIn{from{opacity:0;transform:scale(.85)}}@keyframes introSh{to{background-position:-50% 0}}
+@keyframes introBlur{to{filter:blur(14px);transform:scale(1.25);opacity:0}}@keyframes introOut{to{opacity:0}}
+body.intro-rev main,body.intro-rev .hd{animation:introPg 1.1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes introPg{from{transform:scale(1.08);filter:blur(6px)}}
+@media(prefers-reduced-motion:reduce){#intro{display:none!important}}
+
+/* =========================================================
+   Capa de animaciones (inspirada en el portafolio de Loseel Webs)
+   Se suma encima del diseño de Team K-1 sin cambiar su contenido.
+   ========================================================= */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+html.lenis,html.lenis body{height:auto}
+html.lenis{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* barra de avance arriba */
+.fx-prog{position:fixed;inset:0 0 auto;height:3px;z-index:95;pointer-events:none}
+.fx-prog i{display:block;height:100%;background:#ff1f1f;box-shadow:0 0 10px rgba(255,31,31,.8);transform-origin:left;transform:scaleX(0)}
+
+/* cursor propio: flecha blanca con borde rojo; mano en enlaces; etiqueta «ver» en tarjetas */
+.fx-cur{position:fixed;left:0;top:0;z-index:10000;pointer-events:none;width:28px;height:28px;transform-origin:4px 3px;opacity:0;transition:opacity .2s;display:none}
+.fx-cur svg{position:absolute;inset:0;width:28px;height:28px;overflow:visible;transition:opacity .15s,transform .25s cubic-bezier(.2,.8,.2,1)}
+.fx-cur path{fill:#fff;stroke:#ff1f1f;stroke-width:2;stroke-linejoin:round}
+.fx-cur .c-mano{opacity:0;transform:scale(.6)}
+.fx-cur span{position:absolute;left:30px;top:24px;padding:4px 10px;background:#ff1f1f;color:#fff;font:700 11px "Manrope",sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:0;transform:scale(.6);transform-origin:left top;transition:opacity .2s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.fx-cur.on{opacity:1}.fx-cur.mano .c-flecha{opacity:0;transform:scale(.6)}.fx-cur.mano .c-mano{opacity:1;transform:none}
+.fx-cur.ver span{opacity:1;transform:none}.fx-cur.click svg{transform:scale(.82)}
+@media (hover:hover) and (pointer:fine){
+  html.fx-on:not(.fx-modal) .fx-cur{display:block}
+  html.fx-on:not(.fx-modal),html.fx-on:not(.fx-modal) *{cursor:none!important}
+  html.fx-on:not(.fx-modal) input,html.fx-on:not(.fx-modal) textarea{cursor:text!important}
+}
+
+/* títulos: cada uno entra con un efecto distinto */
+.fx-pw{display:inline-block;white-space:nowrap}
+.fx-ch{display:inline-block;will-change:transform}
+html.fx-on [data-fx="sube"]{overflow:hidden;padding-bottom:.08em}
+html.fx-on [data-fx="sube"] .fx-ch{transform:translateY(110%);transition:transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i)*24ms)}
+html.fx-on [data-fx="giro"]{perspective:900px}
+html.fx-on [data-fx="giro"] .fx-ch{opacity:0;transform:rotateX(-95deg) translateY(30%);transform-origin:50% 0;transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .6s;transition-delay:calc(var(--i)*20ms)}
+html.fx-on [data-fx="borroso"] .fx-ch{opacity:0;filter:blur(14px);transform:scale(1.4);transition:opacity .8s,filter .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i)*26ms)}
+html.fx-on [data-fx="lado"]{opacity:0;transform:translateX(14%) skewX(-14deg);transition:opacity .8s,transform 1.1s cubic-bezier(.2,.8,.2,1)}
+html.fx-on [data-fx="cortina"]{position:relative;width:fit-content;clip-path:inset(0 100% 0 0);transition:clip-path 1.1s cubic-bezier(.2,.8,.2,1) .25s}
+html.fx-on [data-fx="cortina"]::after{content:"";position:absolute;inset:0 auto 0 0;width:100%;background:#ff1f1f;transform:scaleX(0);transform-origin:left;pointer-events:none}
+html.fx-on [data-fx].fx-ok .fx-ch{transform:none;opacity:1;filter:none}
+html.fx-on [data-fx="lado"].fx-ok{opacity:1;transform:none}
+html.fx-on [data-fx="cortina"].fx-ok{clip-path:inset(0 0 0 0)}
+html.fx-on [data-fx="cortina"].fx-ok::after{animation:fxBarre 1.2s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes fxBarre{0%{transform:scaleX(0);transform-origin:left}45%{transform:scaleX(1);transform-origin:left}55%{transform:scaleX(1);transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+
+/* botones: brillo que cruza, brillo giratorio en los rojos, magnéticos */
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;z-index:1;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);pointer-events:none}
+.btn:hover::after,.btn.fx-toque::after{animation:fxCruza .85s cubic-bezier(.2,.8,.2,1)}
+@keyframes fxCruza{to{left:140%}}
+.btn.red:hover,.hd-cta:hover{box-shadow:0 0 0 2px rgba(255,31,31,.35),0 14px 34px -12px rgba(255,31,31,.75)}
+.fx-mag{will-change:transform}
+.fx-mag>*{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+
+/* luz que sigue al cursor en las tarjetas */
+.fx-luz{position:relative;isolation:isolate}
+.fx-l{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .5s cubic-bezier(.2,.8,.2,1);background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,31,31,.16),transparent 45%)}
+.fx-l::before{content:"";position:absolute;inset:0;padding:1.5px;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,70,70,.95),rgba(255,31,31,.15) 45%,transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.fx-luz:hover>.fx-l,.fx-luz.fx-toque>.fx-l{opacity:1}
+@media(hover:none){.fx-l{display:none}}
+
+/* inclinación 3D */
+.fx-tilt{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.fx-tilt.fx-mueve{transition:transform .12s ease-out}
+
+/* filas de grupos: se rellenan de rojo al pasar */
+.gtab .gr{background:linear-gradient(rgba(255,31,31,.14),rgba(255,31,31,.14)) no-repeat 0 100%/100% 0;transition:background-size .5s cubic-bezier(.2,.8,.2,1)}
+.gtab .gr .n b{display:inline-block;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+@media(hover:hover){.gtab .gr:hover{background-size:100% 100%}.gtab .gr:hover .n b{transform:translateX(12px)}}
+
+/* fotos grandes que se abren desde el centro al bajar */
+.fx-reel{clip-path:inset(var(--ci,0%) var(--cl,0%) round var(--cr,0px));will-change:clip-path}
+.fx-reel img{transform:scale(var(--vs,1));transform-origin:center}
+
+/* franja: se inclina según la velocidad del scroll */
+.ribbon{will-change:transform}
+
+/* teléfono: los números suben en ola */
+.fx-le{display:inline-block;transition:color .3s}
+.fx-le:hover{color:#ff1f1f}
+
+/* el menú tiembla en rojo y azul al cambiar de sección */
+.fx-glitch a.on,.fx-glitch a.on span{animation:fxGl .32s steps(2) 1}
+@keyframes fxGl{0%{transform:translate(2px,-1px);text-shadow:-2px 0 rgba(255,43,94,.7)}50%{transform:translate(-2px,1px);text-shadow:2px 0 rgba(61,155,255,.8)}100%{transform:none;text-shadow:none}}
+
+/* transición entre secciones: cortina roja con el logo */
+.fx-vt{position:fixed;inset:0;z-index:9000;pointer-events:none;display:grid;place-items:center;background:#e8141b;clip-path:inset(100% 0 0 0)}
+.fx-vt::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-60deg,rgba(0,0,0,.18) 0 10px,transparent 10px 26px)}
+.fx-vt img{position:relative;width:clamp(90px,12vw,150px);height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.45))}
+.fx-vt.cubre{animation:fxCubre .38s cubic-bezier(.7,0,.3,1) forwards}
+.fx-vt.destapa{animation:fxDestapa .55s cubic-bezier(.7,0,.3,1) forwards}
+.fx-vt.cubre img{animation:fxLogoIn .38s cubic-bezier(.2,.8,.2,1) both}
+.fx-vt.destapa img{animation:fxLogoOut .45s ease both}
+@keyframes fxCubre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes fxDestapa{from{clip-path:inset(0 0 0 0)}to{clip-path:inset(0 0 100% 0)}}
+@keyframes fxLogoIn{from{transform:scale(.6) rotate(-8deg);opacity:0}}
+@keyframes fxLogoOut{to{transform:scale(1.3);opacity:0;filter:blur(8px)}}
+html.fx-on .view.fx-entra{animation:fxEntra .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fxEntra{from{opacity:0;transform:translateY(26px)}}
+
+@media (prefers-reduced-motion:reduce){
+  .fx-vt,.fx-cur{display:none!important}
+  .fx-reel{clip-path:none}.fx-reel img{transform:none}
+}
+
+/* ===== cabecera sin barra: solo logos y botón flotando ===== */
+html.fx-on .hd,html.fx-on .hd.sc,html.fx-on body .hd{background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.fx-on .hd.sc::before{opacity:0}
+html.fx-on .hd::before{transition:opacity .4s}
+html.fx-on .hd-duo .hd-logo img,html.fx-on .hd-duo .hd-wfn img{filter:drop-shadow(0 2px 10px rgba(0,0,0,.65))}
+html.fx-on .hd .nav a{text-shadow:0 1px 10px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}
+/* al entrar al inicio: logos al centro arriba, sin botón de menú */
+html.fx-on .hd-duo{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+html.fx-on .rbtn,html.fx-on .hd .nav,html.fx-on .hd-cta{transition:opacity .45s cubic-bezier(.2,.8,.2,1),transform .55s cubic-bezier(.2,.8,.2,1),visibility .45s}
+html.fx-on.hd-centro .hd-duo{transform:translateX(var(--dx,0px)) scale(1.12)}
+html.fx-on.hd-centro .rbtn{opacity:0;visibility:hidden;pointer-events:none;transform:scale(.5) rotate(-90deg)}
+html.fx-on.hd-centro .hd .nav,html.fx-on.hd-centro .hd-cta{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px)}
+/* sobre fondos claros el menú se pinta negro para que se lea */
+html.fx-on.hd-claro .hd .nav a{color:#0a0a0a;text-shadow:none}
+html.fx-on.hd-claro .hd .nav a.on{color:#c8102e}
+html.fx-on .hd .nav a{transition:color .3s}
+html.fx-on.hd-claro .hd-wfn img{content:url(../img/wfn-logo-contorno.png)}
+
+/* ===================== AJUSTES DE DISEÑO (18 nov, noche) ===================== */
+/* foto de portada: filtro oscuro automático, sea cual sea la foto que suban desde el panel */
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,.25) 100%),linear-gradient(0deg,rgba(0,0,0,.65) 0%,transparent 45%),linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 22%)}
+@media(max-width:767px){.hero::before{background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.5) 100%)}}
+
+/* WFN: la franja de arriba (donde flotan los logos) es oscura, no clara */
+#wfn{background-image:linear-gradient(#0f0f10,#0f0f10);background-size:100% var(--hd);background-repeat:no-repeat}
+
+/* WFN: botón flotante de boletos (opción 1: al entrar solo la cartelera) */
+.w-pill{position:fixed!important;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:55;transform:translateX(-50%);border-radius:999px;min-height:52px;padding:0 26px;box-shadow:0 12px 28px rgba(0,0,0,.45);white-space:nowrap;animation:wPill .6s .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes wPill{from{opacity:0;transform:translate(-50%,30px)}}
+@media(min-width:861px){.w-pill{left:auto;right:28px;transform:none;animation-name:wPill2}}
+@keyframes wPill2{from{opacity:0;transform:translateY(30px)}}
+html.fm-open .w-pill{display:none}
+
+/* WFN: datos de la función estilo créditos de póster */
+.ep{margin-top:30px;background:#0f0f10;color:#fff;text-align:center;padding:30px 20px 26px}
+.ep small{display:block;font:700 12px var(--fc);letter-spacing:.3em;text-transform:uppercase;color:#ff4d4d}
+.ep b{display:block;font:800 clamp(40px,6vw,76px)/.95 var(--fc);text-transform:uppercase;margin:12px 0 4px}
+.ep em{display:block;font:700 15px var(--fc);letter-spacing:.3em;color:#9a9a95;font-style:normal}
+.ep i{display:block;width:60px;height:3px;background:var(--red);margin:14px auto}
+.ep p{font:700 clamp(15px,1.6vw,20px)/1.5 var(--fc);letter-spacing:.08em;text-transform:uppercase;color:#d2d2cd;max-width:900px;margin:0 auto}
+.ep .ex{display:block;margin-top:6px;font-size:13.5px;color:#9a9a95}
+.ep .eacts{justify-content:center;margin-top:18px}
+.ep .fnote{margin:0;color:#9a9a95}
