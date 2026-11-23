@@ -1,45 +1,13 @@
-TEAM K-1 · QUÉ SUBIR A GITHUB (19 nov 2026)
-===========================================
+TEAM K-1 · ARREGLO 2 DEL BOTÓN DE BOLETOS (23 nov 2026)
 
-Revisé lo que tienes en GitHub (loseelwebs/Teamk1, último cambio del 17 nov).
-No hay que borrar NADA. Solo reemplaza 5 archivos y agrega 1 nuevo:
-
-REEMPLAZAR (ya existen, súbelos encima):
-  index.html
-  panel.html
+Reemplaza solo estos 3 archivos en GitHub (no borres nada):
   css/sitio.css
   js/sitio.js
-  js/panel.js
+  index.html   (súbelo al final)
 
-AGREGAR (nuevo, dentro de la carpeta js):
-  js/anim.js
+Incluye el arreglo anterior (se oculta en el pie de página), así que si
+no subiste el zip anterior, con este basta.
 
-NO TOQUES (ya están bien en GitHub):
-  js/config.js, js/defaults.js, img/, docs/, robots.txt, sitemap.xml,
-  .assetsignore, .github/, favicon.ico, README.md
-
-Orden recomendado: primero js/anim.js, css/sitio.css, js/sitio.js y js/panel.js;
-al final index.html y panel.html (así nunca se ve una página a medias).
-
-Las letras siguen cargando de Google Fonts, igual que ahora: no necesitas
-subir la carpeta "fonts" de los zips anteriores. Los zips anteriores ya no
-hacen falta: este los incluye todos.
-
-QUÉ CAMBIA
-- Animaciones: scroll suave, barra roja de avance, cortina roja al cambiar
-  de sección, títulos que entran con efecto, luz en tarjetas, botones
-  magnéticos, fotos que se abren al bajar, cifras que cuentan, cursor propio
-  en PC. (Sin figura de fondo ni partículas.)
-- Intro de brasas y zoom la primera vez que se entra al inicio.
-- Encabezado sin barra negra: al entrar al inicio los dos logos van al centro
-  y no hay botón; al bajar se van a la izquierda y aparece el botón redondo
-  con anillo (en celular) o el menú (en PC).
-- Foto de portada con filtro oscuro automático (cualquier foto del panel).
-- WFN: al entrar solo se ve la cartelera; botón flotante «Boletos»; los
-  datos de la función van en un bloque negro estilo póster.
-- Panel: fondo blanco y letras negras, con el color de cada sección como
-  acento; menú lateral en PC, barra abajo en celular, «Resultados en vivo»,
-  buscador y botón Descartar.
-
-Después de subir, abre la página y recarga una vez (si se ve lo anterior,
-espera un minuto a que Cloudflare publique y recarga de nuevo).
+Qué arregla: el botón ya no brinca ni se queda a media pantalla en
+iPhone. Ahora vive fuera de la sección WFN, así que las animaciones de
+entrada ya no lo arrastran.
