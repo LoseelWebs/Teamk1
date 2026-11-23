@@ -898,11 +898,13 @@ html.fx-on.hd-claro .hd-wfn img{content:url(../img/wfn-logo-contorno.png)}
 #wfn{background-image:linear-gradient(#0f0f10,#0f0f10);background-size:100% var(--hd);background-repeat:no-repeat}
 
 /* WFN: botón flotante de boletos (opción 1: al entrar solo la cartelera) */
-.w-pill{position:fixed!important;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:55;transform:translateX(-50%);border-radius:999px;min-height:52px;padding:0 26px;box-shadow:0 12px 28px rgba(0,0,0,.45);white-space:nowrap;animation:wPill .6s .6s cubic-bezier(.2,.8,.2,1) both}
+.w-pill{position:fixed!important;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:55;transform:translateX(-50%);border-radius:999px;min-height:52px;padding:0 26px;box-shadow:0 12px 28px rgba(0,0,0,.45);white-space:nowrap;animation:wPill .6s .6s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes wPill{from{opacity:0;transform:translate(-50%,30px)}}
 @media(min-width:861px){.w-pill{left:auto;right:28px;transform:none;animation-name:wPill2}}
 @keyframes wPill2{from{opacity:0;transform:translateY(30px)}}
 html.fm-open .w-pill{display:none}
+.w-pill{transition:opacity .3s,translate .35s cubic-bezier(.2,.8,.2,1),visibility 0s}
+html.pill-off .w-pill{opacity:0;translate:0 24px;visibility:hidden;pointer-events:none;transition:opacity .25s,translate .3s,visibility 0s .3s}
 
 /* WFN: datos de la función estilo créditos de póster */
 .ep{margin-top:30px;background:#0f0f10;color:#fff;text-align:center;padding:30px 20px 26px}
@@ -914,3 +916,11 @@ html.fm-open .w-pill{display:none}
 .ep .ex{display:block;margin-top:6px;font-size:13.5px;color:#9a9a95}
 .ep .eacts{justify-content:center;margin-top:18px}
 .ep .fnote{margin:0;color:#9a9a95}
+
+/* Botón de boletos fuera de la sección: solo visible en WFN, sin animación de entrada que mueva su posición */
+html:not(.v-wfn) #wpill{display:none}
+#wpill .w-pill{animation:none;-webkit-transform:translateX(-50%) translateZ(0);transform:translateX(-50%) translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+@media(min-width:861px){#wpill .w-pill{-webkit-transform:translateZ(0);transform:translateZ(0)}}
+html.v-wfn:not(.pill-off) #wpill .w-pill{animation:wPillIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes wPillIn{from{opacity:0}}
+#wpill .btn{font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif;font-weight:800;font-size:17px;letter-spacing:.06em}
