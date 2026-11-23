@@ -349,11 +349,21 @@ function renderWfn() {
       <h2 class="soon-t">${esc(c.proximamente_etiqueta || "Muy pronto")}</h2><i class="soon-l"></i>
       <p class="soon-p">${esc(c.proximamente_texto || "Fecha, sede y cartelera por anunciar. Síguenos para enterarte primero.")}</p>
       <div class="row soon-b">${L2.fbw ? `<a class="btn red" href="${esc(L2.fbw)}" target="_blank" rel="noopener">Síguenos en Facebook</a>` : ""}${verHist ? '<a class="btn out" href="#w-hist">Ver resultados</a>' : ""}</div></div></section>`;
+    pill("");
     box.innerHTML = `${soon}${spons}<div class="w">${ligaH}${hist}</div>`;
     tickCD(); return;
   }
-  box.innerHTML = `${bar}${hero}<div class="w">${card}</div>${spons}<div class="w"><section class="einfo-s">${info}</section>${ligaH}${hist}</div>`;
+  pill(bar);
+  box.innerHTML = `${hero}<div class="w">${card}</div>${spons}<div class="w"><section class="einfo-s">${info}</section>${ligaH}${hist}</div>`;
   tickCD();
+}
+
+/* botón flotante de boletos: vive fuera de la sección (directo en <body>) para que
+   ninguna animación de la sección lo arrastre ni lo deje a media pantalla en iPhone */
+function pill(html) {
+  let h = document.getElementById("wpill");
+  if (!h) { h = document.createElement("div"); h.id = "wpill"; document.body.appendChild(h); }
+  h.innerHTML = html;
 }
 
 /* fechas */
@@ -476,6 +486,7 @@ function parallax() { pxT = 0; if (matchMedia("(prefers-reduced-motion: reduce)"
 function onScroll() {
   const y = scrollY, hd = $(".hd"); hd && hd.classList.toggle("sc", y > 30);
   const rb = $(".rbtn"); if (rb) { const max = document.documentElement.scrollHeight - innerHeight; rb.style.setProperty("--p", max > 0 ? Math.min(100, Math.max(0, y / max * 100)).toFixed(1) : 0); }
+  const ft = $(".ft"); if (ft) document.documentElement.classList.toggle("pill-off", ft.getBoundingClientRect().top < innerHeight - 40);
   paintRv(); if (!pxT) pxT = requestAnimationFrame(parallax);
 }
 addEventListener("scroll", onScroll, { passive: true });
@@ -487,6 +498,7 @@ const TIT = { wfn: "WFN Combat League" };
 function show(k, first, anchor) {
   if (!K.includes(k)) k = "inicio";
   K.forEach(id => { const s = document.getElementById(id); if (s) s.hidden = id !== k; });
+  document.documentElement.classList.toggle("v-wfn", k === "wfn");
   if (anchor) { const a = document.getElementById(anchor); a && setTimeout(() => a.scrollIntoView({ behavior: first ? "auto" : "smooth" }), 30); }
   else if (!first) scrollTo({ top: 0, behavior: "auto" });
   const base = ((C || {}).negocio || {}).titulo_pestana || "Academia Team K-1";
