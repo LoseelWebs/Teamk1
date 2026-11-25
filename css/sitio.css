@@ -910,3 +910,4 @@ html.v-wfn:not(.pill-off) #wpill .w-pill{animation:wPillIn .45s cubic-bezier(.2,
 .fz-d{display:flex;justify-content:center;padding:10px 14px;background:#0c0c0c;border-top:1px solid #262626}
 .fz-d em{font-style:normal;padding:5px 12px;background:var(--red);color:#fff;font:800 14px/1.1 var(--fc);letter-spacing:.08em;text-transform:uppercase}
 @media(max-width:600px){.tvc .evm{font-size:12px}}
+.ft-by{display:inline-block;padding:10px 4px;margin:-10px -4px;position:relative;z-index:2}

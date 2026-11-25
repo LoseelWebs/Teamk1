@@ -215,7 +215,7 @@ function render(c) {
     <div><h4>Síguenos</h4><p class="ft-rs"><a href="${esc(L.fb)}" target="_blank" rel="noopener">Facebook</a><a href="${esc(L.wa)}" target="_blank" rel="noopener">WhatsApp</a>${L.fbw ? `<a href="${esc(L.fbw)}" target="_blank" rel="noopener">WFN Combat League</a>` : `<a href="#wfn">WFN Combat League</a>`}</p></div>
     <div><h4>Secciones</h4><nav aria-label="Pie de página"><a href="#inicio">Inicio</a><a href="#clases">Clases</a><a href="#horarios">Horarios</a><a href="#equipo">Equipo</a><a href="#nosotros">Nosotros</a><a href="#wfn">WFN</a><a href="#contacto">Contacto</a></nav></div></div>
     <a class="ft-big" href="#inicio" aria-label="${esc(nom)} · ir al inicio"><img src="img/logo-tri.png" alt="" loading="lazy"><span>${esc(nom.toUpperCase())}</span></a>
-    <div class="ft-bot"><span>©${esc(pie.anio || new Date().getFullYear())} ${esc(nom)} ${esc(n.subtitulo || "")}</span><span>Página hecha por <a href="https://portafolio.loseelwebs.workers.dev/" target="_blank" rel="noopener"><b>Loseel</b></a></span></div>`);
+    <div class="ft-bot"><span>©${esc(pie.anio || new Date().getFullYear())} ${esc(nom)} ${esc(n.subtitulo || "")}</span><span>Página hecha por <a class="ft-by" href="https://portafolio.loseelwebs.workers.dev/" rel="noopener"><b>Loseel</b></a></span></div>`);
 
   hoy(); initReveal(); observe(); fbLoad();
   if (!$("#nosotros").hidden) { rotRun(); videoOn(); }
