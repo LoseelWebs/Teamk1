@@ -1,0 +1,38 @@
+TEAM K-1 · REVISIÓN Y LIMPIEZA (25 nov 2026)
+============================================
+
+1) REEMPLAZA en GitHub estos archivos (súbelos encima):
+   css/sitio.css
+   js/sitio.js
+   js/panel.js
+   README.md
+   index.html   (casi al final)
+   panel.html   (al final)
+
+2) BORRA de GitHub estos 3 archivos que ya no se usan:
+   LEEME.txt              (el de la raíz: se subió por error con el zip
+                           anterior y se podía ver en internet)
+   img/leeme.txt          (archivo vacío de prueba)
+   img/wfn-logo-claro.png (logo que ninguna página usa)
+   Cómo borrar desde el iPhone: abre el archivo en github.com → botón «…»
+   (arriba a la derecha) → «Delete file» → «Commit changes».
+
+   NO subas este LEEME.txt a GitHub.
+
+3) NO TOQUES nada más: js/anim.js, js/config.js, js/defaults.js, img/
+   (lo demás), docs/, robots.txt, sitemap.xml, .assetsignore, .github/.
+
+QUÉ SE ARREGLÓ
+- Main event y co-estelar con imágenes de cartel: se ven igual que
+  siempre (los datos vienen en la imagen). Solo cuando marcas el ganador
+  en el panel aparece abajo una etiqueta roja con el resultado
+  (ej. «Gana Morales · KO · R2 · 1:45»).
+- Si algún día no subes las imágenes del cartel, el diseño de letras
+  ahora sí muestra el récord, el origen y el resultado que captures.
+- Panel: títulos de algunos campos casi blancos (ej. «Foto del peleador»)
+  ahora en negro; se quitó la sombra gris en la orilla izquierda del
+  celular; se quitaron los campos «Ciudad» y «Texto inferior» del pie
+  porque la página ya no los usa.
+- Código viejo eliminado: estilos del menú y barra de evento anteriores,
+  la tabla de datos vieja de WFN y funciones que ya nadie llamaba.
+- README actualizado (Cloudflare, archivos actuales).

@@ -39,7 +39,7 @@ const SCHEMA = [
  { id: "envivo", tab: "Resultados en vivo", special: "envivo", help: "Marca quién ganó cada pelea desde el celular durante la función." },
  { id: "negocio", tab: "Negocio y contacto", help: "Nombre, teléfono, WhatsApp, dirección y redes. Se usan en toda la página (botones, pie de página, menú).", cards: [
    { l: "Negocio", fields: [ { t: "row", fields: [T("negocio.nombre", "Nombre corto", { help: "Ej. Team K-1" }), T("negocio.subtitulo", "Subtítulo", { help: "Ej. Academy" })] },
-     { t: "row", fields: [T("negocio.ciudad", "Ciudad"), T("negocio.titulo_pestana", "Título de la pestaña del navegador")] } ] },
+     T("negocio.titulo_pestana", "Título de la pestaña del navegador") ] },
    { l: "Contacto", fields: [ { t: "row", fields: [T("contacto.telefono", "Teléfono (como se muestra)", { ph: "782 828 0510" }), T("contacto.whatsapp", "WhatsApp con lada", { help: "Solo números, con 52 al inicio. Ej. 527828280510" })] },
      A("contacto.mensaje_whatsapp", "Mensaje que se escribe solo al abrir WhatsApp"),
      { t: "row", fields: [T("contacto.direccion1", "Dirección (línea 1)"), T("contacto.direccion2", "Dirección (línea 2)")] },
@@ -167,7 +167,7 @@ const SCHEMA = [
        I("logo", "Logo", { folder: "patrocinadores", cut: true, help: "De preferencia PNG sin fondo." }), T("enlace", "Enlace (opcional)", { ph: "https://..." }) ],
        { add: "Agregar patrocinador", title: "nombre" }) ] } ] },
  { id: "pie", tab: "Pie de página", help: "El texto de abajo de la página.", cards: [
-   { l: "Pie de página", fields: [ { t: "row", fields: [T("pie.anio", "Año"), T("pie.texto_inferior", "Texto inferior")] } ] } ] },
+   { l: "Pie de página", fields: [ T("pie.anio", "Año del ©") ] } ] },
  { id: "colores", tab: "Colores", help: "Los colores de toda la página. Toca el cuadro de color para elegir otro. Se ven en la página al guardar.", cards: [
    { l: "Colores de la página", fields: [
      { t: "color", k: "tema.principal", l: "Color principal", def: "#ff1f1f", help: "Botones, barras, títulos rojos, pie de página y brillo del fondo." },
@@ -230,20 +230,20 @@ function field(f, base) {
     case "date": return `<label class="f">${esc(f.l)}<input type="date" data-p="${p}" value="${esc(get(DRAFT, p))}">${help}</label>`;
     case "bool": return `<label class="chk"><input type="checkbox" data-p="${p}" data-bool ${get(DRAFT, p) ? "checked" : ""}>${esc(f.l)}</label>`;
     case "select": return `<label class="f">${esc(f.l)}<select data-p="${p}">${f.options.map(([v, t]) => `<option value="${v}"${get(DRAFT, p) === v ? " selected" : ""}>${esc(t)}</option>`).join("")}</select></label>`;
-    case "days": { const v = get(DRAFT, p) || []; return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span><div class="days">${DAYS.map(([d, t]) => `<label><input type="checkbox" data-days="${p}" value="${d}" ${v.includes(d) ? "checked" : ""}>${t}</label>`).join("")}</div></div>`; }
+    case "days": { const v = get(DRAFT, p) || []; return `<div class="f"><span style="font-weight:700;font-size:13px;color:var(--ink)">${esc(f.l)}</span><div class="days">${DAYS.map(([d, t]) => `<label><input type="checkbox" data-days="${p}" value="${d}" ${v.includes(d) ? "checked" : ""}>${t}</label>`).join("")}</div></div>`; }
     case "img": return imgField(p, f);
     case "color": { const v = get(DRAFT, p) || ""; const shown = /^#[0-9a-f]{6}$/i.test(v) ? v : (f.def || "#ff1f1f");
-      return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span><div class="colrow"><input type="color" data-color="${p}" value="${esc(shown)}"><input type="text" data-p="${p}" value="${esc(v)}" placeholder="${esc(f.def || "Usar color principal")}" maxlength="7"><button type="button" class="btn sm" data-clear="${p}">${f.def ? "Original" : "Vaciar"}</button></div>${help}</div>`; }
+      return `<div class="f"><span style="font-weight:700;font-size:13px;color:var(--ink)">${esc(f.l)}</span><div class="colrow"><input type="color" data-color="${p}" value="${esc(shown)}"><input type="text" data-p="${p}" value="${esc(v)}" placeholder="${esc(f.def || "Usar color principal")}" maxlength="7"><button type="button" class="btn sm" data-clear="${p}">${f.def ? "Original" : "Vaciar"}</button></div>${help}</div>`; }
     case "help": return `<p style="margin:0;color:var(--muted);font-size:13px">${esc(f.l)}</p>`;
     case "range": { const v = get(DRAFT, p); const val = typeof v === "number" ? v : f.def;
-      return `<label class="f">${esc(f.l)} <output style="color:var(--gold);font-weight:800">${val}${f.unit || ""}</output><input type="range" data-p="${p}" data-num="1" data-unit="${f.unit || ""}" min="${f.min}" max="${f.max}" step="${f.step}" value="${val}"></label>`; }
+      return `<label class="f">${esc(f.l)} <output style="color:var(--ink);font-weight:800">${val}${f.unit || ""}</output><input type="range" data-p="${p}" data-num="1" data-unit="${f.unit || ""}" min="${f.min}" max="${f.max}" step="${f.step}" value="${val}"></label>`; }
     case "video": { const v = get(DRAFT, p) || "";
-      return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span>${v ? `<video src="${esc(v)}" muted loop playsinline controls style="width:100%;max-width:360px;aspect-ratio:16/9;background:#000;filter:grayscale(1)"></video>` : ""}
+      return `<div class="f"><span style="font-weight:700;font-size:13px;color:var(--ink)">${esc(f.l)}</span>${v ? `<video src="${esc(v)}" muted loop playsinline controls style="width:100%;max-width:360px;aspect-ratio:16/9;background:#000;filter:grayscale(1)"></video>` : ""}
         <div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><label class="btn sm">${v ? "Cambiar video" : "Subir video"}<input type="file" accept="video/mp4,video/webm,video/quicktime" data-video="${p}" style="display:none"></label>${v ? `<button type="button" class="btn sm del" data-clear="${p}">Quitar</button>` : ""}</div>
         <input type="text" data-p="${p}" value="${esc(v)}" placeholder="O pega aquí el enlace del video (https://… o img/video.mp4)">${help}</div>`; }
     case "tohist": return `<button type="button" class="btn" data-tohist="1" style="justify-self:start">Pasar «Combates WFN» al historial</button>`;
     case "reset": return `<button type="button" class="btn del" data-resettema="1" style="justify-self:start">Regresar a los colores originales</button>`;
-    case "group": return `<div class="item ${f.cls || ""}" style="border-left-color:${f.cls ? "" : "#3a3a40"}"><div class="item-h"><b>${esc(f.l)}</b></div>${f.fields.map(x => field(x, p)).join("")}</div>`;
+    case "group": return `<div class="item ${f.cls || ""}" style="border-left-color:${f.cls ? "" : "var(--line)"}"><div class="item-h"><b>${esc(f.l)}</b></div>${f.fields.map(x => field(x, p)).join("")}</div>`;
     case "list": return listField(p, f);
   }
   return "";
@@ -251,7 +251,7 @@ function field(f, base) {
 function imgField(p, f) {
   const u = get(DRAFT, p) || "";
   const src = u ? (/^https?:/.test(u) ? u : u) : "";
-  return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l || "Foto")}</span>
+  return `<div class="f"><span style="font-weight:700;font-size:13px;color:var(--ink)">${esc(f.l || "Foto")}</span>
     <div class="img"><span class="pv${f.cut ? " cut" : ""}">${src ? `<img src="${esc(src)}" alt="">` : "SIN FOTO"}</span>
     <div class="ia"><div class="row"><label class="btn sm">${u ? "Cambiar foto" : "Subir foto"}<input type="file" accept="image/*" data-img="${p}" data-folder="${esc(f.folder || "general")}" data-cut="${f.cut ? 1 : ""}"></label>${u ? `<button type="button" class="btn sm del" data-clear="${p}">Quitar</button>` : ""}</div>
     ${f.help ? `<small>${esc(f.help)}</small>` : `<small>JPG o PNG. Se ajusta el tamaño automáticamente.</small>`}</div></div></div>`;
@@ -264,7 +264,7 @@ function listField(p, f) {
   else if (f.item === "img") items = arr.map((v, i) => `<div class="item">${imgField(p + "." + i, { l: "Foto " + (i + 1), folder: f.folder })}<div class="item-h"><b></b>${ops(i)}</div></div>`).join("");
   else items = arr.map((v, i) => { const tt = typeof f.title === "function" ? f.title(v) : (v && v[f.title]); const k = p + "." + i;
     return `<details class="item" data-o="${k}"${isOpen(k, false) ? " open" : ""}><summary class="item-h"><span class="chev"></span><b>${i + 1}. ${esc(tt || "Sin nombre")}</b>${ops(i)}</summary><div class="ib">${f.item.map(x => field(x, k)).join("")}</div></details>`; }).join("");
-  return `<div class="f"><span style="font-weight:700;font-size:13px;color:#d9d3cc">${esc(f.l)}</span><div class="list">${items}</div><button type="button" class="btn sm" data-op="add" data-l="${p}" data-kind="${typeof f.item === "string" ? f.item : "obj"}" style="justify-self:start">+ ${esc(f.add || "Agregar")}</button></div>`;
+  return `<div class="f"><span style="font-weight:700;font-size:13px;color:var(--ink)">${esc(f.l)}</span><div class="list">${items}</div><button type="button" class="btn sm" data-op="add" data-l="${p}" data-kind="${typeof f.item === "string" ? f.item : "obj"}" style="justify-self:start">+ ${esc(f.add || "Agregar")}</button></div>`;
 }
 /* ---------------- navegación ---------------- */
 const NAV = [["General", ["resumen", "negocio", "colores"], "#c6f11a"], ["Secciones de la página", ["inicio", "clases", "horarios", "equipo", "nosotros", "pie"], "#ff3b3b"], ["WFN Combat League", ["envivo", "combates", "liga", "competencias"], "#e8b84f"], ["Respaldo", ["historial"], "#8fb0d9"]];
@@ -491,7 +491,7 @@ form.addEventListener("change", e => { const t = e.target; if (t.dataset.video) 
 form.addEventListener("click", async e => {
   const c = e.target.closest("[data-clear]"); if (c) { set(DRAFT, c.dataset.clear, ""); renderForm(); refreshBar(); return; }
   if (e.target.closest("[data-tohist]")) { if (confirmar("¿Copiar la cartelera actual al historial?")) pasarAlHistorial(); return; }
-  if (e.target.closest("[data-resettema]")) { if (!confirmar("¿Regresar a los colores originales?")) return; DRAFT.tema = { principal: "#ff1f1f", acento: "#c6f11a", fondo: "#050505", main_event: "", wfn_letras: "", wfn_sombra: "", wfn_fondo: "" }; renderForm(); refreshBar(); return; }
+  if (e.target.closest("[data-resettema]")) { if (!confirmar("¿Regresar a los colores originales?")) return; DRAFT.tema = { principal: "#ff1f1f", acento: "#c6f11a", fondo: "#050505", wfn_letras: "", wfn_sombra: "", wfn_fondo: "" }; renderForm(); refreshBar(); return; }
   const h = e.target.closest("[data-hist]");
   if (h) { const { data, error } = await sb.from("sitios_historial").select("contenido").eq("id", h.dataset.hist).single(); if (error) return toast("No se pudo cargar"); DRAFT = conDef(data.contenido); refreshBar(); marcarCambios(); toast("Versión cargada. Revísala y presiona «Guardar cambios»."); return; }
   const lv = e.target.closest("[data-live]");

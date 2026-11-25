@@ -139,8 +139,8 @@ details.item[open]>summary{border-bottom:1px solid var(--line);margin-bottom:8px
 .bar .sm-t{display:none}
 /* ===== responsive ===== */
 @media(max-width:1023px){
- .side{transform:translateX(-100%);width:min(320px,86vw);box-shadow:20px 0 40px rgba(0,0,0,.5)}
- body.nav-open .side{transform:none}body.nav-open .scrim{opacity:1;pointer-events:auto}
+ .side{transform:translateX(-100%);width:min(320px,86vw)}
+ body.nav-open .side{transform:none;box-shadow:20px 0 40px rgba(0,0,0,.25)}body.nav-open .scrim{opacity:1;pointer-events:auto}
  .wrap{margin-left:0}.ham,.ibtn{display:grid}
  .bar{left:0;bottom:calc(var(--bnH) + env(safe-area-inset-bottom));transform:translateY(calc(100% + var(--bnH) + 30px));opacity:0;padding-bottom:10px}
  .bar.show,.bar.d{transform:none;opacity:1}
@@ -297,8 +297,8 @@ input[type=text],input[type=email],input[type=password],input[type=time],input[t
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
-<script src="js/config.js"></script>
-<script src="js/defaults.js?v=20261119a"></script>
-<script src="js/panel.js?v=20261119a"></script>
+<script src="js/config.js?v=20261125a"></script>
+<script src="js/defaults.js?v=20261125a"></script>
+<script src="js/panel.js?v=20261125a"></script>
 </body>
 </html>

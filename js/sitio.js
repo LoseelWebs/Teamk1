@@ -49,7 +49,6 @@ function tema(t) {
   if (ok(t.principal)) st.setProperty("--red", t.principal);
   if (ok(t.acento)) st.setProperty("--lime", t.acento);
   if (ok(t.fondo)) st.setProperty("--bg", t.fondo);
-  st.setProperty("--mev", ok(t.main_event) ? t.main_event : "#f2b01e");
 }
 
 /* ===================== DIBUJAR ===================== */
@@ -219,7 +218,6 @@ function render(c) {
 
 /* ===================== WFN ===================== */
 const DEF_WORDS = ["WARRIOR", "FIGHT", "NIGHT", "WFN", "POZA RICA", "COATZINTLA", "AMAMM"];
-const rowsDe = w => { w = (w || []).filter(Boolean); if (!w.length) w = DEF_WORDS; return Array.from({ length: 8 }, (_, k) => `<div class="mev-row">${Array.from({ length: 24 }, (_, i) => `<span>${esc(String(w[(i + k) % w.length]).toUpperCase())}</span>`).join("")}</div>`).join(""); };
 const fname = p => [p.nombre, p.apellido].filter(Boolean).join(" ") || "Por anunciar";
 const meta = p => [p.origen, p.record].filter(Boolean).map(esc).join(" · ");
 const esCo = b => !!b.comain || /co[\s-]?(main|estelar)/i.test(b.tipo || "");
@@ -240,6 +238,13 @@ function renderWfn() {
   /* sin barra arriba: al entrar solo se ve la cartelera; los boletos quedan en un botón flotante */
   const bar = safeUrl(c.enlace_boletos) ? `<a class="btn red w-pill" href="${esc(safeUrl(c.enlace_boletos))}" target="_blank" rel="noopener">Boletos ${esc(titulo)}</a>` : `<a class="btn red w-pill" href="${esc(waTxt("Hola, quiero boletos para " + titulo))}" target="_blank" rel="noopener">${ICW}Boletos ${esc(titulo)}</a>`;
 
+  const resTxt = (x, R, A) => { const g = x.ganador; if (!g) return "";
+    if (g === "empate") return "Empate"; if (g === "nc") return "Sin resultado (NC)";
+    const w = g === "rojo" ? R : A, det = [String(x.metodo || "").trim(), x.round ? "R" + String(x.round).replace(/^r/i, "") : "", x.tiempo].filter(Boolean);
+    return ["Gana " + (w.apellido || w.nombre || (g === "rojo" ? "esquina roja" : "esquina azul"))].concat(det).join(" · "); };
+  const metaPar = (R, A) => (meta(R) || meta(A)) ? `<p class="evm"><span>${meta(R) || "&nbsp;"}</span><span>${meta(A) || "&nbsp;"}</span></p>` : "";
+  /* cartel con imágenes: los datos ya vienen en la imagen; solo se agrega el resultado cuando se marca en el panel */
+  const fzDatos = (x, R, A) => { const rs = resTxt(x, R, A); return rs ? `<div class="fz-d"><em>${esc(rs)}</em></div>` : ""; };
   /* main event con letras en el recuadro */
   const words = (c.fondo || []).filter(Boolean).length ? c.fondo.filter(Boolean) : DEF_WORDS;
   /* cada fila = dos mitades idénticas, así la animación (-50%) da la vuelta sin huecos ni saltos */
@@ -251,11 +256,10 @@ function renderWfn() {
   const cd = f && f.d > new Date() ? `<div class="tvcd" data-cd="${f.d.getTime()}"><em>Faltan</em><div><b>00</b><small>Días</small></div><div><b>00</b><small>Hrs</small></div><div><b>00</b><small>Min</small></div><div><b>00</b><small>Seg</small></div></div>` : "";
   let hero = `<section class="tvh" id="w-evento" aria-label="Main event"><div class="lz" aria-hidden="true"><div class="rows">${rows}</div></div>${fig(r, "l")}${fig(a, "r")}
     <div class="tvc">${num ? `<span class="wlog" role="img" aria-label="Main event · ${esc(titulo)}"><img src="img/wfn-logo-contorno.png" alt=""><i></i><b>${esc(num)}</b></span>` : `<span class="tag">Main event · ${esc(titulo)}</span>`}<span class="nm">${esc(r.apellido || r.nombre || "Por anunciar")}</span><span class="vs"><i></i><b>vs</b><i></i></span><span class="nm">${esc(a.apellido || a.nombre || "Por anunciar")}</span>
-    <p class="dv">${esc([m.div, m.rounds].filter(Boolean).join(" · "))}</p></div>${cd}</section>`;
+    <p class="dv">${esc([m.div, m.rounds].filter(Boolean).join(" · "))}</p>${metaPar(r, a)}${resTxt(m, r, a) ? `<p class="evr">${esc(resTxt(m, r, a))}</p>` : ""}</div>${cd}</section>`;
 
   const ct = c.cartel || {};
   /* resultados en vivo (se marcan en el panel) */
-  const resDet = x => [String(x.metodo || "").trim(), x.round ? "R" + String(x.round).replace(/^r/i, "") : "", x.tiempo].filter(Boolean).join(" · ");
   const gana = (x, lado) => x.ganador === lado ? " win" : (x.ganador === "rojo" || x.ganador === "azul") ? " lose" : "";
 
   /* datos importantes */
@@ -277,18 +281,18 @@ function renderWfn() {
     const cn = (p, side) => { const a = p.nombre && p.apellido, top = a ? p.nombre : "", big = a ? p.apellido : (p.apellido || p.nombre || "Por anunciar"), mt = meta(p);
       return `<div class="cm-n ${side}">${top ? `<small>${esc(top)}</small>` : ""}<b>${esc(big)}</b>${mt ? `<span>${mt}</span>` : ""}</div>`; };
     return `<div class="cm"${rv("rl")}><div class="cm-tag">${esc(comain.tipo || "Co-main event")}</div>${cf(cr, "l")}${cf(ca, "r")}${cn(cr, "l")}
-    <div class="cm-vs"><b>vs</b>${dv ? `<span>${dv}</span>` : ""}</div>${cn(ca, "r")}${dv ? `<div class="cm-dv">${dv}</div>` : ""}</div>`; })() : "";
+    <div class="cm-vs"><b>vs</b>${dv ? `<span>${dv}</span>` : ""}${resTxt(comain, cr, ca) ? `<em class="evr">${esc(resTxt(comain, cr, ca))}</em>` : ""}</div>${cn(ca, "r")}${dv ? `<div class="cm-dv">${dv}</div>` : ""}</div>`; })() : "";
   /* main event cara a cara: cada peleador con su fondo extendido y franja central */
   const eI = safeUrl(ct.est_izq), eD = safeUrl(ct.est_der);
   const franja = (cls, txt) => `<div class="fz-s${cls}"><img src="img/wfn-logo-contorno.png" alt="WFN Combat League">${num ? `<b>${esc(num)}</b>` : ""}<i></i><span>${txt}</span></div>`;
   if (eI && eD) {
     hero = `<section class="fz" id="w-evento" aria-label="Pelea estelar · ${esc(titulo)}">
-    <div class="fz-v"><div class="fz-h l${gana(m, "rojo")}" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')">${m.ganador === "rojo" ? '<span class="fz-w2">Victoria</span>' : ""}</div>${franja("", "Pelea estelar")}<div class="fz-h r${gana(m, "azul")}" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')">${m.ganador === "azul" ? '<span class="fz-w2">Victoria</span>' : ""}</div></div>${cd}</section>`;
+    <div class="fz-v"><div class="fz-h l${gana(m, "rojo")}" role="img" aria-label="${esc(fname(r))}" style="background-image:url('${esc(eI)}')">${m.ganador === "rojo" ? '<span class="fz-w2">Victoria</span>' : ""}</div>${franja("", "Pelea estelar")}<div class="fz-h r${gana(m, "azul")}" role="img" aria-label="${esc(fname(a))}" style="background-image:url('${esc(eD)}')">${m.ganador === "azul" ? '<span class="fz-w2">Victoria</span>' : ""}</div></div>${fzDatos(m, r, a)}${cd}</section>`;
   }
   const cI = safeUrl(ct.co_izq), cD = safeUrl(ct.co_der);
   if (comain && cI && cD) { const cr = comain.rojo || {}, ca = comain.azul || {};
-    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l${gana(comain, "rojo")}" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')">${comain.ganador === "rojo" ? '<span class="fz-w2">Victoria</span>' : ""}</div>${franja(" co", "Coestelar")}<div class="fz-h r${gana(comain, "azul")}" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')">${comain.ganador === "azul" ? '<span class="fz-w2">Victoria</span>' : ""}</div></div></div>`; }
-  const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}, g = x.ganador, det = resDet(x);
+    coH = `<div class="fzc"${rv()}><div class="fzc-v"><div class="fz-h l${gana(comain, "rojo")}" role="img" aria-label="${esc(fname(cr))}" style="background-image:url('${esc(cI)}')">${comain.ganador === "rojo" ? '<span class="fz-w2">Victoria</span>' : ""}</div>${franja(" co", "Coestelar")}<div class="fz-h r${gana(comain, "azul")}" role="img" aria-label="${esc(fname(ca))}" style="background-image:url('${esc(cD)}')">${comain.ganador === "azul" ? '<span class="fz-w2">Victoria</span>' : ""}</div></div>${fzDatos(comain, cr, ca)}</div>`; }
+  const row = (x, j) => { const rr = x.rojo || {}, aa = x.azul || {}, g = x.ganador;
     const mid = g ? `<small>Resultado</small><b class="rs">${g === "empate" ? "Empate" : g === "nc" ? "NC" : esc(String(x.metodo || "").trim().split(/\s+/)[0] || "Gana")}</b><span>${esc([x.round ? "R" + String(x.round).replace(/^r/i, "") : "", x.tiempo].filter(Boolean).join(" · ") || x.div || "")}</span>`
       : `<small>${esc(x.tipo || x.div)}</small><b>vs</b><span>${x.tipo ? esc(x.div) + " · " : ""}${esc(x.rounds)}</span>`;
     const nm = (p, l, lado) => `<div class="nm ${l}${gana(x, lado)}"><b>${esc(fname(p))}</b><span>${x.ganador === lado ? '<em class="vic">Victoria</em>' + (meta(p) ? " · " : "") : ""}${meta(p) || (x.ganador === lado ? "" : "&nbsp;")}</span></div>`;
@@ -377,13 +381,6 @@ function evFecha(c) {
   return isNaN(d) ? null : { d, conHora: !!h };
 }
 const fechaTxt = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? `${+m[3]} ${MESES[+m[2] - 1].slice(0, 3).toLowerCase()} ${m[1]}` : (s || ""); };
-function evHead(c) {
-  const f = evFecha(c);
-  const cal = f ? `<div class="evx-cal"><span>${MESES[f.d.getMonth()]}</span><b>${f.d.getDate()}</b><small>${DIAS_EV[f.d.getDay()]}</small></div>` : "";
-  const cuando = f ? hora12(c.hora) : (c.fecha || "Fecha por anunciar");
-  const cd = f && f.d > new Date() ? `<div class="evx-cd" data-cd="${f.d.getTime()}"><div><b class="gold">00</b><small>Días</small></div><div><b class="gold">00</b><small>Horas</small></div><div><b class="gold">00</b><small>Min</small></div><div><b class="gold">00</b><small>Seg</small></div></div>` : "";
-  return `<div class="evx"${rv()}>${cal}<div class="evx-i"><span class="eb">Próxima función</span><b class="evx-t gold">${esc(tituloEv(c))}</b>${cuando ? `<span>${esc(cuando)}</span>` : ""}${c.lugar ? `<span class="evx-l">${PIN}${esc(c.lugar)}</span>` : ""}</div></div>${cd}`;
-}
 function evCorta(c) { const f = evFecha(c); if (!f) return c.fecha || ""; return `${DIAS_C[f.d.getDay()]} ${f.d.getDate()} ${MESES[f.d.getMonth()].slice(0, 3)}${f.conHora ? " · " + hora12(c.hora) : ""}`; }
 function tickCD() {
   $$("[data-cd]").forEach(el => {
