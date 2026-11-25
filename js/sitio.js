@@ -208,9 +208,14 @@ function render(c) {
   /* ----- Menú y pie ----- */
   $$(".fm-wa,.hd-cta").forEach(a => a.href = L.wa); $$(".fm-map").forEach(a => a.href = L.mapa);
   const pie = c.pie || {};
-  set(".ft-in", `<div class="ft-top"><div class="ft-logo"><img src="img/logo-tri.png" alt="" loading="lazy"><b>${esc(String(n.nombre || "").toUpperCase())}</b><span>${esc(String(n.subtitulo || "").toUpperCase())}</span></div>
-    <nav aria-label="Pie de página"><a href="#clases">Clases</a><a href="#horarios">Horarios</a><a href="#equipo">Equipo</a><a href="#wfn">WFN</a><a href="#contacto">Contacto</a><a href="${esc(L.fb)}" target="_blank" rel="noopener">Facebook</a><a href="${esc(L.wa)}" target="_blank" rel="noopener">WhatsApp</a></nav></div>
-    <div class="ft-bot"><span>${esc(k.direccion1)}, ${esc(k.direccion2)} · <a href="${esc(L.tel)}" style="font:inherit;text-transform:none;letter-spacing:0">${esc(k.telefono)}</a></span><span>${esc(String(n.nombre || "").toUpperCase())} ©${esc(pie.anio)} · Página hecha por <b>Loseel Webs</b></span></div>`);
+  const nom = String(n.nombre || "Team K-1"), dirs = [k.direccion1, k.direccion2].filter(Boolean);
+  set(".ft-in", `<div class="ft-g">
+    <div><h4>Visítanos</h4><p>${dirs.map(esc).join("<br>")}</p><a class="ft-lk" href="${esc(L.mapa)}" target="_blank" rel="noopener">Cómo llegar</a></div>
+    <div><h4>Llámanos</h4><p><a href="${esc(L.tel)}">${esc(k.telefono)}</a></p><a class="ft-lk" href="${esc(L.wa)}" target="_blank" rel="noopener">o escríbenos por WhatsApp</a></div>
+    <div><h4>Síguenos</h4><p class="ft-rs"><a href="${esc(L.fb)}" target="_blank" rel="noopener">Facebook</a><a href="${esc(L.wa)}" target="_blank" rel="noopener">WhatsApp</a>${L.fbw ? `<a href="${esc(L.fbw)}" target="_blank" rel="noopener">WFN Combat League</a>` : `<a href="#wfn">WFN Combat League</a>`}</p></div>
+    <div><h4>Secciones</h4><nav aria-label="Pie de página"><a href="#inicio">Inicio</a><a href="#clases">Clases</a><a href="#horarios">Horarios</a><a href="#equipo">Equipo</a><a href="#nosotros">Nosotros</a><a href="#wfn">WFN</a><a href="#contacto">Contacto</a></nav></div></div>
+    <a class="ft-big" href="#inicio" aria-label="${esc(nom)} · ir al inicio"><img src="img/logo-tri.png" alt="" loading="lazy"><span>${esc(nom.toUpperCase())}</span></a>
+    <div class="ft-bot"><span>©${esc(pie.anio || new Date().getFullYear())} ${esc(nom)} ${esc(n.subtitulo || "")}</span><span>Página hecha por <a href="https://portafolio.loseelwebs.workers.dev/" target="_blank" rel="noopener"><b>Loseel</b></a></span></div>`);
 
   hoy(); initReveal(); observe(); fbLoad();
   if (!$("#nosotros").hidden) { rotRun(); videoOn(); }
